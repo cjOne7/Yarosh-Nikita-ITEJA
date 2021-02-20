@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 namespace MathInterpreter {
    public class MathInterpret {
-      private readonly Stack<double> _stack;
+      private readonly Stack<double> _stack = new Stack<double>();
       private readonly string _mathExpression;
       private int _currentPosition;
 
       public MathInterpret(string mathExpression) {
          _mathExpression = mathExpression;
-         _stack = new Stack<double>();
       }
 
       public double Calculate() {
