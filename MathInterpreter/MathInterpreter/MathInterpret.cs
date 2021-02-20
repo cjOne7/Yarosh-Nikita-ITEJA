@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
-namespace MathCompiler {
-   public class MathInterpreter {
+namespace MathInterpreter {
+   public class MathInterpret {
       private readonly Stack<double> _stack;
       private readonly string _mathExpression;
       private int _currentPosition;
 
-      public MathInterpreter(string mathExpression) {
+      public MathInterpret(string mathExpression) {
          _mathExpression = mathExpression;
          _stack = new Stack<double>();
       }
@@ -60,11 +59,11 @@ namespace MathCompiler {
          while (_currentPosition < _mathExpression.Length && char.IsDigit(_mathExpression[_currentPosition])){
             stringBuilder.Append(_mathExpression[_currentPosition++]);
          }
-         
+
          if (stringBuilder.Length == 0){
             return false;
          }
-         
+
          _stack.Push(Convert.ToDouble(stringBuilder.ToString()));
          return true;
       }
@@ -92,6 +91,5 @@ namespace MathCompiler {
 
          return null;
       }
-      
    }
 }
