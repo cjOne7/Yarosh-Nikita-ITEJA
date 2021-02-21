@@ -20,7 +20,6 @@ namespace MathInterpreter {
       private bool ReadMathExp() {
          ReadTerm();
          char? sign = ReadPlusMinus();
-
          while (sign != null){
             ReadTerm();
             var v1 = _stack.Pop();
@@ -36,7 +35,6 @@ namespace MathInterpreter {
       private bool ReadTerm() {
          ReadFactor();
          char? sign = ReadMulDiv();
-
          while (sign != null){
             ReadFactor();
             var v1 = _stack.Pop();
