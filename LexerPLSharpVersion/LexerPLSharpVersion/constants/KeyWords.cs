@@ -3,10 +3,6 @@ using LexerPLSharpVersion.token;
 
 namespace LexerPLSharpVersion.constants {
    public static class KeyWords {
-      private static readonly string[] KeyWordsArray = {
-         Program, Procedure, Call, Begin, End, If, Then, Else, While, Do, Var, Const
-      };
-
       private const string Program = "program";
       private const string Procedure = "procedure";
       private const string Call = "call";
@@ -19,11 +15,7 @@ namespace LexerPLSharpVersion.constants {
       private const string While = "while";
       private const string Var = "var";
       private const string Const = "const";
-      
-      public static bool IsKeyWord(string value) {
-         return Array.IndexOf(KeyWordsArray, value.ToLower()) != -1;
-      }
-      
+
       public static TokenType DetectKeyWordType(string value) {
          switch (value.ToLower()){
             case Program:
@@ -51,7 +43,7 @@ namespace LexerPLSharpVersion.constants {
             case Const:
                return TokenType.Const;
             default:
-               return TokenType.Unknown;
+               return TokenType.Identifier;
          }
       }
    }

@@ -9,8 +9,8 @@ namespace LexerPLSharpVersion.lexer {
       private int CurrentPosition { get; set; }
       private int CurrentLine { get; set; } = 1;
 
-      private readonly List<Token> _tokens = new List<Token>();
       private readonly StringBuilder _stringBuffer = new StringBuilder();
+      private readonly List<Token> _tokens = new List<Token>();
       private Token _token;
 
       public IEnumerable<Token> GetTokens(string code) {
@@ -78,9 +78,7 @@ namespace LexerPLSharpVersion.lexer {
          }
 
          var str = _stringBuffer.ToString();
-         _token = KeyWords.IsKeyWord(str)
-            ? new Token(KeyWords.DetectKeyWordType(str), str, CurrentLine, CurrentPosition)
-            : new Token(TokenType.Identifier, str, CurrentLine, CurrentPosition);
+         _token = new Token(KeyWords.DetectKeyWordType(str), str, CurrentLine, CurrentPosition);
          _tokens.Add(_token);
          _stringBuffer.Clear();
       }
