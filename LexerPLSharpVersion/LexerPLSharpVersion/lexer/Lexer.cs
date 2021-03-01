@@ -19,9 +19,9 @@ namespace LexerPLSharpVersion.lexer {
       private readonly StringBuilder _stringBuffer = new StringBuilder();
       private Token _token;
 
-      public List<Token> GetTokens(string code) {
+      public IEnumerable<Token> GetTokens(string code) {
          while (CurrentPosition < code.Length){
-            char character = code[CurrentPosition];
+            var character = code[CurrentPosition];
             if (char.IsLetter(character)){
                while (char.IsLetter(character)){
                   _stringBuffer.Append(character);
@@ -80,10 +80,10 @@ namespace LexerPLSharpVersion.lexer {
                      : TokenType.LessOrEqual;
                   AddToken(type, string.Concat(character, code[CurrentPosition + 1]));
                   CurrentPosition++;
-                  continue;
                }
-
-               AddToken(DetectComparisonOperatorType(character), character.ToString());
+               else{
+                  AddToken(DetectComparisonOperatorType(character), character.ToString());
+               }
             }
             else{
                AddToken(TokenType.Unknown, character.ToString());
@@ -93,8 +93,8 @@ namespace LexerPLSharpVersion.lexer {
          return _tokens;
       }
 
-      private bool IsKeyWord(string str) {
-         return Array.IndexOf(_keyWords, str) != -1;
+      private bool IsKeyWord(string value) {
+         return Array.IndexOf(_keyWords, value.ToLower()) != -1;
       }
 
       private void AddToken(TokenType tokenType, string value) {
@@ -113,6 +113,7 @@ namespace LexerPLSharpVersion.lexer {
             case ComparisonOperatorsConstants.Less:
             case ComparisonOperatorsConstants.Notequal:
             case ComparisonOperatorsConstants.ExclamationMark:
+            case ComparisonOperatorsConstants.QuestionMark:
                return true;
             default:
                return false;
@@ -197,6 +198,8 @@ namespace LexerPLSharpVersion.lexer {
                return TokenType.Notequal;
             case ComparisonOperatorsConstants.ExclamationMark:
                return TokenType.ExclamationMark;
+            case ComparisonOperatorsConstants.QuestionMark:
+               return TokenType.QuestionMark;
             default:
                return TokenType.Unknown;
          }
@@ -233,7 +236,7 @@ namespace LexerPLSharpVersion.lexer {
       }
 
       private static TokenType DetectKeyWordType(string value) {
-         switch (value){
+         switch (value.ToLower()){
             case KeyWordConstants.Program:
                return TokenType.Program;
             case KeyWordConstants.Procedure:
