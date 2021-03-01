@@ -12,6 +12,7 @@ namespace LexerPLSharpVersion.lexer {
          , KeyWordConstants.While, KeyWordConstants.Do, KeyWordConstants.Var, KeyWordConstants.Const
       };
 
+      private string Code { get; set; }
       private int CurrentPosition { get; set; }
       private int CurrentLine { get; set; } = 1;
 
@@ -20,38 +21,14 @@ namespace LexerPLSharpVersion.lexer {
       private Token _token;
 
       public IEnumerable<Token> GetTokens(string code) {
+         Code = code;
          while (CurrentPosition < code.Length){
             var character = code[CurrentPosition];
             if (char.IsLetter(character)){
-               while (char.IsLetter(character)){
-                  _stringBuffer.Append(character);
-                  if (++CurrentPosition == code.Length){
-                     break;
-                  }
-
-                  character = code[CurrentPosition];
-               }
-
-               var str = _stringBuffer.ToString();
-               _token = IsKeyWord(str)
-                  ? new Token(DetectKeyWordType(str), str, CurrentLine, CurrentPosition)
-                  : new Token(TokenType.Identifier, str, CurrentLine, CurrentPosition);
-               _tokens.Add(_token);
-               _stringBuffer.Clear();
+               ReadWord(character);
             }
             else if (char.IsDigit(character)){
-               while (char.IsDigit(character)){
-                  _stringBuffer.Append(character);
-                  if (++CurrentPosition == code.Length){
-                     break;
-                  }
-
-                  character = code[CurrentPosition];
-               }
-
-               _token = new Token(TokenType.Number, _stringBuffer.ToString(), CurrentLine, CurrentPosition);
-               _tokens.Add(_token);
-               _stringBuffer.Clear();
+               ReadNumber(character);
             }
             else if (IsMathOperator(character)){
                AddToken(DetectMathOperatorType(character), character.ToString());
@@ -65,12 +42,15 @@ namespace LexerPLSharpVersion.lexer {
                   AddToken(TokenType.Assignment, string.Concat(character, code[CurrentPosition + 1]));
                   CurrentPosition++;
                }
-               else if (CurrentPosition == code.Length - 1 && code[CurrentPosition] == SeparatorConstants.Dot){
+               else if (CurrentPosition == code.Length - 1 && character == SeparatorConstants.Dot){
                   AddToken(TokenType.EndOfFile, character.ToString());
                }
                else{
                   AddToken(DetectSeparatorType(character), character.ToString());
                }
+            }
+            else if (IsBracket(character)){
+               AddToken(DetectBracketType(character), character.ToString());
             }
             else if (IsComparisonOperator(character)){
                if (CurrentPosition < code.Length - 1 &&
@@ -91,6 +71,39 @@ namespace LexerPLSharpVersion.lexer {
          }
 
          return _tokens;
+      }
+
+      private void ReadWord(char character) {
+         while (char.IsLetter(character)){
+            _stringBuffer.Append(character);
+            if (++CurrentPosition == Code.Length){
+               break;
+            }
+
+            character = Code[CurrentPosition];
+         }
+
+         var str = _stringBuffer.ToString();
+         _token = IsKeyWord(str)
+            ? new Token(DetectKeyWordType(str), str, CurrentLine, CurrentPosition)
+            : new Token(TokenType.Identifier, str, CurrentLine, CurrentPosition);
+         _tokens.Add(_token);
+         _stringBuffer.Clear();
+      }
+
+      private void ReadNumber(char character) {
+         while (char.IsDigit(character)){
+            _stringBuffer.Append(character);
+            if (++CurrentPosition == Code.Length){
+               break;
+            }
+
+            character = Code[CurrentPosition];
+         }
+
+         _token = new Token(TokenType.Number, _stringBuffer.ToString(), CurrentLine, CurrentPosition);
+         _tokens.Add(_token);
+         _stringBuffer.Clear();
       }
 
       private bool IsKeyWord(string value) {
@@ -126,6 +139,16 @@ namespace LexerPLSharpVersion.lexer {
             case OperatorConstants.Minus:
             case OperatorConstants.Divide:
             case OperatorConstants.Multiply:
+               return true;
+            default:
+               return false;
+         }
+      }
+
+      private static bool IsBracket(char character) {
+         switch (character){
+            case BracketConstants.CloseRoundBracket:
+            case BracketConstants.OpenRoundBracket:
                return true;
             default:
                return false;
@@ -215,6 +238,17 @@ namespace LexerPLSharpVersion.lexer {
                return TokenType.Multiply;
             case OperatorConstants.Plus:
                return TokenType.Plus;
+            default:
+               return TokenType.Unknown;
+         }
+      }
+
+      private static TokenType DetectBracketType(char character) {
+         switch (character){
+            case BracketConstants.CloseRoundBracket:
+               return TokenType.CloseRoundBracket;
+            case BracketConstants.OpenRoundBracket:
+               return TokenType.OpenRoundBracket;
             default:
                return TokenType.Unknown;
          }

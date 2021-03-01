@@ -10,7 +10,7 @@
       Number,
       Plus, Minus, Multiply, Divide,
       Equal, Notequal, Greater, GreaterOrEqual, Less, LessOrEqual, ExclamationMark, QuestionMark,
-      CloseBracket, OpenBracket,
+      CloseRoundBracket, OpenRoundBracket,
       Unknown, EndOfFile
    }
 }
