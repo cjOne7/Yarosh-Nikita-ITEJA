@@ -72,9 +72,19 @@ namespace LexerPLSharpVersion.lexer {
                   AddToken(DetectSeparatorType(character), character.ToString());
                }
             }
-            // else if (IsComparisonOperator(character)){
-            //    
-            // }
+            else if (IsComparisonOperator(character)){
+               if (CurrentPosition < code.Length - 1 &&
+                   code[CurrentPosition + 1] == ComparisonOperatorsConstants.Equality){
+                  var type = character == ComparisonOperatorsConstants.Greater
+                     ? TokenType.GreaterOrEqual
+                     : TokenType.LessOrEqual;
+                  AddToken(type, string.Concat(character, code[CurrentPosition + 1]));
+                  CurrentPosition++;
+                  continue;
+               }
+
+               AddToken(DetectComparisonOperatorType(character), character.ToString());
+            }
             else{
                AddToken(TokenType.Unknown, character.ToString());
             }
@@ -88,9 +98,12 @@ namespace LexerPLSharpVersion.lexer {
       }
 
       private void AddToken(TokenType tokenType, string value) {
+         CurrentPosition++;
          _token = new Token(tokenType, value, CurrentLine, CurrentPosition);
          _tokens.Add(_token);
-         CurrentPosition++;
+         if (value == WhiteCharsConstants.EscapedNewLine){
+            CurrentLine++;
+         }
       }
 
       private static bool IsComparisonOperator(char character) {
@@ -145,11 +158,11 @@ namespace LexerPLSharpVersion.lexer {
       private static string EscapeWhiteChars(char character) {
          switch (character){
             case WhiteCharsConstants.NewLine:
-               return "\\n";
+               return WhiteCharsConstants.EscapedNewLine;
             case WhiteCharsConstants.Tabulator:
-               return "\\t";
+               return WhiteCharsConstants.EscapedTabulator;
             case WhiteCharsConstants.CarriageReturn:
-               return "\\r";
+               return WhiteCharsConstants.EscapedCarriageReturn;
             case WhiteCharsConstants.WhiteSpace:
                return " ";
          }
@@ -157,7 +170,7 @@ namespace LexerPLSharpVersion.lexer {
          return "";
       }
 
-      private TokenType DetectWhiteCharType(char character) {
+      private static TokenType DetectWhiteCharType(char character) {
          switch (character){
             case WhiteCharsConstants.WhiteSpace:
                return TokenType.WhiteSpace;
@@ -166,7 +179,6 @@ namespace LexerPLSharpVersion.lexer {
             case WhiteCharsConstants.CarriageReturn:
                return TokenType.CarriageReturn;
             case WhiteCharsConstants.NewLine:
-               CurrentLine++;
                return TokenType.NewLine;
             default:
                return TokenType.Unknown;

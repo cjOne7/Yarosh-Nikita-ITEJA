@@ -6,7 +6,5 @@
       public const char ExclamationMark = '!';
       public const char Notequal = '#';
       public const char QuestionMark = '?';
-      public const string GreaterOrEqual = ">=";
-      public const string LessOrEqual = "<=";
    }
 }
