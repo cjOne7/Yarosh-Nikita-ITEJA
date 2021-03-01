@@ -1,14 +1,14 @@
 ﻿using LexerPLSharpVersion.token;
 
 namespace LexerPLSharpVersion.constants {
-   public static class WhiteCharsConstants {
-      public const char WhiteSpace = ' ';
-      public const char NewLine = '\n';
-      public const char Tabulator = '\t';
-      public const char CarriageReturn = '\r';
-      public const string EscapedCarriageReturn = "\\r";
+   public static class WhiteChars {
+      private const char WhiteSpace = ' ';
+      private const char NewLine = '\n';
+      private const char Tabulator = '\t';
+      private const char CarriageReturn = '\r';
+      private const string EscapedCarriageReturn = "\\r";
+      private const string EscapedTabulator = "\\t";
       public const string EscapedNewLine = "\\n";
-      public const string EscapedTabulator = "\\n";
 
       public static bool IsWhiteChar(char character) {
          switch (character){

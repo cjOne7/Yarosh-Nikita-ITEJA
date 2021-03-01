@@ -1,13 +1,13 @@
 ﻿using LexerPLSharpVersion.token;
 
 namespace LexerPLSharpVersion.constants {
-   public static class ComparisonOperatorsConstants {
+   public static class CompareOperators {
       public const char Equality = '=';
       public const char Greater = '>';
       public const char Less = '<';
-      public const char ExclamationMark = '!';
       public const char Notequal = '#';
       public const char QuestionMark = '?';
+      public const char ExclamationMark = '!';
 
       public static bool IsComparisonOperator(char character) {
          switch (character){
