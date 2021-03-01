@@ -33,8 +33,9 @@ namespace LexerPLSharpVersion.lexer {
             else if (IsMathOperator(character)){
                AddToken(DetectMathOperatorType(character), character.ToString());
             }
-            else if (IsWhiteChar(character)){
-               AddToken(DetectWhiteCharType(character), EscapeWhiteChars(character));
+            else if (WhiteCharsConstants.IsWhiteChar(character)){
+               AddToken(WhiteCharsConstants.DetectWhiteCharType(character)
+                  , WhiteCharsConstants.EscapeWhiteChars(character));
             }
             else if (IsSeparator(character)){
                if (CurrentPosition < code.Length - 1 && character == SeparatorConstants.Colon &&
@@ -52,7 +53,7 @@ namespace LexerPLSharpVersion.lexer {
             else if (IsBracket(character)){
                AddToken(DetectBracketType(character), character.ToString());
             }
-            else if (IsComparisonOperator(character)){
+            else if (ComparisonOperatorsConstants.IsComparisonOperator(character)){
                if (CurrentPosition < code.Length - 1 &&
                    code[CurrentPosition + 1] == ComparisonOperatorsConstants.Equality){
                   var type = character == ComparisonOperatorsConstants.Greater
@@ -62,7 +63,7 @@ namespace LexerPLSharpVersion.lexer {
                   CurrentPosition++;
                }
                else{
-                  AddToken(DetectComparisonOperatorType(character), character.ToString());
+                  AddToken(ComparisonOperatorsConstants.DetectComparisonOperatorType(character), character.ToString());
                }
             }
             else{
@@ -119,20 +120,6 @@ namespace LexerPLSharpVersion.lexer {
          }
       }
 
-      private static bool IsComparisonOperator(char character) {
-         switch (character){
-            case ComparisonOperatorsConstants.Equality:
-            case ComparisonOperatorsConstants.Greater:
-            case ComparisonOperatorsConstants.Less:
-            case ComparisonOperatorsConstants.Notequal:
-            case ComparisonOperatorsConstants.ExclamationMark:
-            case ComparisonOperatorsConstants.QuestionMark:
-               return true;
-            default:
-               return false;
-         }
-      }
-
       private static bool IsMathOperator(char character) {
          switch (character){
             case OperatorConstants.Plus:
@@ -164,67 +151,6 @@ namespace LexerPLSharpVersion.lexer {
                return true;
             default:
                return false;
-         }
-      }
-
-      private static bool IsWhiteChar(char character) {
-         switch (character){
-            case WhiteCharsConstants.NewLine:
-            case WhiteCharsConstants.Tabulator:
-            case WhiteCharsConstants.CarriageReturn:
-            case WhiteCharsConstants.WhiteSpace:
-               return true;
-            default:
-               return false;
-         }
-      }
-
-      private static string EscapeWhiteChars(char character) {
-         switch (character){
-            case WhiteCharsConstants.NewLine:
-               return WhiteCharsConstants.EscapedNewLine;
-            case WhiteCharsConstants.Tabulator:
-               return WhiteCharsConstants.EscapedTabulator;
-            case WhiteCharsConstants.CarriageReturn:
-               return WhiteCharsConstants.EscapedCarriageReturn;
-            case WhiteCharsConstants.WhiteSpace:
-               return " ";
-         }
-
-         return "";
-      }
-
-      private static TokenType DetectWhiteCharType(char character) {
-         switch (character){
-            case WhiteCharsConstants.WhiteSpace:
-               return TokenType.WhiteSpace;
-            case WhiteCharsConstants.Tabulator:
-               return TokenType.Tabulator;
-            case WhiteCharsConstants.CarriageReturn:
-               return TokenType.CarriageReturn;
-            case WhiteCharsConstants.NewLine:
-               return TokenType.NewLine;
-            default:
-               return TokenType.Unknown;
-         }
-      }
-
-      private static TokenType DetectComparisonOperatorType(char character) {
-         switch (character){
-            case ComparisonOperatorsConstants.Equality:
-               return TokenType.Equal;
-            case ComparisonOperatorsConstants.Greater:
-               return TokenType.Greater;
-            case ComparisonOperatorsConstants.Less:
-               return TokenType.Less;
-            case ComparisonOperatorsConstants.Notequal:
-               return TokenType.Notequal;
-            case ComparisonOperatorsConstants.ExclamationMark:
-               return TokenType.ExclamationMark;
-            case ComparisonOperatorsConstants.QuestionMark:
-               return TokenType.QuestionMark;
-            default:
-               return TokenType.Unknown;
          }
       }
 
