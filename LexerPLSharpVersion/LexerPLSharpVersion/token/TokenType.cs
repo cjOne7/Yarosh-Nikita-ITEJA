@@ -1,7 +1,7 @@
 ﻿namespace LexerPLSharpVersion.token {
    public enum TokenType {
-      Program, Procedure, Call,
-      Dot, Semicolon, Colon, Comma, 
+      Program, Procedure, Call, Odd,
+      Dot, Semicolon, Comma, 
       WhiteSpace, NewLine, Tabulator, CarriageReturn,
       Begin, End,
       If, Then, Else,

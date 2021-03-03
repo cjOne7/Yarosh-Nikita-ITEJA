@@ -15,6 +15,7 @@ namespace LexerPLSharpVersion.constants {
       private const string While = "while";
       private const string Var = "var";
       private const string Const = "const";
+      private const string Odd = "odd";
 
       public static TokenType DetectKeyWordType(string value) {
          switch (value.ToLower()){
@@ -42,6 +43,8 @@ namespace LexerPLSharpVersion.constants {
                return TokenType.Var;
             case Const:
                return TokenType.Const;
+            case Odd:
+               return TokenType.Odd;
             default:
                return TokenType.Identifier;
          }

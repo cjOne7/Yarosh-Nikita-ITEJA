@@ -21,8 +21,6 @@ namespace LexerPLSharpVersion.constants {
       
       public static TokenType DetectSeparatorType(char character) {
          switch (character){
-            case Colon:
-               return TokenType.Colon;
             case Comma:
                return TokenType.Comma;
             case Dot:

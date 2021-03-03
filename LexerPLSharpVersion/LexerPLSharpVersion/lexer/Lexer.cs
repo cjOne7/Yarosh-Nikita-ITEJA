@@ -27,8 +27,7 @@ namespace LexerPLSharpVersion.lexer {
                AddToken(MathOperators.DetectMathOperatorType(character), character.ToString());
             }
             else if (WhiteChars.IsWhiteChar(character)){
-               AddToken(WhiteChars.DetectWhiteCharType(character)
-                  , WhiteChars.EscapeWhiteChars(character));
+               AddToken(WhiteChars.DetectWhiteCharType(character), WhiteChars.EscapeWhiteChars(character));
             }
             else if (Separators.IsSeparator(character)){
                if (CurrentPosition < code.Length - 1 && character == Separators.Colon &&
@@ -106,6 +105,5 @@ namespace LexerPLSharpVersion.lexer {
             CurrentLine++;
          }
       }
-
    }
 }
