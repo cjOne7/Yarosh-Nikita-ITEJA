@@ -3,9 +3,9 @@ package parser.ast.expressions;
 public class UnaryExpression implements IExpression {
 
     private final IExpression expression;
-    private final char operation;
+    private final String operation;
 
-    public UnaryExpression(char operation, IExpression expression) {
+    public UnaryExpression(String operation, IExpression expression) {
         this.expression = expression;
         this.operation = operation;
     }
@@ -13,9 +13,11 @@ public class UnaryExpression implements IExpression {
     @Override
     public double eval() {
         switch (operation) {
-            case '-':
+            case "-":
                 return -expression.eval();
-            case '+':
+            case "odd":
+                return expression.eval() % 2 == 0 ? 0 : 1;
+            case "+":
             default:
                 return expression.eval();
         }
@@ -23,6 +25,6 @@ public class UnaryExpression implements IExpression {
 
     @Override
     public String toString() {
-        return String.format("%c%s", operation, expression);
+        return String.format("%s%s", operation, expression);
     }
 }

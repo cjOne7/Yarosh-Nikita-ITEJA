@@ -1,9 +1,6 @@
 package parser;
 
-import parser.ast.expressions.BinaryExpression;
-import parser.ast.expressions.IExpression;
-import parser.ast.expressions.NumberExpression;
-import parser.ast.expressions.UnaryExpression;
+import parser.ast.expressions.*;
 import token.Token;
 import token.TokenType;
 
@@ -33,7 +30,40 @@ public class Parser {
 
     //Recursive descending parser
     private IExpression expression() {
-        return additive();
+        return conditional();
+    }
+
+    private IExpression conditional() {
+        IExpression result = additive();
+        while (true) {
+            if (match(TokenType.EQUAL)) {
+                result = new ConditionalExpression("=", result, additive());
+                continue;
+            }
+            if (match(TokenType.NOTEQUAL)) {
+                result = new ConditionalExpression("#", result, additive());
+                continue;
+            }
+            if (match(TokenType.LESS)) {
+                result = new ConditionalExpression("<", result, additive());
+                continue;
+            }
+            if (match(TokenType.LESS_OR_EQUAL)) {
+                result = new ConditionalExpression("<=", result, additive());
+                continue;
+            }
+            if (match(TokenType.GREATER)) {
+                result = new ConditionalExpression(">", result, additive());
+                continue;
+            }
+            if (match(TokenType.GREATER_OR_EQUAL)) {
+                result = new ConditionalExpression(">=", result, additive());
+                continue;
+            }
+            break;
+        }
+
+        return result;
     }
 
     private IExpression additive() {
@@ -72,10 +102,13 @@ public class Parser {
 
     private IExpression unary() {
         if (match(TokenType.MINUS)) {
-            return new UnaryExpression('-', primary());
+            return new UnaryExpression("-", primary());
         }
         if (match(TokenType.PLUS)) {
-            return new UnaryExpression('+', primary());
+            return new UnaryExpression("+", primary());
+        }
+        if (match(TokenType.ODD)) {
+            return new UnaryExpression("odd", primary());
         }
         return primary();
     }
