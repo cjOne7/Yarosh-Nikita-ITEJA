@@ -1,9 +1,9 @@
 package parser;
 
-import parser.ast.BinaryExpression;
-import parser.ast.IExpression;
-import parser.ast.NumberExpression;
-import parser.ast.UnaryExpression;
+import parser.ast.expressions.BinaryExpression;
+import parser.ast.expressions.IExpression;
+import parser.ast.expressions.NumberExpression;
+import parser.ast.expressions.UnaryExpression;
 import token.Token;
 import token.TokenType;
 
@@ -29,6 +29,7 @@ public class Parser {
         }
         return result;
     }
+
 
     //Recursive descending parser
     private IExpression expression() {

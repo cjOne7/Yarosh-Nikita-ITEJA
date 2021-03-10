@@ -1,4 +1,4 @@
-package parser.ast;
+package parser.ast.expressions;
 
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
