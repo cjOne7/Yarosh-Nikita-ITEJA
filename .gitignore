@@ -39,3 +39,4 @@ Desktop.ini
 LexerPL/LexerPL/Properties/AssemblyInfo.cs
 TestProject/TestProject/Properties/AssemblyInfo.cs
 TestProject/TestProject/Program.cs
+*.class

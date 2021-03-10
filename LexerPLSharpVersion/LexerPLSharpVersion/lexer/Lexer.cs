@@ -13,7 +13,7 @@ namespace LexerPLSharpVersion.lexer {
       private readonly List<Token> _tokens = new List<Token>();
       private Token _token;
 
-      public IEnumerable<Token> GetTokens(string code) {
+      public List<Token> GetTokens(string code) {
          Code = code;
          while (CurrentPosition < code.Length){
             var character = code[CurrentPosition];
