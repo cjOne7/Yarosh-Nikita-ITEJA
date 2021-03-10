@@ -1,10 +1,9 @@
 package main;
 
+import lexer.Lexer;
 import lexer.Lexer1;
-import lib.Variables;
 import parser.Parser;
-import parser.ast.expression.IExpression;
-import parser.ast.statement.IStatement;
+import parser.ast.IExpression;
 import token.Token;
 
 import java.io.File;
@@ -26,23 +25,36 @@ public final class Main {
 
             Lexer1 lexer1 = new Lexer1();
             List<Token> tokens = lexer1.getTokens(stringBuilder.toString());
-//            for (Token token : tokens) {
-//                System.out.println(token);
-//            }
-
-            List<IStatement> statements = new Parser(tokens).parse();
-            for (IStatement statement : statements) {
-                System.out.println(statement);
-            }
-            for (IStatement statement : statements) {
-               statement.execute();
+            for (Token token : tokens) {
+                System.out.println(token);
             }
 
-            System.out.printf("%s = %f\n", "word", Variables.get("word"));
-            System.out.printf("%s = %f\n", "word2", Variables.get("word2"));
+            List<IExpression> expressions = new Parser(tokens).parse();
+            for (IExpression expression : expressions) {
+                System.out.println(expression + " = " + expression.eval());
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+//        String input = "(-2+2)*-2";
+//        Lexer lexer = new Lexer(input);
+//        List<Token> tokens = lexer.tokenize();
+//        for (Token token : tokens) {
+//            System.out.println(token);
+//        }
+//        System.out.println();
+
+//        Lexer1 lexer1 = new Lexer1();
+//        List<Token> tokens = lexer1.getTokens("(2+2)*2");
+//        for (Token token : tokens) {
+//            System.out.println(token);
+//        }
+//
+//        List<IExpression> expressions = new Parser(tokens).parse();
+//        for (IExpression expression : expressions) {
+//            System.out.println(expression + " =  " + expression.eval());
+//        }
     }
 
 }

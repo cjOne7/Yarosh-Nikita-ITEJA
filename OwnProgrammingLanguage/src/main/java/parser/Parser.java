@@ -1,8 +1,9 @@
 package parser;
 
-import parser.ast.expression.*;
-import parser.ast.statement.AssignmentStatement;
-import parser.ast.statement.IStatement;
+import parser.ast.BinaryExpression;
+import parser.ast.IExpression;
+import parser.ast.NumberExpression;
+import parser.ast.UnaryExpression;
 import token.Token;
 import token.TokenType;
 
@@ -21,28 +22,12 @@ public class Parser {
         size = tokens.size();
     }
 
-    public List<IStatement> parse() {
-        List<IStatement> result = new ArrayList<>();
+    public List<IExpression> parse() {
+        List<IExpression> result = new ArrayList<>();
         while (!match(TokenType.END_OF_FILE)) {
-            result.add(statement());
+            result.add(expression());
         }
         return result;
-    }
-
-    private IStatement statement() {
-        return assignmentStatement();
-    }
-
-    private IStatement assignmentStatement() {
-//        match(TokenType.SEMICOLON);
-        Token current = get(0);
-        if (current.getType() == TokenType.IDENTIFIER && get(1).getType() == TokenType.ASSIGNMENT) {
-            consume(TokenType.IDENTIFIER);
-            String variable = current.getText();
-            consume(TokenType.ASSIGNMENT);
-            return new AssignmentStatement(variable, expression());
-        }
-        throw new RuntimeException("Unknown statement");
     }
 
     //Recursive descending parser
@@ -99,9 +84,6 @@ public class Parser {
         if (match(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(current.getText()));
         }
-        if (match(TokenType.IDENTIFIER)) {
-            return new VariableExpression(current.getText());
-        }
         if (match(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
             match(TokenType.CLOSE_ROUND_BRACKET);
@@ -117,15 +99,6 @@ public class Parser {
         }
         pos++;
         return true;
-    }
-
-    private Token consume(TokenType type) {
-        Token current = get(0);
-        if (type != current.getType()) {
-            throw new RuntimeException("Token " + current + " doesn't match " + type);
-        }
-        pos++;
-        return current;
     }
 
     private Token get(int relativePosition) {

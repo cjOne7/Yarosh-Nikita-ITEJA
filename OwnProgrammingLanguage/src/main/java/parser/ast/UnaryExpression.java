@@ -1,4 +1,4 @@
-package parser.ast.expression;
+package parser.ast;
 
 public class UnaryExpression implements IExpression {
 
