@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class Lexer {
     private static final TokenType[] OPERATOR_TOKENS =
-            {TokenType.PLUS, TokenType.MINUS, TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.OPEN_BRACKET, TokenType.CLOSE_BRACKET};
+            {TokenType.PLUS, TokenType.MINUS, TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.OPEN_ROUND_BRACKET, TokenType.CLOSE_ROUND_BRACKET};
     private static final String OPERATOR_CHARS = "+-*/()";
 
     private final String input;

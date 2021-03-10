@@ -3,6 +3,16 @@ package token;
 public final class Token {
     private TokenType type;
     private String text;
+    private int rowPosition;
+    private int columnPosition;
+
+
+    public Token(TokenType type, String text, int rowPosition, int columnPosition) {
+        this.type = type;
+        this.text = text;
+        this.rowPosition = rowPosition;
+        this.columnPosition = columnPosition;
+    }
 
     public Token(TokenType type, String text) {
         this.type = type;
@@ -23,6 +33,22 @@ public final class Token {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getRowPosition() {
+        return rowPosition;
+    }
+
+    public void setRowPosition(int rowPosition) {
+        this.rowPosition = rowPosition;
+    }
+
+    public int getColumnPosition() {
+        return columnPosition;
+    }
+
+    public void setColumnPosition(int columnPosition) {
+        this.columnPosition = columnPosition;
     }
 
     @Override

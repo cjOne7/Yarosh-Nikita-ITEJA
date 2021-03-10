@@ -84,9 +84,9 @@ public class Parser {
         if (match(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(current.getText()));
         }
-        if (match(TokenType.OPEN_BRACKET)) {
+        if (match(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
-            match(TokenType.CLOSE_BRACKET);
+            match(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
         throw new RuntimeException("Unknown expression");
