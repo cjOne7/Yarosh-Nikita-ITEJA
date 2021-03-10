@@ -8,7 +8,7 @@ public class MathOperators {
     private static final char MULTIPLY = '*';
     private static final char DIVIDE = '/';
 
-    public static boolean IsMathOperator(char character) {
+    public static boolean isMathOperator(char character) {
         switch (character){
             case PLUS:
             case MINUS:

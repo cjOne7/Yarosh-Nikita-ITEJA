@@ -6,7 +6,7 @@ public class Brackets {
     private static final char OPEN_ROUND_BRACKET = '(';
     private static final char CLOSE_ROUND_BRACKET = ')';
 
-    public static boolean IsBracket(char character) {
+    public static boolean isBracket(char character) {
         switch (character){
             case OPEN_ROUND_BRACKET:
             case CLOSE_ROUND_BRACKET:

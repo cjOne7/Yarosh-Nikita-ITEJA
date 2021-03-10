@@ -53,6 +53,6 @@ public final class Token {
 
     @Override
     public String toString() {
-        return "Type: " + type + ", text: '" + text + '\'';
+        return "Type: " + type + ", value: '" + text + "', row: " + rowPosition + ", column: " + columnPosition;
     }
 }

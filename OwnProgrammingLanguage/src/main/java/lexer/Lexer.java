@@ -13,7 +13,7 @@ public final class Lexer {
 
     private final String input;
     private final int length;
-    private final List<Token> tokens = new ArrayList<Token>();
+    private final List<Token> tokens = new ArrayList<>();
     private int pos;
 
     public Lexer(String input) {

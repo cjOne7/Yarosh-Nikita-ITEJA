@@ -29,6 +29,9 @@ namespace LexerPLSharpVersion.lexer {
             else if (WhiteChars.IsWhiteChar(character)){
                AddToken(WhiteChars.DetectWhiteCharType(character), WhiteChars.EscapeWhiteChars(character));
             }
+            else if (Brackets.IsBracket(character)){
+               AddToken(Brackets.DetectBracketType(character), character.ToString());
+            }
             else if (Separators.IsSeparator(character)){
                if (CurrentPosition < code.Length - 1 && character == Separators.Colon &&
                    code[CurrentPosition + 1] == CompareOperators.Equality){
@@ -41,9 +44,6 @@ namespace LexerPLSharpVersion.lexer {
                else{
                   AddToken(Separators.DetectSeparatorType(character), character.ToString());
                }
-            }
-            else if (Brackets.IsBracket(character)){
-               AddToken(Brackets.DetectBracketType(character), character.ToString());
             }
             else if (CompareOperators.IsComparisonOperator(character)){
                if (CurrentPosition < code.Length - 1 &&
