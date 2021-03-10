@@ -1,4 +1,4 @@
-package parser.ast;
+package parser.ast.expression;
 
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
@@ -27,6 +27,6 @@ public class BinaryExpression implements IExpression {
 
     @Override
     public String toString() {
-        return String.format("%s %c %s", expression1, operation, expression2);
+        return String.format("(%s %c %s)", expression1, operation, expression2);
     }
 }

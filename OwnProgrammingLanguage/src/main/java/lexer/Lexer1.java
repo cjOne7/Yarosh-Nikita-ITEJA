@@ -21,33 +21,46 @@ public final class Lexer1 {
             char character = code.charAt(currentPosition);
             if (Character.isLetter(character)) {
                 readWord(character);
-            } else if (Character.isDigit(character)) {
+            }
+            else if (Character.isDigit(character)) {
                 readNumber(character);
-            } else if (MathOperators.isMathOperator(character)) {
+            }
+            else if (MathOperators.isMathOperator(character)) {
                 addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
-            } else if (WhiteChars.isWhiteChar(character)) {
-                addToken(WhiteChars.detectWhiteCharType(character), WhiteChars.escapeWhiteChars(character));
-            } else if (Brackets.isBracket(character)) {
+            }
+            else if (WhiteChars.isWhiteChar(character)) {
+//                addToken(WhiteChars.detectWhiteCharType(character), WhiteChars.escapeWhiteChars(character));
+                currentPosition++;
+            }
+            else if (Brackets.isBracket(character)) {
                 addToken(Brackets.detectBracketType(character), Character.toString(character));
-            } else if (CompareOperators.isComparisonOperator(character)) {
+            }
+            else if (CompareOperators.isComparisonOperator(character)) {
                 if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    TokenType type = character == CompareOperators.GREATER ? TokenType.GREATER_OR_EQUAL : TokenType.LESS_OR_EQUAL;
+                    TokenType type = character == CompareOperators.GREATER
+                            ? TokenType.GREATER_OR_EQUAL
+                            : TokenType.LESS_OR_EQUAL;
                     addToken(type, Character.toString(character).concat(Character.toString(code.charAt(currentPosition + 1))));
                     currentPosition++;
-                } else {
+                }
+                else {
                     addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
                 }
-            } else if (Separators.isSeparator(character)) {
+            }
+            else if (Separators.isSeparator(character)) {
                 if (currentPosition < code.length() - 1 && character == Separators.COLON
                         && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
                     addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(Character.toString(code.charAt(currentPosition + 1))));
                     currentPosition++;
-                } else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
+                }
+                else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
                     addToken(TokenType.END_OF_FILE, Character.toString(character));
-                } else {
+                }
+                else {
                     addToken(Separators.detectSeparatorType(character), Character.toString(character));
                 }
-            } else {
+            }
+            else {
                 addToken(TokenType.UNKNOWN, Character.toString(character));
             }
         }
@@ -55,7 +68,7 @@ public final class Lexer1 {
     }
 
     private void readWord(char character) {
-        while (Character.isLetter(character)) {
+        while (Character.isLetterOrDigit(character)) {
             builder.append(character);
             if (++currentPosition == code.length()) {
                 break;
