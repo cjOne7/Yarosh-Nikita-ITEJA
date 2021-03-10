@@ -1,7 +1,6 @@
 package main;
 
 import lexer.Lexer;
-import lexer.Lexer1;
 import parser.Parser;
 import parser.ast.IExpression;
 import token.Token;
@@ -23,8 +22,8 @@ public final class Main {
             stringBuilder.deleteCharAt(0);//delete \uFEFF
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-            Lexer1 lexer1 = new Lexer1();
-            List<Token> tokens = lexer1.getTokens(stringBuilder.toString());
+            Lexer lexer = new Lexer();
+            List<Token> tokens = lexer.getTokens(stringBuilder.toString());
             for (Token token : tokens) {
                 System.out.println(token);
             }
@@ -36,25 +35,6 @@ public final class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-//        String input = "(-2+2)*-2";
-//        Lexer lexer = new Lexer(input);
-//        List<Token> tokens = lexer.tokenize();
-//        for (Token token : tokens) {
-//            System.out.println(token);
-//        }
-//        System.out.println();
-
-//        Lexer1 lexer1 = new Lexer1();
-//        List<Token> tokens = lexer1.getTokens("(2+2)*2");
-//        for (Token token : tokens) {
-//            System.out.println(token);
-//        }
-//
-//        List<IExpression> expressions = new Parser(tokens).parse();
-//        for (IExpression expression : expressions) {
-//            System.out.println(expression + " =  " + expression.eval());
-//        }
     }
 
 }

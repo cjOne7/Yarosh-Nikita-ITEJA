@@ -27,6 +27,6 @@ public class BinaryExpression implements IExpression {
 
     @Override
     public String toString() {
-        return String.format("%s %c %s", expression1, operation, expression2);
+        return String.format("(%s %c %s)", expression1, operation, expression2);
     }
 }
