@@ -3,10 +3,10 @@ package lexer.constants;
 import token.TokenType;
 
 public class MathOperators {
-    private static final char PLUS = '+';
-    private static final char MINUS = '-';
-    private static final char MULTIPLY = '*';
-    private static final char DIVIDE = '/';
+    public static final char PLUS = '+';
+    public static final char MINUS = '-';
+    public static final char MULTIPLY = '*';
+    public static final char DIVIDE = '/';
 
     public static boolean isMathOperator(char character) {
         switch (character){

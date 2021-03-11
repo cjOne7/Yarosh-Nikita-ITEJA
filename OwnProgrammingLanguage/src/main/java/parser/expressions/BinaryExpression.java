@@ -1,4 +1,6 @@
-package parser.ast.expressions;
+package parser.expressions;
+
+import static lexer.constants.MathOperators.*;
 
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
@@ -13,13 +15,13 @@ public class BinaryExpression implements IExpression {
     @Override
     public double eval() {
         switch (operation) {
-            case '-':
+            case MINUS:
                 return expression1.eval() - expression2.eval();
-            case '*':
+            case MULTIPLY:
                 return expression1.eval() * expression2.eval();
-            case '/':
+            case DIVIDE:
                 return expression1.eval() / expression2.eval();
-            case '+':
+            case PLUS:
             default:
                 return expression1.eval() + expression2.eval();
         }

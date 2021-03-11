@@ -1,4 +1,6 @@
-package parser.ast.expressions;
+package parser.expressions;
+
+import static lexer.constants.CompareOperators.*;
 
 public class ConditionalExpression implements IExpression {
     private final IExpression expression1, expression2;
@@ -13,17 +15,17 @@ public class ConditionalExpression implements IExpression {
     @Override
     public double eval() {
         switch (operation) {
-            case "#":
+            case NOTEQUAL + "":
                 return expression1.eval() != expression2.eval() ? 1 : 0;
-            case "<":
+            case LESS + "":
                 return expression1.eval() < expression2.eval() ? 1 : 0;
-            case "<=":
+            case LESS + EQUALITY + "":
                 return expression1.eval() <= expression2.eval() ? 1 : 0;
-            case ">":
+            case GREATER + "":
                 return expression1.eval() > expression2.eval() ? 1 : 0;
-            case ">=":
+            case GREATER + EQUALITY + "":
                 return expression1.eval() >= expression2.eval() ? 1 : 0;
-            case "=":
+            case EQUALITY + "":
             default:
                 return expression1.eval() == expression2.eval() ? 1 : 0;
         }

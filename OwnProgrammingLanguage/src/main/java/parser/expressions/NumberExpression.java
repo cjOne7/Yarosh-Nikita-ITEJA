@@ -1,4 +1,4 @@
-package parser.ast.expressions;
+package parser.expressions;
 
 public class NumberExpression implements IExpression {
 

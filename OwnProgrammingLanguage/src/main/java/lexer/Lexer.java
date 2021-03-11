@@ -48,7 +48,7 @@ public final class Lexer {
             else if (Separators.isSeparator(character)) {
                 if (currentPosition < code.length() - 1 && character == Separators.COLON
                         && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(Character.toString(code.charAt(currentPosition + 1))));
+                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(code.charAt(currentPosition + 1) + ""));
                     currentPosition++;
                 }
                 else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
@@ -60,6 +60,7 @@ public final class Lexer {
             }
             else {
                 addToken(TokenType.UNKNOWN, Character.toString(character));
+                throw new RuntimeException("Unknown token on the line " + currentLine + " and position " + currentPosition);
             }
         }
         return tokens;

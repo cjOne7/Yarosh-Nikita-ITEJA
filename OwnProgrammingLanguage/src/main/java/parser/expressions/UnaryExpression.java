@@ -1,4 +1,6 @@
-package parser.ast.expressions;
+package parser.expressions;
+
+import static lexer.constants.MathOperators.*;
 
 public class UnaryExpression implements IExpression {
 
@@ -13,11 +15,11 @@ public class UnaryExpression implements IExpression {
     @Override
     public double eval() {
         switch (operation) {
-            case "-":
+            case MINUS + "":
                 return -expression.eval();
             case "odd":
                 return expression.eval() % 2 == 0 ? 0 : 1;
-            case "+":
+            case PLUS + "":
             default:
                 return expression.eval();
         }
@@ -25,6 +27,6 @@ public class UnaryExpression implements IExpression {
 
     @Override
     public String toString() {
-        return String.format("%s%s", operation, expression);
+        return String.format("%s%s", operation.length() > 1 ? operation + " " : operation, expression);
     }
 }
