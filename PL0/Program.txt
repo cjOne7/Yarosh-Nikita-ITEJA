@@ -1,1 +1,4 @@
-﻿var number := "var";.
+﻿const c1 = 10, c2 = 10;
+var a, b, c;
+begin
+end.

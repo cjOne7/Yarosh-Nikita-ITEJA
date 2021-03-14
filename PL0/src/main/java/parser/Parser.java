@@ -1,7 +1,11 @@
 package parser;
 
 import lexer.constants.Separators;
+import parser.blocks.IBlock;
+import parser.blocks.StatementBlock;
 import parser.expressions.*;
+import parser.lib.Variables;
+import parser.statements.IStatement;
 import token.Token;
 import token.TokenType;
 
@@ -20,6 +24,121 @@ public final class Parser {
         size = tokens.size();
     }
 
+    public IBlock parseBlock() {
+        while (true) {
+            if (get(0).getType() == TokenType.VAR) {
+                parseVariableBlock();
+                continue;
+            }
+            if (get(0).getType() == TokenType.CONST) {
+                parseConstBlock();
+                continue;
+            }
+            if (get(0).getType() == TokenType.PROCEDURE) {
+                parseProcedure();
+                continue;
+            }
+            break;
+        }
+        IBlock programBody = parseStatementBlock();
+        if (!match(TokenType.END_OF_FILE)) {
+            throw new RuntimeException("Program is not ended by DOT.");
+        }
+        return programBody;
+    }
+
+    private void parseVariableBlock() {
+        match(TokenType.VAR);
+        while (!match(TokenType.SEMICOLON)) {
+            String identifier = get(0).getStringToken();
+            Variables.put(identifier, 0);
+            match(TokenType.IDENTIFIER);
+            match(TokenType.COMMA);
+        }
+    }
+
+    private void parseConstBlock() {
+        match(TokenType.CONST);
+        String identifier = get(0).getStringToken();
+        match(TokenType.IDENTIFIER);
+        match(TokenType.EQUAL);
+        double value = Double.parseDouble(get(0).getStringToken());
+        match(TokenType.NUMBER);
+        Variables.put(identifier, value);
+        while (!match(TokenType.SEMICOLON)) {
+            match(TokenType.COMMA);
+            identifier = get(0).getStringToken();
+            match(TokenType.IDENTIFIER);
+            match(TokenType.EQUAL);
+            value = Double.parseDouble(get(0).getStringToken());
+            match(TokenType.NUMBER);
+            Variables.put(identifier, value);
+        }
+    }
+
+    private void parseProcedure() {
+    }
+
+    private IBlock parseStatementBlock() {
+        List<IStatement> statements = new ArrayList<>();
+        match(TokenType.BEGIN);
+        while (!match(TokenType.END)) {
+            IStatement statement = parseStatement();
+            if (statement != null) {
+                statements.add(statement);
+            }
+        }
+        return new StatementBlock(statements);
+    }
+
+    private IStatement parseStatement() {
+        IStatement statement = null;
+        if (match(TokenType.IF)) {
+            statement = parseIfStatement();
+        }
+        return statement;
+    }
+
+    private IStatement parseIfStatement() {
+        IExpression expression = expression();
+        match(TokenType.THEN);
+
+        return null;
+    }
+
+
+//    public List<IStatement> parse1() {
+//        List<IStatement> result = new ArrayList<>();
+//        while (!match(TokenType.END_OF_FILE)) {
+//            result.add(statement());
+//        }
+//        return result;
+//    }
+//
+//    private IStatement statement() {
+//        return assignmentStatement();
+//    }
+//
+//    private IStatement assignmentStatement() {
+//        Token current = get(0);
+//        if (current.getType() == TokenType.IDENTIFIER && get(1).getType() == TokenType.ASSIGNMENT) {
+//            match(TokenType.IDENTIFIER);
+//            String variable = current.getStringToken();
+//            match(TokenType.ASSIGNMENT);
+//            return new AssignmentStatement(variable, expression());
+//        }
+//        throw new RuntimeException("Unknown operator");
+//    }
+
+//    public List<IStatement> parse1() {
+//        List<IStatement> result = new ArrayList<>();
+//        while (!match(TokenType.END_OF_FILE)) {
+//            result.add(parseStatement());
+//        }
+//        return result;
+//    }
+
+    //Recursive descending parser
     public List<IExpression> parse() {
         List<IExpression> result = new ArrayList<>();
         while (!match(TokenType.END_OF_FILE)) {
@@ -28,13 +147,11 @@ public final class Parser {
         return result;
     }
 
-
-    //Recursive descending parser
     private IExpression expression() {
-        return conditional();
+        return condition();
     }
 
-    private IExpression conditional() {
+    private IExpression condition() {
         IExpression result = additive();
         while (true) {
             Token current = get(0);
@@ -123,6 +240,9 @@ public final class Parser {
         if (match(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(current.getStringToken()));
         }
+        if (match(TokenType.IDENTIFIER)) {
+            return new VariableExpression(current.getStringToken());
+        }
         if (match(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
             match(TokenType.CLOSE_ROUND_BRACKET);
@@ -133,11 +253,11 @@ public final class Parser {
 
     private boolean match(TokenType type) {
         Token current = get(0);
-        if (type != current.getType()) {
-            return false;
+        if (type == current.getType()) {
+            pos++;
+            return true;
         }
-        pos++;
-        return true;
+        return false;
     }
 
     private Token get(int relativePosition) {
