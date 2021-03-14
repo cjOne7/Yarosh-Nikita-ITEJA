@@ -7,7 +7,7 @@ public class Separators {
     public static final char COLON = ':';
     private static final char SEMICOLON = ';';
     private static final char COMMA = ',';
-//    public static final char QUOTE = '"';
+    public static final char QUOTE = '"';
 
     public static boolean isSeparator(char character) {
         switch (character){
@@ -15,7 +15,7 @@ public class Separators {
             case COMMA:
             case COLON:
             case SEMICOLON:
-//            case QUOTE:
+            case QUOTE:
                 return true;
             default:
                 return false;

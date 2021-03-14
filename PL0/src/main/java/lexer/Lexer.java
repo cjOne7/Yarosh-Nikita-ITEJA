@@ -54,9 +54,9 @@ public final class Lexer {
                 else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
                     addToken(TokenType.END_OF_FILE, Character.toString(character));//ADD EOF
                 }
-//                else if (code.charAt(currentPosition) == Separators.QUOTE) {
-//                    System.out.println();
-//                }
+                else if (code.charAt(currentPosition) == Separators.QUOTE) {
+                    System.out.println();
+                }
                 else {
                     addToken(Separators.detectSeparatorType(character), Character.toString(character));
                 }

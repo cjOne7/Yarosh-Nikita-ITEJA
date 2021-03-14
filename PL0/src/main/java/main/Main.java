@@ -1,8 +1,6 @@
 package main;
 
 import lexer.Lexer;
-import parser.Parser;
-import parser.expressions.IExpression;
 import token.Token;
 
 import java.io.File;
