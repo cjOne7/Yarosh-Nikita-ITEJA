@@ -40,12 +40,12 @@ public final class Main {
 //            for (IStatement statement : statements) {
 //                statement.execute();
 //            }
-//            Parser parser = new Parser(tokens);
-//            IBlock program = parser.parseBlock();
-//            program.execute();
+            Parser parser = new Parser(tokens);
+            IBlock program = parser.parseBlock();
+            program.execute();
 
-//            System.out.printf("%s = %.2f\n", "word", Variables.get("word"));
-//            System.out.printf("%s = %.2f\n", "word2", Variables.get("word2"));
+            System.out.printf("%s = %.2f\n", "b", Variables.getValueByKey("b"));
+//            System.out.printf("%s = %.2f\n", "word2", Variables.getValueByKey("word2"));
 
 //            List<IExpression> expressions = new Parser(tokens).parse();
 //            for (IExpression expression : expressions) {

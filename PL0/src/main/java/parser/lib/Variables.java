@@ -7,7 +7,6 @@ import java.util.Set;
 
 public class Variables {
     private static final Map<String, Double> VARIABLES = new HashMap<>();
-//    private static final Set<String> IDENTIFIERS = new HashSet<>();
 
     static {
         VARIABLES.put("PI", 3.14);
@@ -23,9 +22,6 @@ public class Variables {
     }
 
     public static void put(String key, double value) {
-        if (isKeyExists(key)) {
-            throw new RuntimeException("Key " + key);
-        }
         VARIABLES.put(key, value);
     }
 }

@@ -1,30 +1,30 @@
 package token;
 
 public final class Token {
-    private TokenType type;
+    private TokenType tokenType;
     private String stringToken;
     private int rowPosition;
     private int columnPosition;
 
 
-    public Token(TokenType type, String stringToken, int rowPosition, int columnPosition) {
-        this.type = type;
+    public Token(TokenType tokenType, String stringToken, int rowPosition, int columnPosition) {
+        this.tokenType = tokenType;
         this.stringToken = stringToken;
         this.rowPosition = rowPosition;
         this.columnPosition = columnPosition;
     }
 
-    public Token(TokenType type, String stringToken) {
-        this.type = type;
+    public Token(TokenType tokenType, String stringToken) {
+        this.tokenType = tokenType;
         this.stringToken = stringToken;
     }
 
-    public TokenType getType() {
-        return type;
+    public TokenType getTokenType() {
+        return tokenType;
     }
 
-    public void setType(TokenType type) {
-        this.type = type;
+    public void setTokenType(TokenType tokenType) {
+        this.tokenType = tokenType;
     }
 
     public String getStringToken() {
@@ -53,6 +53,6 @@ public final class Token {
 
     @Override
     public String toString() {
-        return "Type: " + type + ", value: '" + stringToken + "', row: " + rowPosition + ", column: " + columnPosition;
+        return "Type: " + tokenType + ", value: '" + stringToken + "', row: " + rowPosition + ", column: " + columnPosition;
     }
 }
