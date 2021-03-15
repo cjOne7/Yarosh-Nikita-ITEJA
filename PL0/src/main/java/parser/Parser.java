@@ -5,10 +5,7 @@ import parser.blocks.IBlock;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.Variables;
-import parser.statements.AssignmentStatement;
-import parser.statements.BlockStatement;
-import parser.statements.IStatement;
-import parser.statements.IfStatement;
+import parser.statements.*;
 import token.Token;
 import token.TokenType;
 
@@ -27,7 +24,7 @@ public final class Parser {
         size = tokens.size();
     }
 
-    public IBlock parseBlock() {
+    public IStatement parseBlock() {
         while (true) {
             if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
                 parseVariableBlock();
@@ -43,7 +40,7 @@ public final class Parser {
             }
             break;
         }
-        IBlock programBody = parseStatementBlock();
+        IStatement programBody = parseStatementBlock();
         if (!match(TokenType.END_OF_FILE)) {
             throw new RuntimeException("Program is not ended by DOT.");
         }
@@ -88,7 +85,7 @@ public final class Parser {
     private void parseProcedure() {
     }
 
-    private IBlock parseStatementBlock() {
+    private IStatement parseStatementBlock() {
         List<IStatement> statements = new ArrayList<>();
         match(TokenType.BEGIN);
         while (!match(TokenType.END)) {
@@ -114,16 +111,24 @@ public final class Parser {
             match(TokenType.SEMICOLON);
         }
         else if (current.getTokenType().equals(TokenType.WHILE)) {
+            statement = parseWhileStatement();
         }
-        else if (current.getTokenType().equals(TokenType.QUESTION_MARK)) {
+        else if (current.getTokenType().equals(TokenType.EXCLAMATION_MARK)) {
+            statement = parsePrintBlock();
         }
         else if (current.getTokenType().equals(TokenType.CALL)) {
+
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
                     "IDENTIFIER, IF, WHILE, BEGIN, !, CALL, but current token is " + current.getTokenType());
         }
         return statement;
+    }
+
+    private IStatement parseStatementOrBlock() {
+        return getCurrentToken(0).getTokenType() == TokenType.BEGIN
+                ? parseStatementBlock() : parseStatement();
     }
 
     private IStatement parseAssignmentStatement() {
@@ -139,15 +144,31 @@ public final class Parser {
         match(TokenType.IF);
         IExpression expression = expression();
         match(TokenType.THEN);
-        IBlock trueBlock = parseStatementBlock();
+        IStatement trueBlock = parseStatementOrBlock();
         match(TokenType.SEMICOLON);
-        IBlock falseBlock = null;
+        IStatement falseBlock = null;
         if (match(TokenType.ELSE)) {
-            falseBlock = parseStatementBlock();
+            falseBlock = parseStatementOrBlock();
             match(TokenType.SEMICOLON);
         }
 
         return new IfStatement(expression, trueBlock, falseBlock);
+    }
+
+    private IStatement parseWhileStatement() {
+        match(TokenType.WHILE);
+        IExpression condition = expression();
+        match(TokenType.DO);
+        IStatement statement = parseStatementOrBlock();
+        match(TokenType.SEMICOLON);
+        return new WhileStatement(condition, statement);
+    }
+
+    private IStatement parsePrintBlock() {
+        match(TokenType.EXCLAMATION_MARK);
+        IStatement printStatement = new PrintStatement(expression());
+        match(TokenType.SEMICOLON);
+        return printStatement;
     }
 
     //Recursive descending parser

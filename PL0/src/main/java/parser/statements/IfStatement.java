@@ -1,13 +1,12 @@
 package parser.statements;
 
-import parser.blocks.IBlock;
 import parser.expressions.IExpression;
 
 public class IfStatement implements IStatement {
     private final IExpression expression;
-    private final IBlock ifStatement, elseStatement;
+    private final IStatement ifStatement, elseStatement;
 
-    public IfStatement(IExpression expression, IBlock ifStatement, IBlock elseStatement) {
+    public IfStatement(IExpression expression, IStatement ifStatement, IStatement elseStatement) {
         this.expression = expression;
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;

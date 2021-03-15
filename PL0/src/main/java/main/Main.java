@@ -34,13 +34,13 @@ public final class Main {
 //            }
 
             Parser parser = new Parser(tokens);
-            IBlock program = parser.parseBlock();
+            IStatement program = parser.parseBlock();
             program.execute();
 //            System.out.println(program);
+//            System.out.println();
 
-            System.out.println();
-            System.out.printf("%s = %.2f\n", "b", Variables.getValueByKey("b"));
-            System.out.printf("%s = %.2f\n", "c", Variables.getValueByKey("c"));
+//            System.out.printf("%s = %.2f\n", "b", Variables.getValueByKey("b"));
+//            System.out.printf("%s = %.2f\n", "c", Variables.getValueByKey("c"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

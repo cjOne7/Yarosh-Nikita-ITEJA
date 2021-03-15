@@ -1,14 +1,9 @@
-﻿const c1 = 10, c2 = 15;
-var a, b, c;
+﻿var i;
 begin
-    a := 5;
-    b := a + a;
-    if b = 10 then
+    i := 10;
+    while i # 0 do
     begin
-        c := 1;
-    end;
-    else
-    begin
-        c := 0;
+        ! i;
+        i := i - 1;
     end;
 end.

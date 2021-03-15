@@ -4,7 +4,7 @@ import parser.statements.IStatement;
 
 import java.util.List;
 
-public class StatementBlock implements IBlock {
+public class StatementBlock implements IStatement {
     List<IStatement> statementList;
 
     public StatementBlock(List<IStatement> statementList) {

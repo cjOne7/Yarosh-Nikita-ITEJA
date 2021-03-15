@@ -4,9 +4,9 @@ package parser.statements;
 import parser.blocks.IBlock;
 
 public class BlockStatement implements IStatement {
-    private final IBlock block;
+    private final IStatement block;
 
-    public BlockStatement(IBlock block) {
+    public BlockStatement(IStatement block) {
         this.block = block;
     }
 
