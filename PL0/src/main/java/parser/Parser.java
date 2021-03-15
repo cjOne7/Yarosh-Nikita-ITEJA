@@ -8,6 +8,7 @@ import parser.lib.Variables;
 import parser.statements.AssignmentStatement;
 import parser.statements.BlockStatement;
 import parser.statements.IStatement;
+import parser.statements.IfStatement;
 import token.Token;
 import token.TokenType;
 
@@ -112,8 +113,15 @@ public final class Parser {
             statement = new BlockStatement(parseStatementBlock());
             match(TokenType.SEMICOLON);
         }
+        else if (current.getTokenType().equals(TokenType.WHILE)) {
+        }
+        else if (current.getTokenType().equals(TokenType.QUESTION_MARK)) {
+        }
+        else if (current.getTokenType().equals(TokenType.CALL)) {
+        }
         else {
-            throw new RuntimeException("Хз что написать");//-------------------------Change it--------------------------
+            throw new RuntimeException("Missing one of next statements: " +
+                    "IDENTIFIER, IF, WHILE, BEGIN, !, CALL, but current token is " + current.getTokenType());
         }
         return statement;
     }
@@ -131,19 +139,18 @@ public final class Parser {
         match(TokenType.IF);
         IExpression expression = expression();
         match(TokenType.THEN);
+        IBlock trueBlock = parseStatementBlock();
+        match(TokenType.SEMICOLON);
+        IBlock falseBlock = null;
+        if (match(TokenType.ELSE)) {
+            falseBlock = parseStatementBlock();
+            match(TokenType.SEMICOLON);
+        }
 
-        return null;
+        return new IfStatement(expression, trueBlock, falseBlock);
     }
 
     //Recursive descending parser
-    public List<IExpression> parse() {
-        List<IExpression> result = new ArrayList<>();
-        while (!match(TokenType.END_OF_FILE)) {
-            result.add(expression());
-        }
-        return result;
-    }
-
     private IExpression expression() {
         return condition();
     }

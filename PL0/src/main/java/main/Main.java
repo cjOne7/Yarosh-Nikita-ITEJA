@@ -33,24 +33,14 @@ public final class Main {
 //                System.out.println(token);
 //            }
 
-//            List<IStatement> statements = new Parser(tokens).parse1();
-//            for (IStatement statement : statements) {
-//                System.out.println(statement);
-//            }
-//            for (IStatement statement : statements) {
-//                statement.execute();
-//            }
             Parser parser = new Parser(tokens);
             IBlock program = parser.parseBlock();
             program.execute();
+//            System.out.println(program);
 
+            System.out.println();
             System.out.printf("%s = %.2f\n", "b", Variables.getValueByKey("b"));
-//            System.out.printf("%s = %.2f\n", "word2", Variables.getValueByKey("word2"));
-
-//            List<IExpression> expressions = new Parser(tokens).parse();
-//            for (IExpression expression : expressions) {
-//                System.out.println(expression + " = " + expression.eval());
-//            }
+            System.out.printf("%s = %.2f\n", "c", Variables.getValueByKey("c"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

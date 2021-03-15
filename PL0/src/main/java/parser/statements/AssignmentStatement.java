@@ -20,6 +20,6 @@ public class AssignmentStatement implements IStatement {
 
     @Override
     public String toString() {
-        return String.format("%s = %s", variableName, expression);
+        return String.format("%s := %s;\n", variableName, expression);
     }
 }
