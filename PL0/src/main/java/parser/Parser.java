@@ -3,6 +3,7 @@ package parser;
 import lexer.constants.Separators;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
+import parser.lib.Constants;
 import parser.lib.Identifiers;
 import parser.lib.Variables;
 import parser.procedure.Procedure;
@@ -71,22 +72,25 @@ public final class Parser {
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
         String identifier = getCurrentToken(0).getStringToken();
+        if (Constants.isKeyExists(identifier)) {
+            throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+        }
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.EQUAL);
         double value = Double.parseDouble(getCurrentToken(0).getStringToken());
         consumeToken(TokenType.NUMBER);
-        Variables.put(identifier, value);
+        Constants.put(identifier, value);
         while (!isMatchTokenType(TokenType.SEMICOLON)) {
             consumeToken(TokenType.COMMA);
             identifier = getCurrentToken(0).getStringToken();
-            if (Variables.isKeyExists(identifier)) {
+            if (Constants.isKeyExists(identifier)) {
                 throw new RuntimeException("Variable '" + identifier + "' is already defined.");
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.EQUAL);
             value = Double.parseDouble(getCurrentToken(0).getStringToken());
             consumeToken(TokenType.NUMBER);
-            Variables.put(identifier, value);
+            Constants.put(identifier, value);
         }
     }
 
@@ -117,7 +121,7 @@ public final class Parser {
     }
 
     private IStatement parseStatement() {//add CALL, WHILE and ! as print
-        IStatement statement = null;
+        IStatement statement;
         Token current = getCurrentToken(0);
         if (current.getTokenType().equals(TokenType.IDENTIFIER)) {
             statement = parseAssignmentStatement();
@@ -171,6 +175,9 @@ public final class Parser {
 
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
+        if (Constants.isKeyExists(identifier)) {
+            throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
+        }
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.ASSIGNMENT);
         IExpression expression = expression();
@@ -194,18 +201,18 @@ public final class Parser {
     }
 
     private IStatement parseWhileStatement() {
-        isMatchTokenType(TokenType.WHILE);
+        consumeToken(TokenType.WHILE);
         IExpression condition = expression();
-        isMatchTokenType(TokenType.DO);
+        consumeToken(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
-        isMatchTokenType(TokenType.SEMICOLON);
+        consumeToken(TokenType.SEMICOLON);
         return new WhileStatement(condition, statement);
     }
 
     private IStatement parsePrintBlock() {
-        isMatchTokenType(TokenType.EXCLAMATION_MARK);
+        consumeToken(TokenType.EXCLAMATION_MARK);
         IStatement printStatement = new PrintStatement(expression());
-        isMatchTokenType(TokenType.SEMICOLON);
+        consumeToken(TokenType.SEMICOLON);
         return printStatement;
     }
 
@@ -323,11 +330,11 @@ public final class Parser {
         return false;
     }
 
-    private boolean consumeToken(TokenType type) {
+    private void consumeToken(TokenType type) {
         Token current = getCurrentToken(0);
         if (type == current.getTokenType()) {
             pos++;
-            return true;
+            return;
         }
         throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType());
     }

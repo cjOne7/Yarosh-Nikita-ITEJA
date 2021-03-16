@@ -1,5 +1,6 @@
 package parser.expressions;
 
+import parser.lib.Constants;
 import parser.lib.Variables;
 
 public class VariableExpression implements IExpression {
@@ -14,11 +15,14 @@ public class VariableExpression implements IExpression {
         if (Variables.isKeyExists(name)) {
             return Variables.getValueByKey(name);
         }
-        throw new RuntimeException("Variable doesn't exist.");
+        if (Constants.isKeyExists(name)) {
+            return Constants.getValueByKey(name);
+        }
+        throw new RuntimeException("Variable '" + name + "' doesn't exist.");
     }
 
     @Override
     public String toString() {
-        return Variables.isKeyExists(name) ? Double.toString(Variables.getValueByKey(name)) : "";
+        return name;
     }
 }

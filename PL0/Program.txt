@@ -1,5 +1,15 @@
 ﻿const c1 = 10, c2 = 15;
+var a, b, c;
 begin
-    с1 := 10;
-    !c1;
+    a := 5;
+    c := 10;
+    c := c + a;
+    ! c;
+    if b # 10 then
+    begin
+        c := 1;
+        ! c;
+    end;
+    else
+        c := 0;
 end.
