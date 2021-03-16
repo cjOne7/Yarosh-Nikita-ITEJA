@@ -13,4 +13,9 @@ public class ProcedureStatement implements IStatement {
     public void execute() {
         procedure.execute();
     }
+
+    @Override
+    public String toString() {
+        return procedure.toString();
+    }
 }

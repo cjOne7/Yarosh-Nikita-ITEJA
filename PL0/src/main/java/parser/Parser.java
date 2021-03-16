@@ -5,6 +5,8 @@ import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.Identifiers;
 import parser.lib.Variables;
+import parser.procedure.Procedure;
+import parser.procedure.Procedures;
 import parser.statements.*;
 import token.Token;
 import token.TokenType;
@@ -16,12 +18,14 @@ public final class Parser {
     private static final Token EOF = new Token(TokenType.END_OF_FILE, Character.toString(Separators.DOT));
 
     private final List<Token> tokens;
+    private final Procedures procedures;
     private int pos;
     private final int size;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
         size = tokens.size();
+        procedures = new Procedures();
     }
 
     public IStatement parseBlock() {
@@ -96,7 +100,8 @@ public final class Parser {
             parseVariableBlock();
         }
         IStatement procedureBlockStatements = parseStatementBlock();
-
+        procedures.add(new Procedure(identifier, procedureBlockStatements));
+        consumeToken(TokenType.SEMICOLON);
     }
 
     private IStatement parseStatementBlock() {
@@ -131,13 +136,21 @@ public final class Parser {
             statement = parsePrintBlock();
         }
         else if (current.getTokenType().equals(TokenType.CALL)) {
-
+            statement = parseProcedureStatement();
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
                     "IDENTIFIER, IF, WHILE, BEGIN, !, CALL, but current token is " + current.getTokenType());
         }
         return statement;
+    }
+
+    private IStatement parseProcedureStatement() {
+        consumeToken(TokenType.CALL);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.SEMICOLON);
+        return new ProcedureStatement(procedures.get(identifier));
     }
 
     private IStatement parseStatementOrBlock() {

@@ -2,18 +2,12 @@ package main;
 
 import lexer.Lexer;
 import parser.Parser;
-import parser.blocks.IBlock;
-import parser.expressions.IExpression;
-import parser.lib.Variables;
 import parser.statements.IStatement;
 import token.Token;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public final class Main {
     public static void main(String[] args) {
