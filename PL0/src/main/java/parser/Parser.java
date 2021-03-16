@@ -1,9 +1,9 @@
 package parser;
 
 import lexer.constants.Separators;
-import parser.blocks.IBlock;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
+import parser.lib.Identifiers;
 import parser.lib.Variables;
 import parser.statements.*;
 import token.Token;
@@ -41,54 +41,68 @@ public final class Parser {
             break;
         }
         IStatement programBody = parseStatementBlock();
-        if (!match(TokenType.END_OF_FILE)) {
-            throw new RuntimeException("Program is not ended by DOT.");
-        }
+        consumeToken(TokenType.END_OF_FILE);
         return programBody;
     }
 
     private void parseVariableBlock() {
-        match(TokenType.VAR);
-        while (!match(TokenType.SEMICOLON)) {
-            String identifier = getCurrentToken(0).getStringToken();
-            if (Variables.isKeyExists(identifier)) {
-                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
-            }
-            Variables.put(identifier, 0);
-            match(TokenType.IDENTIFIER);
-            match(TokenType.COMMA);
-        }
-    }
-
-    private void parseConstBlock() {
-        match(TokenType.CONST);
+        consumeToken(TokenType.VAR);
         String identifier = getCurrentToken(0).getStringToken();
-        match(TokenType.IDENTIFIER);
-        match(TokenType.EQUAL);
-        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
-        match(TokenType.NUMBER);
-        Variables.put(identifier, value);
-        while (!match(TokenType.SEMICOLON)) {
-            match(TokenType.COMMA);
+        if (Variables.isKeyExists(identifier)) {
+            throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+        }
+        Variables.put(identifier, 0);
+        consumeToken(TokenType.IDENTIFIER);
+        while (isMatchTokenType(TokenType.COMMA)) {
             identifier = getCurrentToken(0).getStringToken();
             if (Variables.isKeyExists(identifier)) {
                 throw new RuntimeException("Variable '" + identifier + "' is already defined.");
             }
-            match(TokenType.IDENTIFIER);
-            match(TokenType.EQUAL);
+            Variables.put(identifier, 0);
+            consumeToken(TokenType.IDENTIFIER);
+        }
+        consumeToken(TokenType.SEMICOLON);
+    }
+
+    private void parseConstBlock() {
+        consumeToken(TokenType.CONST);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.EQUAL);
+        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
+        consumeToken(TokenType.NUMBER);
+        Variables.put(identifier, value);
+        while (!isMatchTokenType(TokenType.SEMICOLON)) {
+            consumeToken(TokenType.COMMA);
+            identifier = getCurrentToken(0).getStringToken();
+            if (Variables.isKeyExists(identifier)) {
+                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+            }
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.EQUAL);
             value = Double.parseDouble(getCurrentToken(0).getStringToken());
-            match(TokenType.NUMBER);
+            consumeToken(TokenType.NUMBER);
             Variables.put(identifier, value);
         }
     }
 
     private void parseProcedure() {
+        consumeToken(TokenType.PROCEDURE);
+        String identifier = getCurrentToken(0).getStringToken();
+        Identifiers.put(identifier);
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.SEMICOLON);
+        if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
+            parseVariableBlock();
+        }
+        IStatement procedureBlockStatements = parseStatementBlock();
+
     }
 
     private IStatement parseStatementBlock() {
         List<IStatement> statements = new ArrayList<>();
-        match(TokenType.BEGIN);
-        while (!match(TokenType.END)) {
+        isMatchTokenType(TokenType.BEGIN);
+        while (!isMatchTokenType(TokenType.END)) {
             IStatement statement = parseStatement();
             if (statement != null) {
                 statements.add(statement);
@@ -108,7 +122,7 @@ public final class Parser {
         }
         else if (current.getTokenType().equals(TokenType.BEGIN)) {
             statement = new BlockStatement(parseStatementBlock());
-            match(TokenType.SEMICOLON);
+            isMatchTokenType(TokenType.SEMICOLON);
         }
         else if (current.getTokenType().equals(TokenType.WHILE)) {
             statement = parseWhileStatement();
@@ -133,41 +147,41 @@ public final class Parser {
 
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
-        match(TokenType.IDENTIFIER);
-        match(TokenType.ASSIGNMENT);
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.ASSIGNMENT);
         IExpression expression = expression();
-        match(TokenType.SEMICOLON);
+        consumeToken(TokenType.SEMICOLON);
         return new AssignmentStatement(identifier, expression);
     }
 
     private IStatement parseIfStatement() {
-        match(TokenType.IF);
+        consumeToken(TokenType.IF);
         IExpression expression = expression();
-        match(TokenType.THEN);
+        consumeToken(TokenType.THEN);
         IStatement trueBlock = parseStatementOrBlock();
-        match(TokenType.SEMICOLON);
+        consumeToken(TokenType.SEMICOLON);
         IStatement falseBlock = null;
-        if (match(TokenType.ELSE)) {
+        if (isMatchTokenType(TokenType.ELSE)) {
             falseBlock = parseStatementOrBlock();
-            match(TokenType.SEMICOLON);
+            isMatchTokenType(TokenType.SEMICOLON);
         }
 
         return new IfStatement(expression, trueBlock, falseBlock);
     }
 
     private IStatement parseWhileStatement() {
-        match(TokenType.WHILE);
+        isMatchTokenType(TokenType.WHILE);
         IExpression condition = expression();
-        match(TokenType.DO);
+        isMatchTokenType(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
-        match(TokenType.SEMICOLON);
+        isMatchTokenType(TokenType.SEMICOLON);
         return new WhileStatement(condition, statement);
     }
 
     private IStatement parsePrintBlock() {
-        match(TokenType.EXCLAMATION_MARK);
+        isMatchTokenType(TokenType.EXCLAMATION_MARK);
         IStatement printStatement = new PrintStatement(expression());
-        match(TokenType.SEMICOLON);
+        isMatchTokenType(TokenType.SEMICOLON);
         return printStatement;
     }
 
@@ -180,27 +194,27 @@ public final class Parser {
         IExpression result = additive();
         while (true) {
             Token current = getCurrentToken(0);
-            if (match(TokenType.EQUAL)) {
+            if (isMatchTokenType(TokenType.EQUAL)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
-            if (match(TokenType.NOTEQUAL)) {
+            if (isMatchTokenType(TokenType.NOTEQUAL)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
-            if (match(TokenType.LESS)) {
+            if (isMatchTokenType(TokenType.LESS)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
-            if (match(TokenType.LESS_OR_EQUAL)) {
+            if (isMatchTokenType(TokenType.LESS_OR_EQUAL)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
-            if (match(TokenType.GREATER)) {
+            if (isMatchTokenType(TokenType.GREATER)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
-            if (match(TokenType.GREATER_OR_EQUAL)) {
+            if (isMatchTokenType(TokenType.GREATER_OR_EQUAL)) {
                 result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
@@ -214,11 +228,11 @@ public final class Parser {
         IExpression result = multiplicative();
         while (true) {
             Token current = getCurrentToken(0);
-            if (match(TokenType.PLUS)) {
+            if (isMatchTokenType(TokenType.PLUS)) {
                 result = new BinaryExpression(current.getStringToken().charAt(0), result, multiplicative());
                 continue;
             }
-            if (match(TokenType.MINUS)) {
+            if (isMatchTokenType(TokenType.MINUS)) {
                 result = new BinaryExpression(current.getStringToken().charAt(0), result, multiplicative());
                 continue;
             }
@@ -232,11 +246,11 @@ public final class Parser {
         IExpression result = unary();
         while (true) {
             Token current = getCurrentToken(0);
-            if (match(TokenType.MULTIPLY)) {
+            if (isMatchTokenType(TokenType.MULTIPLY)) {
                 result = new BinaryExpression(current.getStringToken().charAt(0), result, unary());
                 continue;
             }
-            if (match(TokenType.DIVIDE)) {
+            if (isMatchTokenType(TokenType.DIVIDE)) {
                 result = new BinaryExpression(current.getStringToken().charAt(0), result, unary());
                 continue;
             }
@@ -248,13 +262,13 @@ public final class Parser {
 
     private IExpression unary() {
         Token current = getCurrentToken(0);
-        if (match(TokenType.MINUS)) {
+        if (isMatchTokenType(TokenType.MINUS)) {
             return new UnaryExpression(current.getStringToken(), primary());
         }
-        if (match(TokenType.PLUS)) {
+        if (isMatchTokenType(TokenType.PLUS)) {
             return new UnaryExpression(current.getStringToken(), primary());
         }
-        if (match(TokenType.ODD)) {
+        if (isMatchTokenType(TokenType.ODD)) {
             return new UnaryExpression(current.getStringToken(), primary());
         }
         return primary();
@@ -262,27 +276,36 @@ public final class Parser {
 
     private IExpression primary() {
         Token current = getCurrentToken(0);
-        if (match(TokenType.NUMBER)) {
+        if (isMatchTokenType(TokenType.NUMBER)) {
             return new NumberExpression(Double.parseDouble(current.getStringToken()));
         }
-        if (match(TokenType.IDENTIFIER)) {
+        if (isMatchTokenType(TokenType.IDENTIFIER)) {
             return new VariableExpression(current.getStringToken());
         }
-        if (match(TokenType.OPEN_ROUND_BRACKET)) {
+        if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
-            match(TokenType.CLOSE_ROUND_BRACKET);
+            isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
         throw new RuntimeException("Unknown expression");
     }
 
-    private boolean match(TokenType type) {
+    private boolean isMatchTokenType(TokenType type) {
         Token current = getCurrentToken(0);
         if (type == current.getTokenType()) {
             pos++;
             return true;
         }
         return false;
+    }
+
+    private boolean consumeToken(TokenType type) {
+        Token current = getCurrentToken(0);
+        if (type == current.getTokenType()) {
+            pos++;
+            return true;
+        }
+        throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType());
     }
 
     private Token getCurrentToken(int relativePosition) {

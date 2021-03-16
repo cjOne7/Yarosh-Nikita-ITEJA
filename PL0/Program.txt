@@ -1,9 +1,12 @@
-﻿var i;
+﻿var x, squ;
+
+PROCEDURE square;
+BEGIN
+   squ:= x * x
+END;
+
 begin
-    i := 10;
-    while i # 0 do
-    begin
-        ! i;
-        i := i - 1;
-    end;
+    x := 2;
+    call square;
+    ! squ;
 end.
