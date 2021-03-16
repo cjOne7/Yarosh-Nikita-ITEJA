@@ -155,9 +155,12 @@ public final class Parser {
     private IStatement parseReadStatement() {
         consumeToken(TokenType.QUESTION_MARK);
         String identifier = getCurrentToken(0).getStringToken();
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.SEMICOLON);
-        return new ReadStatement(identifier);
+        if (Variables.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.SEMICOLON);
+            return new ReadStatement(identifier);
+        }
+        throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
     }
 
     private IStatement parseProcedureStatement() {
