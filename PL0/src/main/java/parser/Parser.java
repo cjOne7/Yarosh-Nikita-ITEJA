@@ -135,14 +135,25 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.EXCLAMATION_MARK)) {
             statement = parsePrintBlock();
         }
+        else if (current.getTokenType().equals(TokenType.QUESTION_MARK)) {
+            statement = parseReadStatement();
+        }
         else if (current.getTokenType().equals(TokenType.CALL)) {
             statement = parseProcedureStatement();
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
-                    "IDENTIFIER, IF, WHILE, BEGIN, !, CALL, but current token is " + current.getTokenType());
+                    "IDENTIFIER, IF, WHILE, BEGIN, '!', '?', CALL, but current token is " + current.getTokenType());
         }
         return statement;
+    }
+
+    private IStatement parseReadStatement() {
+        consumeToken(TokenType.QUESTION_MARK);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.SEMICOLON);
+        return new ReadStatement(identifier);
     }
 
     private IStatement parseProcedureStatement() {

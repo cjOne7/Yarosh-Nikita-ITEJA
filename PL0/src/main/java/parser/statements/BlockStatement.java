@@ -1,8 +1,6 @@
 package parser.statements;
 
 
-import parser.blocks.IBlock;
-
 public class BlockStatement implements IStatement {
     private final IStatement block;
 

@@ -1,12 +1,5 @@
-﻿var x, squ;
-
-PROCEDURE square;
-BEGIN
-   squ:= x * x;
-END;
-
+﻿const c1 = 10, c2 = 15;
 begin
-    x := 2;
-    call square;
-    ! squ;
+    с1 := 10;
+    !c1;
 end.
