@@ -15,6 +15,7 @@ public class NumberExpression implements IExpression {
 
     @Override
     public String toString() {
-        return value + "";
+        long result = (long) value;
+        return result == value ? result + "" : value + "";
     }
 }

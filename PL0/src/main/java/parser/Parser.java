@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Parser {
-    private static final Token EOF = new Token(TokenType.END_OF_FILE, Character.toString(Separators.DOT));
-
     private final List<Token> tokens;
     private final Procedures procedures;
     private int pos;
@@ -112,6 +110,9 @@ public final class Parser {
         List<IStatement> statements = new ArrayList<>();
         isMatchTokenType(TokenType.BEGIN);
         while (!isMatchTokenType(TokenType.END)) {
+            if (getCurrentToken(0).getTokenType().equals(TokenType.END_OF_FILE)) {
+                break;
+            }
             IStatement statement = parseStatement();
             if (statement != null) {
                 statements.add(statement);
@@ -144,6 +145,9 @@ public final class Parser {
         }
         else if (current.getTokenType().equals(TokenType.CALL)) {
             statement = parseProcedureStatement();
+        }
+        else if (current.getTokenType().equals(TokenType.END_OF_FILE)) {
+            return null;
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
