@@ -1,15 +1,13 @@
-﻿const c1 = 10, c2 = 15;
-var a, b, c;
+﻿var x, squ;
+const a = 10;
+
+PROCEDURE square;
+BEGIN
+   squ:= x * x;
+END;
+
 begin
-    a := 5;
-    c := 10;
-    c := c + a;
-    ! c;
-    if b # 10 then
-    begin
-        c := 1;
-        ! c;
-    end;
-    else
-        c := 0;
+    x := 2;
+    call square;
+    ! squ;
 end.

@@ -1,6 +1,5 @@
 package parser;
 
-import lexer.constants.Separators;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.Constants;
@@ -50,46 +49,31 @@ public final class Parser {
 
     private void parseVariableBlock() {
         consumeToken(TokenType.VAR);
-        String identifier = getCurrentToken(0).getStringToken();
-        if (Variables.isKeyExists(identifier)) {
-            throw new RuntimeException("Variable '" + identifier + "' is already defined.");
-        }
-        Variables.put(identifier, 0);
-        consumeToken(TokenType.IDENTIFIER);
-        while (isMatchTokenType(TokenType.COMMA)) {
-            identifier = getCurrentToken(0).getStringToken();
+        do {
+            String identifier = getCurrentToken(0).getStringToken();
             if (Variables.isKeyExists(identifier)) {
                 throw new RuntimeException("Variable '" + identifier + "' is already defined.");
             }
             Variables.put(identifier, 0);
             consumeToken(TokenType.IDENTIFIER);
-        }
+        } while (isMatchTokenType(TokenType.COMMA));
         consumeToken(TokenType.SEMICOLON);
     }
 
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
-        String identifier = getCurrentToken(0).getStringToken();
-        if (Constants.isKeyExists(identifier)) {
-            throw new RuntimeException("Variable '" + identifier + "' is already defined.");
-        }
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.EQUAL);
-        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
-        consumeToken(TokenType.NUMBER);
-        Constants.put(identifier, value);
-        while (!isMatchTokenType(TokenType.SEMICOLON)) {
-            consumeToken(TokenType.COMMA);
-            identifier = getCurrentToken(0).getStringToken();
+        do {
+            String identifier = getCurrentToken(0).getStringToken();
             if (Constants.isKeyExists(identifier)) {
-                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+                throw new RuntimeException("Constant '" + identifier + "' is already defined.");
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.EQUAL);
-            value = Double.parseDouble(getCurrentToken(0).getStringToken());
+            double value = Double.parseDouble(getCurrentToken(0).getStringToken());
             consumeToken(TokenType.NUMBER);
             Constants.put(identifier, value);
-        }
+        } while (isMatchTokenType(TokenType.COMMA));
+        consumeToken(TokenType.SEMICOLON);
     }
 
     private void parseProcedure() {
@@ -108,7 +92,7 @@ public final class Parser {
 
     private IStatement parseStatementBlock() {
         List<IStatement> statements = new ArrayList<>();
-        isMatchTokenType(TokenType.BEGIN);
+        consumeToken(TokenType.BEGIN);
         while (!isMatchTokenType(TokenType.END)) {
             if (getCurrentToken(0).getTokenType().equals(TokenType.END_OF_FILE)) {
                 break;
@@ -145,9 +129,6 @@ public final class Parser {
         }
         else if (current.getTokenType().equals(TokenType.CALL)) {
             statement = parseProcedureStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.END_OF_FILE)) {
-            return null;
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
@@ -197,7 +178,7 @@ public final class Parser {
         IExpression expression = expression();
         consumeToken(TokenType.THEN);
         IStatement trueBlock = parseStatementOrBlock();
-        consumeToken(TokenType.SEMICOLON);
+        isMatchTokenType(TokenType.SEMICOLON);
         IStatement falseBlock = null;
         if (isMatchTokenType(TokenType.ELSE)) {
             falseBlock = parseStatementOrBlock();

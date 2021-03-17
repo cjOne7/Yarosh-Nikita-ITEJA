@@ -18,7 +18,9 @@ public class IfStatement implements IStatement {
         if (result == 1) {
             ifStatement.execute();
         } else {
-            elseStatement.execute();
+            if (elseStatement != null) {
+                elseStatement.execute();
+            }
         }
     }
 
