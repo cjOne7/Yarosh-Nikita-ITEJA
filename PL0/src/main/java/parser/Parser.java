@@ -42,9 +42,17 @@ public final class Parser {
             }
             break;
         }
+        if (tokens.size() == 1 && getCurrentToken(0).getTokenType() == TokenType.END_OF_FILE) {
+            return new EndOfFileStatement();
+        }
         IStatement programBody = parseStatementBlock();
         consumeToken(TokenType.END_OF_FILE);
         return programBody;
+    }
+
+    private IStatement parseStatementOrBlock() {
+        return getCurrentToken(0).getTokenType() == TokenType.BEGIN
+                ? parseStatementBlock() : parseStatement();
     }
 
     private void parseVariableBlock() {
@@ -154,11 +162,6 @@ public final class Parser {
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.SEMICOLON);
         return new ProcedureStatement(procedures.get(identifier));
-    }
-
-    private IStatement parseStatementOrBlock() {
-        return getCurrentToken(0).getTokenType() == TokenType.BEGIN
-                ? parseStatementBlock() : parseStatement();
     }
 
     private IStatement parseAssignmentStatement() {
