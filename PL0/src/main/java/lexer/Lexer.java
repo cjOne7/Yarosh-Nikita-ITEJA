@@ -29,7 +29,9 @@ public final class Lexer {
                 addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
             }
             else if (WhiteChars.isWhiteChar(character)) {
-//                addToken(WhiteChars.detectWhiteCharType(character), WhiteChars.escapeWhiteChars(character));
+                if (character == WhiteChars.NEW_LINE) {
+                    currentLine++;
+                }
                 currentPosition++;
             }
             else if (Brackets.isBracket(character)) {
@@ -64,7 +66,7 @@ public final class Lexer {
             else {
                 addToken(TokenType.UNKNOWN, Character.toString(character));
                 throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
-                        + ((currentPosition + 1) / currentLine + (currentPosition + 1) % currentLine));
+                        + (currentPosition / currentLine - currentLine * (currentPosition / currentLine)));
             }
         }
         return tokens;
@@ -92,8 +94,8 @@ public final class Lexer {
             }
             if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == Separators.DOT) {
                 if (builder.indexOf(Character.toString(Separators.DOT)) != -1) {
-                    throw new RuntimeException("Incorrect double number on the line " + currentLine + " and on position "
-                            + ((currentPosition + 1) / currentLine + (currentPosition + 1) % currentLine));
+                    throw new RuntimeException("Incorrect double number on the line " + currentLine
+                            + " and on position " + currentPosition);
                 }
                 builder.append(code.charAt(currentPosition++));
             }
