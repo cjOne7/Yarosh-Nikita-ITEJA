@@ -45,7 +45,7 @@ public final class Parser {
         if (tokens.size() == 1 && getCurrentToken(0).getTokenType() == TokenType.END_OF_FILE) {
             return new EndOfFileStatement();
         }
-        IStatement programBody = parseStatementBlock();
+        IStatement programBody = parseStatementOrBlock();
         consumeToken(TokenType.END_OF_FILE);
         return programBody;
     }
@@ -102,10 +102,11 @@ public final class Parser {
         List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
         while (!isMatchTokenType(TokenType.END)) {
-            if (getCurrentToken(0).getTokenType().equals(TokenType.END_OF_FILE)) {
-                break;
+            IStatement statement;
+            if (statements.size() != 0) {
+                consumeToken(TokenType.SEMICOLON);
             }
-            IStatement statement = parseStatement();
+            statement = parseStatement();
             if (statement != null) {
                 statements.add(statement);
             }
@@ -113,7 +114,7 @@ public final class Parser {
         return new StatementBlock(statements);
     }
 
-    private IStatement parseStatement() {//add CALL, WHILE and ! as print
+    private IStatement parseStatement() {
         IStatement statement;
         Token current = getCurrentToken(0);
         if (current.getTokenType().equals(TokenType.IDENTIFIER)) {
@@ -124,7 +125,6 @@ public final class Parser {
         }
         else if (current.getTokenType().equals(TokenType.BEGIN)) {
             statement = new BlockStatement(parseStatementBlock());
-            isMatchTokenType(TokenType.SEMICOLON);
         }
         else if (current.getTokenType().equals(TokenType.WHILE)) {
             statement = parseWhileStatement();
@@ -145,23 +145,10 @@ public final class Parser {
         return statement;
     }
 
-    private IStatement parseReadStatement() {
-        consumeToken(TokenType.QUESTION_MARK);
-        String identifier = getCurrentToken(0).getStringToken();
-        if (Variables.isKeyExists(identifier)) {
-            consumeToken(TokenType.IDENTIFIER);
-            consumeToken(TokenType.SEMICOLON);
-            return new ReadStatement(identifier);
-        }
-        throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
-    }
-
-    private IStatement parseProcedureStatement() {
-        consumeToken(TokenType.CALL);
-        String identifier = getCurrentToken(0).getStringToken();
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.SEMICOLON);
-        return new ProcedureStatement(procedures.get(identifier));
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private IStatement parsePrintBlock() {
+        consumeToken(TokenType.EXCLAMATION_MARK);
+        return new PrintStatement(expression());
     }
 
     private IStatement parseAssignmentStatement() {
@@ -171,9 +158,7 @@ public final class Parser {
         }
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.ASSIGNMENT);
-        IExpression expression = expression();
-        consumeToken(TokenType.SEMICOLON);
-        return new AssignmentStatement(identifier, expression);
+        return new AssignmentStatement(identifier, expression());
     }
 
     private IStatement parseIfStatement() {
@@ -181,14 +166,24 @@ public final class Parser {
         IExpression expression = expression();
         consumeToken(TokenType.THEN);
         IStatement trueBlock = parseStatementOrBlock();
-        isMatchTokenType(TokenType.SEMICOLON);
-        IStatement falseBlock = null;
-        if (isMatchTokenType(TokenType.ELSE)) {
-            falseBlock = parseStatementOrBlock();
-            isMatchTokenType(TokenType.SEMICOLON);
-        }
+        return new IfStatement(expression, trueBlock);
+    }
 
-        return new IfStatement(expression, trueBlock, falseBlock);
+    private IStatement parseReadStatement() {
+        consumeToken(TokenType.QUESTION_MARK);
+        String identifier = getCurrentToken(0).getStringToken();
+        if (Variables.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            return new ReadStatement(identifier);
+        }
+        throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
+    }
+
+    private IStatement parseProcedureStatement() {
+        consumeToken(TokenType.CALL);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        return new ProcedureStatement(procedures.get(identifier));
     }
 
     private IStatement parseWhileStatement() {
@@ -196,16 +191,10 @@ public final class Parser {
         IExpression condition = expression();
         consumeToken(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
-        consumeToken(TokenType.SEMICOLON);
         return new WhileStatement(condition, statement);
     }
 
-    private IStatement parsePrintBlock() {
-        consumeToken(TokenType.EXCLAMATION_MARK);
-        IStatement printStatement = new PrintStatement(expression());
-        consumeToken(TokenType.SEMICOLON);
-        return printStatement;
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Recursive descending parser
     private IExpression expression() {

@@ -15,17 +15,17 @@ public class ConditionalExpression implements IExpression {
     @Override
     public double eval() {
         switch (operation) {
-            case NOTEQUAL + "":
+            case "#":
                 return expression1.eval() != expression2.eval() ? 1 : 0;
-            case LESS + "":
+            case "<":
                 return expression1.eval() < expression2.eval() ? 1 : 0;
-            case LESS + EQUALITY + "":
+            case "<=":
                 return expression1.eval() <= expression2.eval() ? 1 : 0;
-            case GREATER + "":
+            case ">":
                 return expression1.eval() > expression2.eval() ? 1 : 0;
-            case GREATER + EQUALITY + "":
+            case ">=":
                 return expression1.eval() >= expression2.eval() ? 1 : 0;
-            case EQUALITY + "":
+            case "=":
             default:
                 return expression1.eval() == expression2.eval() ? 1 : 0;
         }

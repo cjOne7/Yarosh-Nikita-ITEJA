@@ -21,6 +21,6 @@ public class Procedure {
 
     @Override
     public String toString() {
-        return "procedure " + identifier + ";\n" + procedureBody;
+        return "procedure " + identifier + ";\nbegin\n" + procedureBody + "end;";
     }
 }

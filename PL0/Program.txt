@@ -1,13 +1,16 @@
-﻿var x, squ;
-const a = 10;
+﻿VAR x, squ;
 
 PROCEDURE square;
 BEGIN
-   squ:= x * x;
+   squ:= x * x
 END;
 
-begin
-    x := 2;
-    call square;
-    ! squ;
-end.
+BEGIN
+   x := 1;
+   WHILE x <= 10 DO
+   BEGIN
+      CALL square;
+      ! squ;
+      x := x + 1
+   END
+END.
