@@ -3,12 +3,12 @@ package lexer.constants;
 import token.TokenType;
 
 public class WhiteChars {
-    private static final char WHITE_SPACE = ' ';
-    private static final char NEW_LINE = '\n';
-    private static final char TABULATOR = '\t';
-    private static final char CARRIAGE_RETURN = '\r';
-    private static final String ESCAPED_CARRIAGE_RETURN = "\\r";
-    private static final String ESCAPED_TABULATOR = "\\t";
+    public static final char WHITE_SPACE = ' ';
+    public static final char NEW_LINE = '\n';
+    public static final char TABULATOR = '\t';
+    public static final char CARRIAGE_RETURN = '\r';
+    public static final String ESCAPED_CARRIAGE_RETURN = "\\r";
+    public static final String ESCAPED_TABULATOR = "\\t";
     public static final String ESCAPED_NEW_LINE = "\\n";
 
     public static boolean isWhiteChar(char character) {
