@@ -66,7 +66,7 @@ public final class Lexer {
             else {
                 addToken(TokenType.UNKNOWN, Character.toString(character));
                 throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
-                        + (currentPosition / currentLine - currentLine * (currentPosition / currentLine)));
+                        + (currentPosition - currentLine * (currentPosition / currentLine)));
             }
         }
         return tokens;
@@ -111,9 +111,6 @@ public final class Lexer {
         currentPosition++;
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);
-        if (value.equals(WhiteChars.ESCAPED_NEW_LINE)) {
-            currentLine++;
-        }
     }
 
 }
