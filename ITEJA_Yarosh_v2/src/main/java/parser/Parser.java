@@ -4,6 +4,7 @@ import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.Constants;
 import parser.lib.Identifiers;
+import parser.lib.NumberValue;
 import parser.lib.Variables;
 import parser.procedure.Procedure;
 import parser.procedure.Procedures;
@@ -60,7 +61,7 @@ public final class Parser {
             if (Variables.isKeyExists(identifier)) {
                 throw new RuntimeException("Variable '" + identifier + "' is already defined.");
             }
-            Variables.put(identifier, 0);
+            Variables.put(identifier, Variables.ZERO);
             consumeToken(TokenType.IDENTIFIER);
         } while (isMatchTokenType(TokenType.COMMA));
         consumeToken(TokenType.SEMICOLON);
@@ -77,7 +78,7 @@ public final class Parser {
             consumeToken(TokenType.EQUAL);
             double value = Double.parseDouble(getCurrentToken(0).getStringToken());
             consumeToken(TokenType.NUMBER);
-            Constants.put(identifier, value);
+            Constants.put(identifier, new NumberValue(value));
         } while (isMatchTokenType(TokenType.COMMA));
         consumeToken(TokenType.SEMICOLON);
     }
