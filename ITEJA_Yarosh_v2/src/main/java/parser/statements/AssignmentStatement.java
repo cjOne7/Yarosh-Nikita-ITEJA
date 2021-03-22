@@ -1,6 +1,7 @@
 package parser.statements;
 
 import parser.expressions.IExpression;
+import parser.lib.IValue;
 import parser.lib.Variables;
 
 public class AssignmentStatement implements IStatement {
@@ -14,7 +15,7 @@ public class AssignmentStatement implements IStatement {
 
     @Override
     public void execute() {
-        double result = expression.eval();
+        IValue result = expression.eval();
         Variables.put(variableName, result);
     }
 

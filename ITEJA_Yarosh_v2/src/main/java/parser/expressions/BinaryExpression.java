@@ -1,5 +1,9 @@
 package parser.expressions;
 
+import parser.lib.IValue;
+import parser.lib.NumberValue;
+import parser.lib.StringValue;
+
 import static lexer.constants.MathOperators.*;
 
 public class BinaryExpression implements IExpression {
@@ -13,17 +17,40 @@ public class BinaryExpression implements IExpression {
     }
 
     @Override
-    public double eval() {
+    public IValue eval() {
+        final IValue value1 = expression1.eval();
+        final IValue value2 = expression2.eval();
+        if (value1 instanceof StringValue) {
+            final String string1 = value1.asString();
+            final String string2 = value2.asString();
+            switch (operation) {
+                case MINUS:
+                case DIVIDE:
+                    throw new RuntimeException("Strings don't support '" + operation + "' operation");
+                case MULTIPLY:
+                    final int iterations = (int) value2.asDouble();
+                    final StringBuilder buffer = new StringBuilder();
+                    for (int i = 0; i < iterations; i++) {
+                        buffer.append(string1);
+                    }
+                    return new StringValue(buffer.toString());
+                case PLUS:
+                default:
+                    return new StringValue(string1 + string2);
+            }
+        }
+        final double number1 = value1.asDouble();
+        final double number2 = value2.asDouble();
         switch (operation) {
             case MINUS:
-                return expression1.eval() - expression2.eval();
+                return new NumberValue(number1 - number2);
             case MULTIPLY:
-                return expression1.eval() * expression2.eval();
+                return new NumberValue(number1 * number2);
             case DIVIDE:
-                return expression1.eval() / expression2.eval();
+                return new NumberValue(number1 / number2);
             case PLUS:
             default:
-                return expression1.eval() + expression2.eval();
+                return new NumberValue(number1 + number2);
         }
     }
 

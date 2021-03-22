@@ -1,21 +1,23 @@
 package parser.expressions;
 
+import parser.lib.IValue;
+import parser.lib.NumberValue;
+
 public class NumberExpression implements IExpression {
 
-    private final double value;
+    private final IValue value;
 
     public NumberExpression(double value) {
-        this.value = value;
+        this.value = new NumberValue(value);
     }
 
     @Override
-    public double eval() {
+    public IValue eval() {
         return value;
     }
 
     @Override
     public String toString() {
-        long result = (long) value;
-        return result == value ? result + "" : value + "";
+        return value.asString();
     }
 }

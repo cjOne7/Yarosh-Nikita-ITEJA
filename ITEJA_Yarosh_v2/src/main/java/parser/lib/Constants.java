@@ -4,22 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-    private static final Map<String, Double> CONSTANTS = new HashMap<>();
+    private static final IValue ZERO = new NumberValue(0);
+    private static final Map<String, IValue> CONSTANTS = new HashMap<>();
 
     static {
-        CONSTANTS.put("PI", Math.PI);
-        CONSTANTS.put("E", Math.E);
+        CONSTANTS.put("PI", new NumberValue(Math.PI));
+        CONSTANTS.put("E", new NumberValue(Math.E));
     }
 
     public static boolean isKeyExists(String key) {
         return CONSTANTS.containsKey(key);
     }
 
-    public static double getValueByKey(String key) {
-        return isKeyExists(key) ? CONSTANTS.get(key) : Double.valueOf(Double.NaN);
+    public static IValue getValueByKey(String key) {
+        return isKeyExists(key) ? CONSTANTS.get(key) : ZERO;
     }
 
-    public static void put(String key, double value) {
+    public static void put(String key, IValue value) {
         if (isKeyExists(key)) {
             throw new RuntimeException("Constant with key " + key + " has already existed");
         }

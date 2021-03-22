@@ -1,5 +1,9 @@
 package parser.expressions;
 
+import parser.lib.IValue;
+import parser.lib.NumberValue;
+import parser.lib.StringValue;
+
 public class ConditionalExpression implements IExpression {
     private final IExpression expression1, expression2;
     private final String operation;
@@ -11,27 +15,51 @@ public class ConditionalExpression implements IExpression {
     }
 
     @Override
-    public double eval() {
+    public IValue eval() {
+        final IValue value1 = expression1.eval();
+        final IValue value2 = expression2.eval();
+        if (value1 instanceof StringValue) {
+            final String string1 = value1.asString();
+            final String string2 = value2.asString();
+            switch (operation) {
+                case "#":
+                    return new NumberValue(!string1.equals(string2));
+                case "<=":
+                    return new NumberValue(string1.compareTo(string2) <= 0);
+                case ">=":
+                    return new NumberValue(string1.compareTo(string2) >= 0);
+                case "<":
+                    return new NumberValue(string1.compareTo(string2) < 0);
+                case ">":
+                    return new NumberValue(string1.compareTo(string2) > 0);
+                case "=":
+                default:
+                    return new NumberValue(string1.equals(string2));
+            }
+        }
+
+        double number1 = value1.asDouble();
+        double number2 = value2.asDouble();
         switch (operation) {
             case "#":
-                return expression1.eval() != expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 != number2);
             case "<":
-                return expression1.eval() < expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 < number2);
             case "<=":
-                return expression1.eval() <= expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 <= number2);
             case ">":
-                return expression1.eval() > expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 > number2);
             case ">=":
-                return expression1.eval() >= expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 >= number2);
             case "=":
             default:
-                return expression1.eval() == expression2.eval() ? 1 : 0;
+                return new NumberValue(number1 == number2);
         }
     }
 
     @Override
     public String toString() {
-        return String.format("(%s %s %s)", expression1, operation, expression2);
+        return String.format("[%s %s %s]", expression1, operation, expression2);
     }
 
 
