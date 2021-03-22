@@ -12,8 +12,8 @@ public class VariableExpression implements IExpression {
 
     @Override
     public double eval() {
-        if (Variables.isDoubleExists(name)) {
-            return Variables.getDouble(name);
+        if (Variables.isKeyExists(name)) {
+            return Variables.getValueByKey(name);
         }
         if (Constants.isKeyExists(name)) {
             return Constants.getValueByKey(name);

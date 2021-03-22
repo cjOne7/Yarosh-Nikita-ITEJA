@@ -15,7 +15,7 @@ public class AssignmentStatement implements IStatement {
     @Override
     public void execute() {
         double result = expression.eval();
-        Variables.putDoubleVar(variableName, result);
+        Variables.put(variableName, result);
     }
 
     @Override

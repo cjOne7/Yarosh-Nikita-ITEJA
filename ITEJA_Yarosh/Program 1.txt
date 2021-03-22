@@ -1,6 +1,0 @@
-var x,z : double;
-      y : string;
-const c1 = 10; c2 = 15;
-begin
-
-end.

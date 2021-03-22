@@ -5,8 +5,8 @@ import token.TokenType;
 public class Separators {
     public static final char DOT = '.';
     public static final char COLON = ':';
-    private static final char SEMICOLON = ';';
-    private static final char COMMA = ',';
+    public static final char SEMICOLON = ';';
+    public static final char COMMA = ',';
     public static final char QUOTE = '"';
 
     public static boolean isSeparator(char character) {

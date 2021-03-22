@@ -15,7 +15,7 @@ public class ReadStatement implements IStatement{
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         double value = scanner.nextDouble();
-        Variables.putDoubleVar(identifier, value);
+        Variables.put(identifier, value);
     }
 
     @Override
