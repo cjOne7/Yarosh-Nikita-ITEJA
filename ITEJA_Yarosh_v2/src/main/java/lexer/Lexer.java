@@ -74,12 +74,16 @@ public final class Lexer {
     }
 
     private void readString() {
-        Matcher matcher = Pattern.compile("\"[^\"]*\"").matcher(code);
+        addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
+        Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
         matcher.find(currentPosition);
-        String value = code.substring(matcher.start() + 1, matcher.end() - 1);//cut " from the beginning and end
-        token = new Token(TokenType.STRING, value, currentLine, currentPosition);
-        currentPosition += (matcher.end() - matcher.start());//skip string value
-        tokens.add(token);
+        String value = code.substring(matcher.start(), matcher.end());
+        if (!value.isEmpty()) {
+            token = new Token(TokenType.STRING, value, currentLine, currentPosition);
+            currentPosition += (matcher.end() - matcher.start());//skip string value
+            tokens.add(token);
+        }
+        addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the end
     }
 
     private void readWord(char character) {
@@ -118,6 +122,10 @@ public final class Lexer {
     }
 
     private void addToken(TokenType tokenType, String value) {
+        if (tokenType == TokenType.UNKNOWN) {
+            throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
+                    + (currentPosition - currentLine * (currentPosition / currentLine)));
+        }
         currentPosition++;
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);

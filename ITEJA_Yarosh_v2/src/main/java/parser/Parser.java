@@ -2,10 +2,7 @@ package parser;
 
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
-import parser.lib.Constants;
-import parser.lib.Identifiers;
-import parser.lib.NumberValue;
-import parser.lib.Variables;
+import parser.lib.*;
 import parser.procedure.Procedure;
 import parser.procedure.Procedures;
 import parser.statements.*;
@@ -30,7 +27,7 @@ public final class Parser {
     public IStatement parseBlock() {
         consumeToken(TokenType.PROGRAM);
         String programIdentifier = getCurrentToken(0).getStringToken();
-        System.out.println("Starting parse '" + programIdentifier + "' program.\n.\n..\n...");
+        System.out.println("Starting parse '" + programIdentifier + "' program.");
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.SEMICOLON);
         while (true) {
@@ -70,17 +67,39 @@ public final class Parser {
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
         do {
+            if (getCurrentToken(0).getTokenType() != TokenType.IDENTIFIER) {
+                break;
+            }
             String identifier = getCurrentToken(0).getStringToken();
             if (Constants.isKeyExists(identifier)) {
                 throw new RuntimeException("Constant '" + identifier + "' is already defined.");
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.EQUAL);
-            double value = Double.parseDouble(getCurrentToken(0).getStringToken());
-            consumeToken(TokenType.NUMBER);
-            Constants.put(identifier, new NumberValue(value));
-        } while (isMatchTokenType(TokenType.COMMA));
-        consumeToken(TokenType.SEMICOLON);
+            if (getCurrentToken(0).getTokenType() == TokenType.QUOTE) {
+                parseConstString(identifier);
+            } else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
+                parseConstNumber(identifier);
+            }
+        } while (isMatchTokenType(TokenType.SEMICOLON));
+    }
+
+    private void parseConstNumber(String identifier) {
+        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
+        consumeToken(TokenType.NUMBER);
+        Constants.put(identifier, new NumberValue(value));
+    }
+
+    private void parseConstString(String identifier){
+        consumeToken(TokenType.QUOTE);
+        if (getCurrentToken(0).getTokenType() == TokenType.STRING) {
+            String value = getCurrentToken(0).getStringToken();
+            consumeToken(TokenType.STRING);
+            Constants.put(identifier, new StringValue(value));
+        } else {
+            Constants.put(identifier, Constants.EMPTY);
+        }
+        consumeToken(TokenType.QUOTE);
     }
 
     private void parseProcedure() {

@@ -27,4 +27,9 @@ public class StringValue implements IValue {
     public String asString() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return asString();
+    }
 }

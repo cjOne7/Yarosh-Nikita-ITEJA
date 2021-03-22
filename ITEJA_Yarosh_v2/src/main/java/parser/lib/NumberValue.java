@@ -3,7 +3,7 @@ package parser.lib;
 import token.TokenType;
 
 public class NumberValue implements IValue {
-    private final TokenType type = TokenType.DOUBLE;
+    private final TokenType type = TokenType.NUMBER;
     private final double value;
 
     public NumberValue(boolean value) {
@@ -26,5 +26,10 @@ public class NumberValue implements IValue {
     @Override
     public String asString() {
         return Double.toString(value);
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }

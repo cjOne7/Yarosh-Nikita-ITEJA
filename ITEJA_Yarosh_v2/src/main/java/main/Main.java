@@ -26,8 +26,6 @@ public final class Main {
 //            for (Token token : tokens) {
 //                System.out.println(token);
 //            }
-
-
             Parser parser = new Parser(tokens);
             IStatement program = parser.parseBlock();
             program.execute();
