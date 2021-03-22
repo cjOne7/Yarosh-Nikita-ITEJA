@@ -1,7 +1,5 @@
 package parser.expressions;
 
-import static lexer.constants.MathOperators.*;
-
 public class UnaryExpression implements IExpression {
 
     private final IExpression expression;
