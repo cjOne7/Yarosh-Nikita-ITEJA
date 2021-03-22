@@ -7,7 +7,6 @@ public class CompareOperators {
     public static final char GREATER = '>';
     public static final char LESS = '<';
     public static final char NOTEQUAL = '#';
-    public static final char QUESTION_MARK = '?';
 
     public static boolean isComparisonOperator(char character) {
         switch (character){
@@ -15,7 +14,6 @@ public class CompareOperators {
             case GREATER:
             case LESS:
             case NOTEQUAL:
-            case QUESTION_MARK:
                 return true;
             default:
                 return false;
@@ -32,8 +30,6 @@ public class CompareOperators {
                 return TokenType.LESS;
             case NOTEQUAL:
                 return TokenType.NOTEQUAL;
-            case QUESTION_MARK:
-                return TokenType.QUESTION_MARK;
             default:
                 return TokenType.UNKNOWN;
         }

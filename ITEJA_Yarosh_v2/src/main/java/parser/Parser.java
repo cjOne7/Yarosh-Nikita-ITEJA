@@ -27,6 +27,11 @@ public final class Parser {
     }
 
     public IStatement parseBlock() {
+        consumeToken(TokenType.PROGRAM);
+        String programIdentifier = getCurrentToken(0).getStringToken();
+        System.out.println("Starting parse '" + programIdentifier + "' program.\n.\n..\n...");
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.SEMICOLON);
         while (true) {
             if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
                 parseVariableBlock();
@@ -42,17 +47,10 @@ public final class Parser {
             }
             break;
         }
-        if (tokens.size() == 1 && getCurrentToken(0).getTokenType() == TokenType.END_OF_FILE) {
-            return new EndOfFileStatement();
-        }
-        IStatement programBody = parseStatementOrBlock();
+        IStatement programBody = parseStatementBlock();
         consumeToken(TokenType.END_OF_FILE);
+        System.out.println("Successfully finished parse '" + programIdentifier + "'.");
         return programBody;
-    }
-
-    private IStatement parseStatementOrBlock() {
-        return getCurrentToken(0).getTokenType() == TokenType.BEGIN
-                ? parseStatementBlock() : parseStatement();
     }
 
     private void parseVariableBlock() {
@@ -98,6 +96,11 @@ public final class Parser {
         consumeToken(TokenType.SEMICOLON);
     }
 
+    private IStatement parseStatementOrBlock() {
+        return getCurrentToken(0).getTokenType() == TokenType.BEGIN
+                ? parseStatementBlock() : parseStatement();
+    }
+
     private IStatement parseStatementBlock() {
         List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
@@ -132,7 +135,7 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.WRITELN)) {
             statement = parsePrintBlock();
         }
-        else if (current.getTokenType().equals(TokenType.QUESTION_MARK)) {
+        else if (current.getTokenType().equals(TokenType.READLN)) {
             statement = parseReadStatement();
         }
         else if (current.getTokenType().equals(TokenType.CALL)) {
@@ -148,7 +151,10 @@ public final class Parser {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private IStatement parsePrintBlock() {
         consumeToken(TokenType.WRITELN);
-        return new PrintStatement(expression());
+        consumeToken(TokenType.OPEN_ROUND_BRACKET);
+        IExpression expression = expression();
+        consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+        return new PrintStatement(expression);
     }
 
     private IStatement parseAssignmentStatement() {
@@ -170,10 +176,12 @@ public final class Parser {
     }
 
     private IStatement parseReadStatement() {
-        consumeToken(TokenType.QUESTION_MARK);
+        consumeToken(TokenType.READLN);
+        consumeToken(TokenType.OPEN_ROUND_BRACKET);
         String identifier = getCurrentToken(0).getStringToken();
         if (Variables.isKeyExists(identifier)) {
             consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
             return new ReadStatement(identifier);
         }
         throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");

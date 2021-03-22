@@ -1,5 +1,3 @@
-var x;
+program myProgram;
 begin
-    ?x;
-    writeln x
 end.

@@ -19,7 +19,6 @@ public final class Main {
                 stringBuilder.append(scanner.nextLine()).append("\n");
             }
             scanner.close();
-//            stringBuilder.deleteCharAt(0);//delete \uFEFF
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
             Lexer lexer = new Lexer();
