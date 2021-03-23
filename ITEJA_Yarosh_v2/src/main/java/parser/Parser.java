@@ -26,8 +26,6 @@ public final class Parser {
 
     public IStatement parseBlock() {
         consumeToken(TokenType.PROGRAM);
-        String programIdentifier = getCurrentToken(0).getStringToken();
-        System.out.println("Starting parse '" + programIdentifier + "' program.");
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.SEMICOLON);
         while (true) {
@@ -47,21 +45,38 @@ public final class Parser {
         }
         IStatement programBody = parseStatementBlock();
         consumeToken(TokenType.END_OF_FILE);
-        System.out.println("Successfully finished parse '" + programIdentifier + "'.");
         return programBody;
     }
 
     private void parseVariableBlock() {
+        List<String> identifiersList = new ArrayList<>();
         consumeToken(TokenType.VAR);
-        do {
-            String identifier = getCurrentToken(0).getStringToken();
-            if (Variables.isKeyExists(identifier)) {
-                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+        loop:
+        while (true) {
+            do {
+                if (getCurrentToken(0).getTokenType() != TokenType.IDENTIFIER) {
+                    break loop;
+                }
+                String identifier = getCurrentToken(0).getStringToken();
+                if (identifiersList.contains(identifier)) {
+                    throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+                }
+                identifiersList.add(identifier);
+                consumeToken(TokenType.IDENTIFIER);
+            } while (isMatchTokenType(TokenType.COMMA));
+            consumeToken(TokenType.COLON);
+            if (isMatchTokenType(TokenType.DOUBLE)) {
+                identifiersList.forEach(identifier -> Variables.put(identifier, new NumberValue(0)));
+                consumeToken(TokenType.SEMICOLON);
+                continue;
             }
-            Variables.put(identifier, Variables.ZERO);
-            consumeToken(TokenType.IDENTIFIER);
-        } while (isMatchTokenType(TokenType.COMMA));
-        consumeToken(TokenType.SEMICOLON);
+            if (isMatchTokenType(TokenType.STRING)) {
+                identifiersList.forEach(identifier -> Variables.put(identifier, new StringValue("")));
+                consumeToken(TokenType.SEMICOLON);
+                continue;
+            }
+            break;
+        }
     }
 
     private void parseConstBlock() {
@@ -80,6 +95,8 @@ public final class Parser {
                 parseConstString(identifier);
             } else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
                 parseConstNumber(identifier);
+            } else {
+                throw new RuntimeException("Unallowed datatype.");
             }
         } while (isMatchTokenType(TokenType.SEMICOLON));
     }
@@ -316,7 +333,13 @@ public final class Parser {
     private IExpression primary() {
         Token current = getCurrentToken(0);
         if (isMatchTokenType(TokenType.NUMBER)) {
-            return new NumberExpression(Double.parseDouble(current.getStringToken()));
+            return new ValueExpression(Double.parseDouble(current.getStringToken()));
+        }
+        if (isMatchTokenType(TokenType.QUOTE)) {
+            String value = getCurrentToken(0).getStringToken();
+            consumeToken(TokenType.STRING);
+            consumeToken(TokenType.QUOTE);
+            return new ValueExpression(value);
         }
         if (isMatchTokenType(TokenType.IDENTIFIER)) {
             return new VariableExpression(current.getStringToken());

@@ -8,15 +8,14 @@ public class AssignmentStatement implements IStatement {
     private final String variableName;
     private final IExpression expression;
 
-    public AssignmentStatement(String variableName, IExpression expression) {
-        this.variableName = variableName;
+    public AssignmentStatement(String identifier, IExpression expression) {
+        this.variableName = identifier;
         this.expression = expression;
     }
 
     @Override
     public void execute() {
-        IValue result = expression.eval();
-        Variables.put(variableName, result);
+        Variables.put(variableName, expression.eval());
     }
 
     @Override

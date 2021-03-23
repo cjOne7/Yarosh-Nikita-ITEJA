@@ -1,7 +1,11 @@
 program myProgram;
 const x = "const";
       y = 10;
+var a, b : double;
+    s1, s2 : string;
 begin
-   writeln(x);
-   writeln(y)
+    a := 2 * 5 * PI;
+    writeln(a);
+    s1 := "Hello, world!";
+    writeln(s1)
 end.

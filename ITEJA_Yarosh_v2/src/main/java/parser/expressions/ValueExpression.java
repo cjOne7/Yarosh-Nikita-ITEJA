@@ -2,13 +2,18 @@ package parser.expressions;
 
 import parser.lib.IValue;
 import parser.lib.NumberValue;
+import parser.lib.StringValue;
 
-public class NumberExpression implements IExpression {
+public class ValueExpression implements IExpression {
 
     private final IValue value;
 
-    public NumberExpression(double value) {
+    public ValueExpression(double value) {
         this.value = new NumberValue(value);
+    }
+
+    public ValueExpression(String value) {
+        this.value = new StringValue(value);
     }
 
     @Override
