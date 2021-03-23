@@ -25,7 +25,11 @@ public class NumberValue implements IValue {
 
     @Override
     public String asString() {
-        return String.format("%.2f", value);
+        long result = (long) value;
+        if (result == value) {
+            return String.format("%.0f", value);
+        }
+        return Double.toString(value);
     }
 
     @Override

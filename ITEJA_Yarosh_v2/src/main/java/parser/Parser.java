@@ -223,15 +223,14 @@ public final class Parser {
         consumeToken(TokenType.IF);
         IExpression expression = expression();
         consumeToken(TokenType.THEN);
-        IStatement trueBlock = parseStatementOrBlock();
-        return new IfStatement(expression, trueBlock);
-    }
-
-    private IStatement parseProcedureStatement() {
-        consumeToken(TokenType.CALL);
-        String identifier = getCurrentToken(0).getStringToken();
-        consumeToken(TokenType.IDENTIFIER);
-        return new ProcedureStatement(procedures.get(identifier));
+        IStatement ifBlock = parseStatementOrBlock();
+//        isMatchTokenType(TokenType.SEMICOLON);
+        IStatement elseBlock = null;
+        if (isMatchTokenType(TokenType.ELSE)) {
+            elseBlock = parseStatementOrBlock();
+//            isMatchTokenType(TokenType.SEMICOLON);
+        }
+        return new IfStatement(expression, ifBlock, elseBlock);
     }
 
     private IStatement parseWhileStatement() {
@@ -240,6 +239,13 @@ public final class Parser {
         consumeToken(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
         return new WhileStatement(condition, statement);
+    }
+
+    private IStatement parseProcedureStatement() {
+        consumeToken(TokenType.CALL);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        return new ProcedureStatement(procedures.get(identifier));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

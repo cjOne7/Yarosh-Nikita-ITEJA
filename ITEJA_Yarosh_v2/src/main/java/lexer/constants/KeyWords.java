@@ -10,6 +10,7 @@ public class KeyWords {
     public final static String END = "end";
     public final static String IF = "if";
     public final static String THEN = "then";
+    public final static String ELSE = "else";
     public final static String WHILE = "while";
     public final static String DO = "do";
     public final static String VAR = "var";
@@ -36,6 +37,8 @@ public class KeyWords {
                 return TokenType.IF;
             case THEN:
                 return TokenType.THEN;
+            case ELSE:
+                return TokenType.ELSE;
             case WHILE:
                 return TokenType.WHILE;
             case DO:
