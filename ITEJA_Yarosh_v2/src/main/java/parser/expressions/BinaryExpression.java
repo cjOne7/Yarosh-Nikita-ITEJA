@@ -28,12 +28,15 @@ public class BinaryExpression implements IExpression {
                 case DIVIDE:
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
                 case MULTIPLY:
-                    final int iterations = (int) value2.asDouble();
-                    final StringBuilder buffer = new StringBuilder();
-                    for (int i = 0; i < iterations; i++) {
-                        buffer.append(string1);
+                    if (value2 instanceof NumberValue) {
+                        final int iterations = (int) value2.asDouble();
+                        final StringBuilder buffer = new StringBuilder();
+                        for (int i = 0; i < iterations; i++) {
+                            buffer.append(string1);
+                        }
+                        return new StringValue(buffer.toString());
                     }
-                    return new StringValue(buffer.toString());
+                    throw new RuntimeException("You can't string times string");
                 case PLUS:
                 default:
                     return new StringValue(string1 + string2);

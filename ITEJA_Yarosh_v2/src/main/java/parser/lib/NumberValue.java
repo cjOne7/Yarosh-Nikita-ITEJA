@@ -20,12 +20,12 @@ public class NumberValue implements IValue {
 
     @Override
     public double asDouble() {
-        return value;
+        return Math.round(value * 1000.0) / 1000.0;
     }
 
     @Override
     public String asString() {
-        return Double.toString(value);
+        return String.format("%.2f", value);
     }
 
     @Override

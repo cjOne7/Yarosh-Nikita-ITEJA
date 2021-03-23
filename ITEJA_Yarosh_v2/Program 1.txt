@@ -6,6 +6,6 @@ var a, b : double;
 begin
     a := 2 * 5 * PI;
     writeln(a);
-    s1 := "Hello, world!";
-    writeln(s1)
+    s1 := "Radius: ";
+    writeln(s1 + a + "cm.")
 end.

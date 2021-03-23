@@ -66,12 +66,12 @@ public final class Parser {
             } while (isMatchTokenType(TokenType.COMMA));
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, new NumberValue(0)));
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.ZERO));
                 consumeToken(TokenType.SEMICOLON);
                 continue;
             }
             if (isMatchTokenType(TokenType.STRING)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, new StringValue("")));
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
                 consumeToken(TokenType.SEMICOLON);
                 continue;
             }
@@ -93,9 +93,11 @@ public final class Parser {
             consumeToken(TokenType.EQUAL);
             if (getCurrentToken(0).getTokenType() == TokenType.QUOTE) {
                 parseConstString(identifier);
-            } else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
+            }
+            else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
                 parseConstNumber(identifier);
-            } else {
+            }
+            else {
                 throw new RuntimeException("Unallowed datatype.");
             }
         } while (isMatchTokenType(TokenType.SEMICOLON));
@@ -107,13 +109,14 @@ public final class Parser {
         Constants.put(identifier, new NumberValue(value));
     }
 
-    private void parseConstString(String identifier){
+    private void parseConstString(String identifier) {
         consumeToken(TokenType.QUOTE);
         if (getCurrentToken(0).getTokenType() == TokenType.STRING) {
             String value = getCurrentToken(0).getStringToken();
             consumeToken(TokenType.STRING);
             Constants.put(identifier, new StringValue(value));
-        } else {
+        }
+        else {
             Constants.put(identifier, Constants.EMPTY);
         }
         consumeToken(TokenType.QUOTE);
@@ -194,6 +197,18 @@ public final class Parser {
         return new PrintStatement(expression);
     }
 
+    private IStatement parseReadStatement() {
+        consumeToken(TokenType.READLN);
+        consumeToken(TokenType.OPEN_ROUND_BRACKET);
+        String identifier = getCurrentToken(0).getStringToken();
+        if (Variables.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+            return new ReadStatement(identifier);
+        }
+        throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
+    }
+
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
         if (Constants.isKeyExists(identifier)) {
@@ -210,18 +225,6 @@ public final class Parser {
         consumeToken(TokenType.THEN);
         IStatement trueBlock = parseStatementOrBlock();
         return new IfStatement(expression, trueBlock);
-    }
-
-    private IStatement parseReadStatement() {
-        consumeToken(TokenType.READLN);
-        consumeToken(TokenType.OPEN_ROUND_BRACKET);
-        String identifier = getCurrentToken(0).getStringToken();
-        if (Variables.isKeyExists(identifier)) {
-            consumeToken(TokenType.IDENTIFIER);
-            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-            return new ReadStatement(identifier);
-        }
-        throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
     }
 
     private IStatement parseProcedureStatement() {

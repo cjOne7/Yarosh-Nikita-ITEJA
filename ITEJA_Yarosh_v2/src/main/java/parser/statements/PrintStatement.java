@@ -19,7 +19,7 @@ public class PrintStatement implements IStatement {
         } else {
             double doubleValue = value.asDouble();
             long result = (long) doubleValue;//For example, 1.0 will be typed as 1
-            System.out.println(result == doubleValue ? result + "" :  String.format("%.2f", doubleValue));
+            System.out.println(result == doubleValue ? result + "" :  doubleValue + "");
         }
     }
 
