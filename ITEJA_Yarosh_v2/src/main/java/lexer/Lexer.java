@@ -40,26 +40,34 @@ public final class Lexer {
                 addToken(Brackets.detectBracketType(character), Character.toString(character));
             }
             else if (CompareOperators.isComparisonOperator(character)) {
-                if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
+                if (currentPosition < code.length() - 1 && !CompareOperators.isComparisonOperator(code.charAt(currentPosition + 1))) {//<,>,=
+                    addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
+                }
+                else if (currentPosition < code.length() - 1
+                        && code.charAt(currentPosition) == CompareOperators.EQUALITY
+                        && CompareOperators.isComparisonOperator(code.charAt(currentPosition + 1))) {
+                    throw new RuntimeException("After '=' cannot be other condition operator. Your operator: " + character + code.charAt(currentPosition + 1));
+                }
+                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == CompareOperators.LESS) {
                     char nextChar = code.charAt(currentPosition + 1);
                     String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
-                    switch (character) {
-                        case CompareOperators.LESS://<=
+                    switch (nextChar) {
+                        case CompareOperators.EQUALITY:
                             addToken(TokenType.LESS_OR_EQUAL, compareOperator);
                             break;
-                        case CompareOperators.GREATER://>=
-                            addToken(TokenType.GREATER_OR_EQUAL, compareOperator);
+                        case CompareOperators.GREATER:
+                            addToken(TokenType.NOTEQUAL, compareOperator);
                             break;
                         default:
                             throw new RuntimeException("Wrong conditional operator " + character + nextChar);
                     }
                     currentPosition++;
                 }
-                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.GREATER) {
+                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == CompareOperators.GREATER) {//>=
                     char nextChar = code.charAt(currentPosition + 1);
                     String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
-                    if (character == CompareOperators.LESS) {//<>
-                        addToken(TokenType.NOTEQUAL, compareOperator);
+                    if (nextChar == CompareOperators.EQUALITY) {//>=
+                        addToken(TokenType.GREATER_OR_EQUAL, compareOperator);
                         currentPosition++;
                     }
                     else {
