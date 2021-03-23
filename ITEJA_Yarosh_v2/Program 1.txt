@@ -1,11 +1,12 @@
 program myProgram;
 const x = "const";
       y = 10;
-var a, b : double;
-    s1, s2 : string;
+var l, r : double;
+    result: string;
 begin
-    a := 2 * 5 * PI;
-    writeln(a);
-    s1 := "Radius: ";
-    writeln(s1 + a + "cm.")
+    writeln("Enter radius:");
+    readln(r);
+    l := 2 * PI * r;
+    result := "Circle length: " + l + "cm.";
+    writeln(result)
 end.
