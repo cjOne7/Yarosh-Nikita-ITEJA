@@ -41,9 +41,30 @@ public final class Lexer {
             }
             else if (CompareOperators.isComparisonOperator(character)) {
                 if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    TokenType type = character == CompareOperators.GREATER ? TokenType.GREATER_OR_EQUAL : TokenType.LESS_OR_EQUAL;
-                    addToken(type, Character.toString(character).concat(Character.toString(code.charAt(currentPosition + 1))));
+                    char nextChar = code.charAt(currentPosition + 1);
+                    String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
+                    switch (character) {
+                        case CompareOperators.LESS://<=
+                            addToken(TokenType.LESS_OR_EQUAL, compareOperator);
+                            break;
+                        case CompareOperators.GREATER://>=
+                            addToken(TokenType.GREATER_OR_EQUAL, compareOperator);
+                            break;
+                        default:
+                            throw new RuntimeException("Wrong conditional operator " + character + nextChar);
+                    }
                     currentPosition++;
+                }
+                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.GREATER) {
+                    char nextChar = code.charAt(currentPosition + 1);
+                    String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
+                    if (character == CompareOperators.LESS) {//<>
+                        addToken(TokenType.NOTEQUAL, compareOperator);
+                        currentPosition++;
+                    }
+                    else {
+                        throw new RuntimeException("Wrong conditional operator " + character + nextChar);
+                    }
                 }
                 else {
                     addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
