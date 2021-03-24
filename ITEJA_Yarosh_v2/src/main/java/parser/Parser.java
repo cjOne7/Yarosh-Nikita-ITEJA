@@ -1,9 +1,9 @@
 package parser;
 
+import lexer.constants.MathOperators;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.*;
-import parser.procedure.Procedure;
 import parser.procedure.Procedures;
 import parser.statements.*;
 import token.Token;
@@ -35,10 +35,6 @@ public final class Parser {
             }
             if (getCurrentToken(0).getTokenType() == TokenType.CONST) {
                 parseConstBlock();
-                continue;
-            }
-            if (getCurrentToken(0).getTokenType() == TokenType.PROCEDURE) {
-                parseProcedure();
                 continue;
             }
             break;
@@ -122,20 +118,6 @@ public final class Parser {
         consumeToken(TokenType.QUOTE);
     }
 
-    private void parseProcedure() {
-        consumeToken(TokenType.PROCEDURE);
-        String identifier = getCurrentToken(0).getStringToken();
-        Identifiers.put(identifier);
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.SEMICOLON);
-        if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
-            parseVariableBlock();
-        }
-        IStatement procedureBlockStatements = parseStatementBlock();
-        procedures.add(new Procedure(identifier, procedureBlockStatements));
-        consumeToken(TokenType.SEMICOLON);
-    }
-
     private IStatement parseStatementOrBlock() {
         return getCurrentToken(0).getTokenType() == TokenType.BEGIN
                 ? parseStatementBlock() : parseStatement();
@@ -173,13 +155,10 @@ public final class Parser {
             statement = parseWhileStatement();
         }
         else if (current.getTokenType().equals(TokenType.WRITELN)) {
-            statement = parsePrintBlock();
+            statement = parseWriteBlock();
         }
         else if (current.getTokenType().equals(TokenType.READLN)) {
             statement = parseReadStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.CALL)) {
-            statement = parseProcedureStatement();
         }
         else {
             throw new RuntimeException("Missing one of next statements: " +
@@ -189,12 +168,12 @@ public final class Parser {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private IStatement parsePrintBlock() {
+    private IStatement parseWriteBlock() {
         consumeToken(TokenType.WRITELN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
         IExpression expression = expression();
         consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-        return new PrintStatement(expression);
+        return new WriteStatement(expression);
     }
 
     private IStatement parseReadStatement() {
@@ -239,13 +218,6 @@ public final class Parser {
         consumeToken(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
         return new WhileStatement(condition, statement);
-    }
-
-    private IStatement parseProcedureStatement() {
-        consumeToken(TokenType.CALL);
-        String identifier = getCurrentToken(0).getStringToken();
-        consumeToken(TokenType.IDENTIFIER);
-        return new ProcedureStatement(procedures.get(identifier));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,15 +298,11 @@ public final class Parser {
     }
 
     private IExpression unary() {
-        Token current = getCurrentToken(0);
         if (isMatchTokenType(TokenType.MINUS)) {
-            return new UnaryExpression(current.getStringToken(), primary());
+            return new UnaryExpression(MathOperators.MINUS, primary());
         }
         if (isMatchTokenType(TokenType.PLUS)) {
-            return new UnaryExpression(current.getStringToken(), primary());
-        }
-        if (isMatchTokenType(TokenType.ODD)) {
-            return new UnaryExpression(current.getStringToken(), primary());
+            return new UnaryExpression(MathOperators.PLUS, primary());
         }
         return primary();
     }

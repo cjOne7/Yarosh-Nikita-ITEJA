@@ -1,12 +1,12 @@
 program myProgram;
 const y = 10;
 begin
-    if y = 10 then
+    if y <> -10 then
     begin
-      Writeln(y + " = 10")
+      Writeln(y + " = -10")
     end
     else
     begin
-      Writeln(y + " <> 10")
+      Writeln(y + " <> -10")
     end
 end.

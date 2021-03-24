@@ -4,8 +4,6 @@ import token.TokenType;
 
 public class KeyWords {
     public final static String PROGRAM = "program";
-    public final static String PROCEDURE = "procedure";
-    public final static String CALL = "call";
     public final static String BEGIN = "begin";
     public final static String END = "end";
     public final static String IF = "if";
@@ -15,7 +13,6 @@ public class KeyWords {
     public final static String DO = "do";
     public final static String VAR = "var";
     public final static String CONST = "const";
-    public final static String ODD = "odd";
     public final static String WRITELN = "writeln";
     public final static String READLN = "readln";
     public final static String DOUBLE = "double";
@@ -25,10 +22,6 @@ public class KeyWords {
         switch (value.toLowerCase()) {
             case PROGRAM:
                 return TokenType.PROGRAM;
-            case PROCEDURE:
-                return TokenType.PROCEDURE;
-            case CALL:
-                return TokenType.CALL;
             case BEGIN:
                 return TokenType.BEGIN;
             case END:
@@ -47,8 +40,6 @@ public class KeyWords {
                 return TokenType.VAR;
             case CONST:
                 return TokenType.CONST;
-            case ODD:
-                return TokenType.ODD;
             case WRITELN:
                 return TokenType.WRITELN;
             case READLN:

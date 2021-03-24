@@ -5,12 +5,7 @@ import parser.expressions.IExpression;
 public class IfStatement implements IStatement {
     private final IExpression expression;
     private final IStatement ifStatement;
-    private IStatement elseStatement;
-
-    public IfStatement(IExpression expression, IStatement ifStatement) {
-        this.expression = expression;
-        this.ifStatement = ifStatement;
-    }
+    private final IStatement elseStatement;
 
     public IfStatement(IExpression expression, IStatement ifStatement, IStatement elseStatement) {
         this.expression = expression;
@@ -20,7 +15,7 @@ public class IfStatement implements IStatement {
 
     @Override
     public void execute() {
-        if (expression.eval().asDouble() != 0) {
+        if (expression.eval().asDouble() == 1) {
             ifStatement.execute();
         }
         else if (elseStatement != null) {

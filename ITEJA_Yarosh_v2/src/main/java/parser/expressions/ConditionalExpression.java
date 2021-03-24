@@ -18,7 +18,7 @@ public class ConditionalExpression implements IExpression {
     public IValue eval() {
         final IValue value1 = expression1.eval();
         final IValue value2 = expression2.eval();
-        if (value1 instanceof StringValue) {
+        if (value1 instanceof StringValue || value2 instanceof StringValue) {
             final String string1 = value1.asString();
             final String string2 = value2.asString();
             switch (operation) {

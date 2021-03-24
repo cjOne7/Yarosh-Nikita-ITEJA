@@ -4,10 +4,10 @@ import parser.expressions.IExpression;
 import parser.lib.IValue;
 import parser.lib.StringValue;
 
-public class PrintStatement implements IStatement {
+public class WriteStatement implements IStatement {
     private final IExpression expression;
 
-    public PrintStatement(IExpression expression) {
+    public WriteStatement(IExpression expression) {
         this.expression = expression;
     }
 
