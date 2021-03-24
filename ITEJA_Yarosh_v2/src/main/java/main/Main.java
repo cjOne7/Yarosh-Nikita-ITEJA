@@ -14,7 +14,9 @@ public final class Main {
     public static void main(String[] args) {
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            Scanner scanner = new Scanner(new File("Program 1.txt"));
+//            Scanner scanner = new Scanner(new File("Example 1.txt"));
+//            Scanner scanner = new Scanner(new File("Example 2.txt"));
+            Scanner scanner = new Scanner(new File("Example 3.txt"));
             while (scanner.hasNextLine()) {
                 stringBuilder.append(scanner.nextLine()).append("\n");
             }

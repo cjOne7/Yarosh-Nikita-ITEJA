@@ -1,0 +1,28 @@
+program ThirdExample;
+
+var p1, p2, value1, i, count: double;
+
+begin
+  p1 := 1;
+  p2 := 1;
+  value1 := 1;
+  i := 1;
+  count := 10;
+  if count < 1 then
+  begin
+    writeln("Parameter count less than 1")
+  end
+  else
+  begin
+    writeln(p1);
+    writeln(p2);
+    while i < count - 1 do
+    begin
+      value1 := p1 + p2;
+      writeln(value1);
+      p1 := p2;
+      p2 := value1;
+      i := i + 1
+    end
+  end
+end.

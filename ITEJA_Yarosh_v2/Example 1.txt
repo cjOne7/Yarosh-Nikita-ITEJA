@@ -1,0 +1,10 @@
+program FirstExample;
+
+var
+  r: double;
+
+begin
+  writeln("Enter radius: ");
+  readln(r);
+  writeln("Length is: " + 2 * r * PI + " cm.")
+end.
