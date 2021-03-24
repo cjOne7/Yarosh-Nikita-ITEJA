@@ -16,6 +16,7 @@ public class KeyWords {
     public final static String WRITELN = "writeln";
     public final static String READLN = "readln";
     public final static String EXIT = "exit";
+    public final static String SQRT = "sqrt";
     public final static String DOUBLE = "double";
     public final static String STRING = "string";
 
@@ -47,6 +48,8 @@ public class KeyWords {
                 return TokenType.READLN;
             case EXIT:
                 return TokenType.EXIT;
+            case SQRT:
+                return TokenType.SQRT;
             case DOUBLE:
                 return TokenType.DOUBLE;
             case STRING:

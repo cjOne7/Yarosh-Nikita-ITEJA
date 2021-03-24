@@ -1,8 +1,30 @@
-program FirstExample;
+program SecondExample;
 
-var
-  r: double;
+var a, b, c, x1, x2, discriminant: double;
 
 begin
-  writeln("Enter radius: ");
+  writeln("Enter a: ");
+  readln(a);
+  writeln("Enter b: ");
+  readln(b);
+  writeln("Enter c: ");
+  readln(c);
+  discriminant := b * b - 4 * a * c;
+ if discriminant < 0 then
+  begin
+    writeln("Discriminant = " + discriminant + ". Cannot resolve due to discriminant < 0.");
+    exit;
+  end;
+  if discriminant > 0 then
+  begin
+    x1 := (-b + sqrt(discriminant)) / (2 * a);
+    x2 := (-b - sqrt(discriminant)) / (2 * a);
+    writeln("x1 = " + x1 + ", x2 = " + x2)
+  end
+  else
+  begin
+    x1 := -b / 2 * a;
+    x2 := x1;
+    writeln("x1 = x2 = " + x1)
+  end
 end.

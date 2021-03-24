@@ -163,12 +163,12 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.READLN)) {
             statement = parseReadStatement();
         }
-        else if (current.getTokenType().equals(TokenType.EXIT)) {
+        else if (isMatchTokenType(TokenType.EXIT)) {
             statement = new ExitStatement();
         }
         else {
-            throw new RuntimeException("Missing one of next statements: " +
-                    "IDENTIFIER, IF, WHILE, BEGIN, '!', '?', CALL, but current token is " + current.getTokenType());
+            throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, " +
+                    "but current token is " + current.getTokenType() + " on position " + current.getRowPosition());
         }
         return statement;
     }
@@ -329,10 +329,16 @@ public final class Parser {
         }
         if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
-            isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET);
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
-        throw new RuntimeException("Unknown expression");
+        if (isMatchTokenType(TokenType.SQRT)) {
+            consumeToken(TokenType.OPEN_ROUND_BRACKET);
+            IExpression expression = expression();
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+            return new SqrtExpression(expression);
+        }
+        throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
     private boolean isMatchTokenType(TokenType type) {
