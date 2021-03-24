@@ -7,7 +7,8 @@ begin
   p2 := 1;
   value1 := 1;
   i := 1;
-  count := 10;
+  writeln("Enter count of Fibonacci numbers: ");
+  readln(count);
   if count < 1 then
   begin
     writeln("Parameter count less than 1")
