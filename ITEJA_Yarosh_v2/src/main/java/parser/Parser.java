@@ -130,6 +130,9 @@ public final class Parser {
             IStatement statement;
             if (statements.size() != 0) {
                 consumeToken(TokenType.SEMICOLON);
+                if (isMatchTokenType(TokenType.END)) {
+                    break;
+                }
             }
             statement = parseStatement();
             if (statement != null) {
@@ -347,7 +350,7 @@ public final class Parser {
             pos++;
             return;
         }
-        throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType());
+        throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType() + " on position " + current.getRowPosition());
     }
 
     private Token getCurrentToken(int relativePosition) {
