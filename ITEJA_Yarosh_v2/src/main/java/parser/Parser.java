@@ -4,7 +4,6 @@ import lexer.constants.MathOperators;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.*;
-import parser.procedure.Procedures;
 import parser.statements.*;
 import token.Token;
 import token.TokenType;
@@ -14,14 +13,12 @@ import java.util.List;
 
 public final class Parser {
     private final List<Token> tokens;
-    private final Procedures procedures;
     private int pos;
     private final int size;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
         size = tokens.size();
-        procedures = new Procedures();
     }
 
     public IStatement parseBlock() {
