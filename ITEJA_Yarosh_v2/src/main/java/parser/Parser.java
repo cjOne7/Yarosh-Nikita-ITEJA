@@ -206,11 +206,9 @@ public final class Parser {
         IExpression expression = expression();
         consumeToken(TokenType.THEN);
         IStatement ifBlock = parseStatementOrBlock();
-//        isMatchTokenType(TokenType.SEMICOLON);
         IStatement elseBlock = null;
         if (isMatchTokenType(TokenType.ELSE)) {
             elseBlock = parseStatementOrBlock();
-//            isMatchTokenType(TokenType.SEMICOLON);
         }
         return new IfStatement(expression, ifBlock, elseBlock);
     }
