@@ -44,16 +44,21 @@ public class BinaryExpression implements IExpression {
         }
         final double number1 = value1.asDouble();
         final double number2 = value2.asDouble();
+        double result;
         switch (operation) {
             case MINUS:
-                return new NumberValue(number1 - number2);
+                result = number1 - number2;
+                return new NumberValue(Math.round(result * 100.0) / 100.0);
             case MULTIPLY:
-                return new NumberValue(number1 * number2);
+                result = number1 * number2;
+                return new NumberValue(Math.round(result * 100.0) / 100.0);
             case DIVIDE:
-                return new NumberValue(number1 / number2);
+                result = number1 / number2;
+                return new NumberValue(Math.round(result * 100.0) / 100.0);
             case PLUS:
             default:
-                return new NumberValue(number1 + number2);
+                result = number1 + number2;
+                return new NumberValue(Math.round(result * 100.0) / 100.0);
         }
     }
 

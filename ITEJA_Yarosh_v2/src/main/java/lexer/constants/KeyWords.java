@@ -15,6 +15,7 @@ public class KeyWords {
     public final static String CONST = "const";
     public final static String WRITELN = "writeln";
     public final static String READLN = "readln";
+    public final static String EXIT = "exit";
     public final static String DOUBLE = "double";
     public final static String STRING = "string";
 
@@ -44,6 +45,8 @@ public class KeyWords {
                 return TokenType.WRITELN;
             case READLN:
                 return TokenType.READLN;
+            case EXIT:
+                return TokenType.EXIT;
             case DOUBLE:
                 return TokenType.DOUBLE;
             case STRING:

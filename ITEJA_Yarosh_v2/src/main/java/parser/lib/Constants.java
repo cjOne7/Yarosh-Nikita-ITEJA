@@ -9,8 +9,8 @@ public class Constants {
     private static final Map<String, IValue> CONSTANTS = new HashMap<>();
 
     static {
-        CONSTANTS.put("PI", new NumberValue(Math.PI));
-        CONSTANTS.put("E", new NumberValue(Math.E));
+        CONSTANTS.put("PI", new NumberValue(3.14));
+        CONSTANTS.put("E", new NumberValue(2.7));
     }
 
     public static boolean isKeyExists(String key) {

@@ -160,6 +160,9 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.READLN)) {
             statement = parseReadStatement();
         }
+        else if (current.getTokenType().equals(TokenType.EXIT)) {
+            statement = new ExitStatement();
+        }
         else {
             throw new RuntimeException("Missing one of next statements: " +
                     "IDENTIFIER, IF, WHILE, BEGIN, '!', '?', CALL, but current token is " + current.getTokenType());

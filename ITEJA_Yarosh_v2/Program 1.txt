@@ -1,12 +1,8 @@
-program myProgram;
-const y = 10;
+program FirstExample;
+
+var
+  r: double;
+
 begin
-    if y <> -10 then
-    begin
-      Writeln(y + " = -10")
-    end
-    else
-    begin
-      Writeln(y + " <> -10")
-    end
+  writeln("Enter radius: ");
 end.
