@@ -139,8 +139,8 @@ public final class Parser {
             statement = parseProcedureStatement();
         }
         else {
-            throw new RuntimeException("Missing one of next statements: " +
-                    "IDENTIFIER, IF, WHILE, BEGIN, '!', '?', CALL, but current token is " + current.getTokenType());
+            throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, '!', '?', CALL, " +
+                    "but current token is " + current.getTokenType() + " on position " + current.getRowPosition());
         }
         return statement;
     }
@@ -153,6 +153,9 @@ public final class Parser {
 
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
+        if (!Variables.isKeyExists(identifier)) {
+            throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
+        }
         if (Constants.isKeyExists(identifier)) {
             throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
         }
@@ -298,7 +301,7 @@ public final class Parser {
             isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
-        throw new RuntimeException("Unknown expression");
+        throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
     private boolean isMatchTokenType(TokenType type) {
@@ -316,7 +319,7 @@ public final class Parser {
             pos++;
             return;
         }
-        throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType());
+        throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType() + " on position " + current.getRowPosition());
     }
 
     private Token getCurrentToken(int relativePosition) {

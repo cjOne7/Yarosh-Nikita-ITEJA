@@ -1,0 +1,48 @@
+var a, b, c, x1, x2, discriminant, sqrtDiscriminant;
+
+procedure calcDiscriminant;
+begin
+    ?a;
+    ?b;
+    ?c;
+    discriminant := b * b - 4 * a * c
+end;
+
+procedure sqrt;
+var x;
+begin
+  x := 0;
+  while x * x < discriminant do
+    x := x + 1;
+
+  if x * x # discriminant then
+  begin
+    while x * x < discriminant do
+      x := x + 0.1;
+
+    x := x - 0.1;
+    while x * x < discriminant do
+      x := x + 0.01;
+
+    x := x - 0.01;
+    while x * x < discriminant do
+      x := x + 0.001;
+
+    x := x - 0.001
+  end;
+  sqrtDiscriminant := x
+end;
+
+begin
+    call calcDiscriminant;
+    ! discriminant;
+    call sqrt;
+    ! sqrtDiscriminant;
+    if discriminant >= 0 then
+    begin
+        x1 := (-b + sqrtDiscriminant) / (2*a);
+        x2 := (-b - sqrtDiscriminant) / (2*a)
+    end;
+    ! x1;
+    ! x2
+end.
