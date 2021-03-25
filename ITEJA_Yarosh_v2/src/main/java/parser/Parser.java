@@ -124,17 +124,13 @@ public final class Parser {
         List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
         while (!isMatchTokenType(TokenType.END)) {
-            IStatement statement;
             if (statements.size() != 0) {
                 consumeToken(TokenType.SEMICOLON);
                 if (isMatchTokenType(TokenType.END)) {
                     break;
                 }
             }
-            statement = parseStatement();
-            if (statement != null) {
-                statements.add(statement);
-            }
+            statements.add(parseStatement());
         }
         return new StatementBlock(statements);
     }
@@ -162,6 +158,11 @@ public final class Parser {
         }
         else if (isMatchTokenType(TokenType.EXIT)) {
             statement = new ExitStatement();
+        }
+        else if (isMatchTokenType(TokenType.SQRT)) {
+            consumeToken(TokenType.OPEN_ROUND_BRACKET);
+            statement = new SqrtStatement(expression());
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
         }
         else {
             throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, " +
