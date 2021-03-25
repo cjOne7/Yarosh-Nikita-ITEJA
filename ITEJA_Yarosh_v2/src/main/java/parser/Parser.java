@@ -14,11 +14,9 @@ import java.util.List;
 public final class Parser {
     private final List<Token> tokens;
     private int pos;
-    private final int size;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
-        size = tokens.size();
     }
 
     public IStatement parseBlock() {
@@ -369,7 +367,7 @@ public final class Parser {
 
     private Token getCurrentToken(int relativePosition) {
         int position = pos + relativePosition;
-        if (position >= size) {
+        if (position >= tokens.size()) {
             throw new RuntimeException("Program must be finished with DOT in the end.");
         }
         return tokens.get(position);
