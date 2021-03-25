@@ -186,6 +186,7 @@ public final class Parser {
         consumeToken(TokenType.READLN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
         String identifier = getCurrentToken(0).getStringToken();
+        checkConstImmutable(identifier);
         if (Variables.isKeyExists(identifier)) {
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.CLOSE_ROUND_BRACKET);
@@ -196,9 +197,7 @@ public final class Parser {
 
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
-        if (Constants.isKeyExists(identifier)) {
-            throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
-        }
+        checkConstImmutable(identifier);
         if (Variables.isKeyExists(identifier)) {
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.ASSIGNMENT);
@@ -366,5 +365,11 @@ public final class Parser {
             throw new RuntimeException("Program must be finished with DOT in the end.");
         }
         return tokens.get(position);
+    }
+
+    private void checkConstImmutable(String identifier) {
+        if (Constants.isKeyExists(identifier)) {
+            throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
+        }
     }
 }
