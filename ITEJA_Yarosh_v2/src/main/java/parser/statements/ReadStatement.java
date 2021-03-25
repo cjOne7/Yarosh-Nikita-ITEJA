@@ -12,6 +12,7 @@ public class ReadStatement implements IStatement{
         this.identifier = identifier;
     }
 
+    //TODO change it to string
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
