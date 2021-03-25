@@ -60,15 +60,14 @@ public final class Parser {
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
                 identifiersList.forEach(identifier -> Variables.put(identifier, Variables.ZERO));
-                consumeToken(TokenType.SEMICOLON);
-                continue;
             }
-            if (isMatchTokenType(TokenType.STRING)) {
+            else if (isMatchTokenType(TokenType.STRING)) {
                 identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
-                consumeToken(TokenType.SEMICOLON);
-                continue;
+            } else  {
+                throw new RuntimeException("Unknown datatype.");
             }
-            break;
+            identifiersList.clear();
+            consumeToken(TokenType.SEMICOLON);
         }
     }
 
@@ -88,18 +87,21 @@ public final class Parser {
                 parseConstString(identifier);
             }
             else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
-                parseConstNumber(identifier);
+                parseConstNumber(identifier, false);
+            }
+            else if (isMatchTokenType(TokenType.MINUS)) {
+                parseConstNumber(identifier, true);
             }
             else {
-                throw new RuntimeException("Unallowed datatype.");
+                throw new RuntimeException("Unknown datatype.");
             }
         } while (isMatchTokenType(TokenType.SEMICOLON));
     }
 
-    private void parseConstNumber(String identifier) {
+    private void parseConstNumber(String identifier, boolean isNegativeNumber) {
         double value = Double.parseDouble(getCurrentToken(0).getStringToken());
         consumeToken(TokenType.NUMBER);
-        Constants.put(identifier, new NumberValue(value));
+        Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
     }
 
     private void parseConstString(String identifier) {
@@ -197,9 +199,12 @@ public final class Parser {
         if (Constants.isKeyExists(identifier)) {
             throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
         }
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.ASSIGNMENT);
-        return new AssignmentStatement(identifier, expression());
+        if (Variables.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.ASSIGNMENT);
+            return new AssignmentStatement(identifier, expression());
+        }
+        throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
     }
 
     private IStatement parseIfStatement() {

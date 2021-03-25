@@ -23,7 +23,7 @@ public class Constants {
 
     public static void put(String key, IValue value) {
         if (isKeyExists(key)) {
-            throw new RuntimeException("Constant with key " + key + " has already existed");
+            throw new RuntimeException("Constant with key '" + key + "' has already existed");
         }
         CONSTANTS.put(key, value);
     }

@@ -1,10 +1,8 @@
 program FirstExample;
 
-var
-  r: double;
+var a: double;
+    str: string;
 
 begin
-  writeln("Enter radius: ");
-  readln(r);
-  writeln("Length is: " + 2 * r * PI + " cm.")
+    readln(a);
 end.
