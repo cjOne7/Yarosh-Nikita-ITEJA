@@ -4,6 +4,7 @@ import lexer.Lexer;
 import parser.Parser;
 import parser.statements.IStatement;
 import token.Token;
+import token.TokenType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,7 +33,6 @@ public final class Main {
             IStatement program = parser.parseBlock();
             program.execute();
 //            System.out.println(program);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

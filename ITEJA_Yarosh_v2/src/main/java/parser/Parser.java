@@ -63,7 +63,8 @@ public final class Parser {
             }
             else if (isMatchTokenType(TokenType.STRING)) {
                 identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
-            } else  {
+            }
+            else {
                 throw new RuntimeException("Unknown datatype.");
             }
             identifiersList.clear();
@@ -161,13 +162,8 @@ public final class Parser {
         else if (isMatchTokenType(TokenType.EXIT)) {
             statement = new ExitStatement();
         }
-        else if (isMatchTokenType(TokenType.SQRT)) {
-            consumeToken(TokenType.OPEN_ROUND_BRACKET);
-            statement = new SqrtStatement(expression());
-            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-        }
         else {
-            throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, " +
+            throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, EXIT, " +
                     "but current token is " + current.getTokenType() + " on position " + current.getRowPosition());
         }
         return statement;
@@ -206,6 +202,14 @@ public final class Parser {
         throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
     }
 
+    private IStatement parseWhileStatement() {
+        consumeToken(TokenType.WHILE);
+        IExpression condition = expression();
+        consumeToken(TokenType.DO);
+        IStatement statement = parseStatementOrBlock();
+        return new WhileStatement(condition, statement);
+    }
+
     private IStatement parseIfStatement() {
         consumeToken(TokenType.IF);
         IExpression expression = expression();
@@ -216,14 +220,6 @@ public final class Parser {
             elseBlock = parseStatementOrBlock();
         }
         return new IfStatement(expression, ifBlock, elseBlock);
-    }
-
-    private IStatement parseWhileStatement() {
-        consumeToken(TokenType.WHILE);
-        IExpression condition = expression();
-        consumeToken(TokenType.DO);
-        IStatement statement = parseStatementOrBlock();
-        return new WhileStatement(condition, statement);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,7 +316,7 @@ public final class Parser {
         }
         if (isMatchTokenType(TokenType.QUOTE)) {
             String value = getCurrentToken(0).getStringToken();
-            consumeToken(TokenType.STRING);
+            isMatchTokenType(TokenType.STRING);
             consumeToken(TokenType.QUOTE);
             return new ValueExpression(value);
         }
@@ -332,13 +328,20 @@ public final class Parser {
             consumeToken(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
-        if (isMatchTokenType(TokenType.SQRT)) {
-            consumeToken(TokenType.OPEN_ROUND_BRACKET);
-            IExpression expression = expression();
-            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-            return new SqrtExpression(expression);
+        if (MathExpression.isMathExpression(current.getTokenType().name())) {
+            return parseMathFunction();
         }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
+    }
+
+    private IExpression parseMathFunction() {
+        Token current = getCurrentToken(0);
+        String function = current.getStringToken();
+        consumeToken(current.getTokenType());
+        consumeToken(TokenType.OPEN_ROUND_BRACKET);
+        IExpression expression = expression();
+        consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+        return new MathExpression(expression, function);
     }
 
     private boolean isMatchTokenType(TokenType type) {

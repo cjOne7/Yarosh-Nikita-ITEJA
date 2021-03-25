@@ -4,5 +4,5 @@ var a: double;
     str: string;
 
 begin
-    readln(a);
+    str := "";
 end.
