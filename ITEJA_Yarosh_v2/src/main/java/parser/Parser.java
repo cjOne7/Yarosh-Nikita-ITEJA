@@ -170,6 +170,7 @@ public final class Parser {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //todo add writeln() method opportunity
     private IStatement parseWriteBlock() {
         consumeToken(TokenType.WRITELN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
@@ -315,10 +316,7 @@ public final class Parser {
             return new ValueExpression(Double.parseDouble(current.getStringToken()));
         }
         if (isMatchTokenType(TokenType.QUOTE)) {
-            String value = getCurrentToken(0).getStringToken();
-            isMatchTokenType(TokenType.STRING);
-            consumeToken(TokenType.QUOTE);
-            return new ValueExpression(value);
+            return string();
         }
         if (isMatchTokenType(TokenType.IDENTIFIER)) {
             return new VariableExpression(current.getStringToken());
@@ -329,19 +327,26 @@ public final class Parser {
             return expression;
         }
         if (MathExpression.isMathExpression(current.getTokenType().name())) {
-            return parseMathFunction();
+            return mathFunction();
         }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
-    private IExpression parseMathFunction() {
+    private IExpression string() {
+        String value = getCurrentToken(0).getStringToken();
+        isMatchTokenType(TokenType.STRING);
+        consumeToken(TokenType.QUOTE);
+        return new ValueExpression(value);
+    }
+
+    private IExpression mathFunction() {
         Token current = getCurrentToken(0);
         String function = current.getStringToken();
         consumeToken(current.getTokenType());
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
         IExpression expression = expression();
         consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-        return new MathExpression(expression, function);
+        return new MathExpression(function, expression);
     }
 
     private boolean isMatchTokenType(TokenType type) {

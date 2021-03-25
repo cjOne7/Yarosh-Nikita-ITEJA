@@ -8,9 +8,9 @@ public class MathExpression implements IExpression {
     private final IExpression expression;
     private final String functionName;
 
-    public MathExpression(IExpression expression, String functionName) {
-        this.expression = expression;
+    public MathExpression(String functionName, IExpression expression) {
         this.functionName = functionName;
+        this.expression = expression;
     }
 
     public static boolean isMathExpression(String functionName) {
