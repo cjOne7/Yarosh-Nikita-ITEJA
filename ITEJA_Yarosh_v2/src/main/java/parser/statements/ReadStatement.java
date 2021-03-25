@@ -5,7 +5,6 @@ import parser.lib.NumberValue;
 import parser.lib.StringValue;
 import parser.lib.Variables;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ReadStatement implements IStatement {
@@ -34,6 +33,6 @@ public class ReadStatement implements IStatement {
 
     @Override
     public String toString() {
-        return identifier;
+        return String.format("readln(%s)", identifier);
     }
 }
