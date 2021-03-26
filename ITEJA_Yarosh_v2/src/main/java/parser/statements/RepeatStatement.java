@@ -15,7 +15,7 @@ public class RepeatStatement implements IStatement {
     public void execute() {
         do {
             blockStatement.execute();
-        } while (condition.eval().asDouble() == 0);//works while condition is false
+        } while (condition.eval().asDouble() != 0);
     }
 
     @Override
