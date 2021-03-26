@@ -28,7 +28,12 @@ public final class Lexer {
                 readNumber(character);
             }
             else if (MathOperators.isMathOperator(character)) {
-                addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
+                if (character == '/' && peek(1) == '/') {
+                    while (code.charAt(currentPosition++) != '\n');//skip before you meet new line
+                }
+                else {
+                    addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
+                }
             }
             else if (WhiteChars.isWhiteChar(character)) {
                 if (character == WhiteChars.NEW_LINE) {
