@@ -8,6 +8,7 @@ public class KeyWords {
     public final static String END = "end";
     public final static String AND = "and";
     public final static String OR = "or";
+    public final static String NOT = "not";
     public final static String IF = "if";
     public final static String THEN = "then";
     public final static String ELSE = "else";
@@ -46,6 +47,8 @@ public class KeyWords {
                 return TokenType.AND;
             case OR:
                 return TokenType.OR;
+            case NOT:
+                return TokenType.NOT;
             case IF:
                 return TokenType.IF;
             case THEN:
