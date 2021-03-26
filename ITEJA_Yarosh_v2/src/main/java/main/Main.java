@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Main {
     public static void main(String[] args) {
@@ -26,12 +28,12 @@ public final class Main {
 
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.getTokens(stringBuilder.toString());
-//            for (Token token : tokens) {
-//                System.out.println(token);
-//            }
-            Parser parser = new Parser(tokens);
-            IStatement program = parser.parseBlock();
-            program.execute();
+            for (Token token : tokens) {
+                System.out.println(token);
+            }
+//            Parser parser = new Parser(tokens);
+//            IStatement program = parser.parseBlock();
+//            program.execute();
 //            System.out.println(program);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -40,54 +40,41 @@ public final class Lexer {
                 addToken(Brackets.detectBracketType(character), Character.toString(character));
             }
             else if (CompareOperators.isComparisonOperator(character)) {
-                if (currentPosition < code.length() - 1 && !CompareOperators.isComparisonOperator(code.charAt(currentPosition + 1))) {//<,>,=
-                    addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
-                }
-                else if (currentPosition < code.length() - 1
-                        && code.charAt(currentPosition) == CompareOperators.EQUALITY
-                        && CompareOperators.isComparisonOperator(code.charAt(currentPosition + 1))) {
-                    throw new RuntimeException("After '=' cannot be other condition operator. Your operator: " + character + code.charAt(currentPosition + 1));
-                }
-                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == CompareOperators.LESS) {
-                    char nextChar = code.charAt(currentPosition + 1);
-                    String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
-                    switch (nextChar) {
-                        case CompareOperators.EQUALITY:
-                            addToken(TokenType.LESS_OR_EQUAL, compareOperator);
-                            break;
-                        case CompareOperators.GREATER:
-                            addToken(TokenType.NOTEQUAL, compareOperator);
-                            break;
-                        default:
-                            throw new RuntimeException("Wrong conditional operator " + character + nextChar);
-                    }
-                    currentPosition++;
-                }
-                else if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == CompareOperators.GREATER) {//>=
-                    char nextChar = code.charAt(currentPosition + 1);
-                    String compareOperator = Character.toString(character).concat(Character.toString(nextChar));
-                    if (nextChar == CompareOperators.EQUALITY) {//>=
-                        addToken(TokenType.GREATER_OR_EQUAL, compareOperator);
+                String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
+                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
+                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
+                Matcher matcher = pattern.matcher(possibleConditionalOperator);
+                if (matcher.find()) {
+                    builder.append(matcher.group());
+                    String operator = builder.toString();
+                    if (matcher.find(1)) {
+                        String secondOperator = matcher.group();
+                        if (character == CompareOperators.EQUALITY) {
+                            throw new RuntimeException("Wrong conditional operator " + character + secondOperator + " on position " + currentLine);
+                        }
+                        builder.append(secondOperator);
+                        operator = builder.toString();
+                        TokenType type = CompareOperators.detectComparisonOperatorType(operator);
+                        if (type == TokenType.UNKNOWN) {
+                            throw new RuntimeException("Wrong conditional operator " + operator + " on position " + currentLine);
+                        }
+                        addToken(type, operator);
                         currentPosition++;
+                    } else {
+                        addToken(CompareOperators.detectComparisonOperatorType(character), operator);
                     }
-                    else {
-                        throw new RuntimeException("Wrong conditional operator " + character + nextChar);
-                    }
-                }
-                else {
-                    addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
+                    builder.setLength(0);
                 }
             }
             else if (Separators.isSeparator(character)) {
-                if (currentPosition < code.length() - 1 && character == Separators.COLON
-                        && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(code.charAt(currentPosition + 1) + ""));//ADD :=
+                if (character == Separators.COLON && peek(1) == CompareOperators.EQUALITY) {
+                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
                     currentPosition++;
                 }
                 else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
                     addToken(TokenType.END_OF_FILE, Character.toString(character));//ADD EOF
                 }
-                else if (code.charAt(currentPosition) == Separators.QUOTE) {
+                else if (character == Separators.QUOTE) {
                     readString();
                 }
                 else {
@@ -158,6 +145,14 @@ public final class Lexer {
         currentPosition++;
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);
+    }
+
+    private char peek(int relativePosition) {
+        final int position = currentPosition + relativePosition;
+        if (position >= code.length()) {
+            return '\0';
+        }
+        return code.charAt(position);
     }
 
 }
