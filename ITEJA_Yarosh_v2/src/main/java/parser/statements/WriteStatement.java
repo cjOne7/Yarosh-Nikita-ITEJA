@@ -5,7 +5,10 @@ import parser.lib.IValue;
 import parser.lib.StringValue;
 
 public class WriteStatement implements IStatement {
-    private final IExpression expression;
+    private IExpression expression;
+
+    public WriteStatement() {
+    }
 
     public WriteStatement(IExpression expression) {
         this.expression = expression;
@@ -13,13 +16,18 @@ public class WriteStatement implements IStatement {
 
     @Override
     public void execute() {
-        IValue value = expression.eval();
-        if (value instanceof StringValue) {
-            System.out.println(value);
+        if (expression == null) {
+            System.out.println();
         } else {
-            double doubleValue = value.asDouble();
-            long result = (long) doubleValue;//For example, 1.0 will be typed as 1
-            System.out.println(result == doubleValue ? result + "" :  doubleValue + "");
+            IValue value = expression.eval();
+            if (value instanceof StringValue) {
+                System.out.println(value);
+            }
+            else {
+                double doubleValue = value.asDouble();
+                long result = (long) doubleValue;//For example, 1.0 will be typed as 1
+                System.out.println(result == doubleValue ? result + "" : doubleValue + "");
+            }
         }
     }
 

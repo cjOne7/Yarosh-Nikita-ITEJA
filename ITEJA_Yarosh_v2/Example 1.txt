@@ -4,5 +4,7 @@ var a: double;
     str: string;
 
 begin
-    str := "";
+    str := "str";
+    writeln();
+    writeln(str);
 end.

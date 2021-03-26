@@ -168,10 +168,12 @@ public final class Parser {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //todo add writeln() method opportunity
     private IStatement parseWriteBlock() {
         consumeToken(TokenType.WRITELN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
+        if (isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET)) {
+            return new WriteStatement();
+        }
         IExpression expression = expression();
         consumeToken(TokenType.CLOSE_ROUND_BRACKET);
         return new WriteStatement(expression);
