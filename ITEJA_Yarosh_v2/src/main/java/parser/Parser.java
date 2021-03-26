@@ -152,6 +152,9 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.WHILE)) {
             statement = parseWhileStatement();
         }
+        else if (current.getTokenType().equals(TokenType.REPEAT)) {
+            statement = parseRepeatStatement();
+        }
         else if (current.getTokenType().equals(TokenType.WRITELN)) {
             statement = parseWriteBlock();
         }
@@ -210,6 +213,15 @@ public final class Parser {
         consumeToken(TokenType.DO);
         IStatement statement = parseStatementOrBlock();
         return new WhileStatement(condition, statement);
+    }
+
+    private IStatement parseRepeatStatement() {
+        consumeToken(TokenType.REPEAT);
+        IStatement statement = parseStatementOrBlock();
+        consumeToken(TokenType.UNTIL);
+        IExpression condition = expression();
+        consumeToken(TokenType.SEMICOLON);
+        return new RepeatStatement(condition, statement);
     }
 
     private IStatement parseIfStatement() {

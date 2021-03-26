@@ -13,6 +13,8 @@ public class KeyWords {
     public final static String ELSE = "else";
     public final static String WHILE = "while";
     public final static String DO = "do";
+    public final static String REPEAT = "repeat";
+    public final static String UNTIL = "until";
     public final static String VAR = "var";
     public final static String CONST = "const";
     public final static String WRITELN = "writeln";
@@ -54,6 +56,10 @@ public class KeyWords {
                 return TokenType.WHILE;
             case DO:
                 return TokenType.DO;
+            case REPEAT:
+                return TokenType.REPEAT;
+            case UNTIL:
+                return TokenType.UNTIL;
             case VAR:
                 return TokenType.VAR;
             case CONST:

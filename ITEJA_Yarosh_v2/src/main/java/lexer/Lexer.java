@@ -102,7 +102,6 @@ public final class Lexer {
         return tokens;
     }
 
-    //todo add escaped symbols
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
         Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
