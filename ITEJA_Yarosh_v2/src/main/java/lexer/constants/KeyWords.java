@@ -6,6 +6,8 @@ public class KeyWords {
     public final static String PROGRAM = "program";
     public final static String BEGIN = "begin";
     public final static String END = "end";
+    public final static String AND = "and";
+    public final static String OR = "or";
     public final static String IF = "if";
     public final static String THEN = "then";
     public final static String ELSE = "else";
@@ -31,13 +33,17 @@ public class KeyWords {
     public final static String STRING = "string";
 
     public static TokenType detectKeyWordType(String value) {
-        switch (value.toLowerCase()) {
+        switch (value) {
             case PROGRAM:
                 return TokenType.PROGRAM;
             case BEGIN:
                 return TokenType.BEGIN;
             case END:
                 return TokenType.END;
+            case AND:
+                return TokenType.AND;
+            case OR:
+                return TokenType.OR;
             case IF:
                 return TokenType.IF;
             case THEN:
