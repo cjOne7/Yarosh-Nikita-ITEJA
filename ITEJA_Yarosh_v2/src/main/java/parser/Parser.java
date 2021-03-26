@@ -125,16 +125,20 @@ public final class Parser {
     private IStatement parseStatementBlock() {
         List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
-        while (!isMatchTokenType(TokenType.END)) {
+        parseTokensInList(statements, TokenType.END);
+        return new StatementBlock(statements);
+    }
+
+    private void parseTokensInList(List<IStatement> statements, TokenType type) {
+        while (!isMatchTokenType(type)) {
             if (statements.size() != 0) {
                 consumeToken(TokenType.SEMICOLON);
-                if (isMatchTokenType(TokenType.END)) {
+                if (isMatchTokenType(type)) {
                     break;
                 }
             }
             statements.add(parseStatement());
         }
-        return new StatementBlock(statements);
     }
 
     private IStatement parseStatement() {
@@ -217,10 +221,18 @@ public final class Parser {
 
     private IStatement parseRepeatStatement() {
         consumeToken(TokenType.REPEAT);
-        IStatement statement = parseStatementOrBlock();
-        consumeToken(TokenType.UNTIL);
+        IStatement statement;
+        if (getCurrentToken(0).getTokenType() == TokenType.BEGIN) {
+            statement = parseStatementOrBlock();
+            isMatchTokenType(TokenType.SEMICOLON);
+            consumeToken(TokenType.UNTIL);
+        }
+        else {
+            List<IStatement> statements = new ArrayList<>();
+            parseTokensInList(statements, TokenType.UNTIL);
+            statement = new StatementBlock(statements);
+        }
         IExpression condition = expression();
-        consumeToken(TokenType.SEMICOLON);
         return new RepeatStatement(condition, statement);
     }
 
