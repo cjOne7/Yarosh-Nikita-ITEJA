@@ -20,9 +20,10 @@ public final class Parser {
     }
 
     public IStatement parseBlock() {
-        consumeToken(TokenType.PROGRAM);
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.SEMICOLON);
+        if (isMatchTokenType(TokenType.PROGRAM)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.SEMICOLON);
+        }
         while (true) {
             if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
                 parseVariableBlock();
@@ -35,7 +36,7 @@ public final class Parser {
             break;
         }
         IStatement programBody = parseStatementBlock();
-        consumeToken(TokenType.END_OF_FILE);
+        consumeToken(TokenType.DOT);
         return programBody;
     }
 

@@ -29,28 +29,35 @@ public final class Lexer {
             }
             else if (MathOperators.isMathOperator(character)) {
                 if (character == '/' && peek(1) == '/') {
-                    while (code.charAt(currentPosition++) != '\n');//skip before you meet new line
+                    tokenizeOneLineComment(character);
+                    continue;
                 }
-                else {
-                    addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
-                }
+                addToken(MathOperators.detectMathOperatorType(character), Character.toString(character));
             }
             else if (WhiteChars.isWhiteChar(character)) {
                 if (character == WhiteChars.NEW_LINE) {
                     currentLine++;
                 }
-                currentPosition++;
+                next();
             }
             else if (Brackets.isBracket(character)) {
-                addToken(Brackets.detectBracketType(character), Character.toString(character));
+                if (peek(1) == '*') {
+                    tokenizeMultilineComment(character);
+                    next();
+                    next();
+                }
+                else if (peek(0) == Brackets.OPEN_CURVE_BRACKET) {
+                    tokenizeMultilineComment(character);
+                    next();
+                }
+                else {
+                    addToken(Brackets.detectBracketType(character), Character.toString(character));
+                }
             }
             else if (Separators.isSeparator(character)) {
                 if (character == Separators.COLON && peek(1) == CompareOperators.EQUALITY) {
                     addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
-                    currentPosition++;
-                }
-                else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
-                    addToken(TokenType.END_OF_FILE, Character.toString(character));//ADD EOF
+                    next();
                 }
                 else if (character == Separators.QUOTE) {
                     readString();
@@ -79,7 +86,7 @@ public final class Lexer {
                             throw new RuntimeException("Wrong conditional operator " + operator + " on line " + currentLine);
                         }
                         addToken(type, operator);
-                        currentPosition++;
+                        next();
                     }
                     else {
                         addToken(CompareOperators.detectComparisonOperatorType(character), operator);
@@ -149,7 +156,7 @@ public final class Lexer {
             throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
                     + (currentPosition - currentLine * (currentPosition / currentLine)));
         }
-        currentPosition++;
+        next();
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);
     }
@@ -162,4 +169,27 @@ public final class Lexer {
         return code.charAt(position);
     }
 
+    private char next() {
+        currentPosition++;
+        return peek(0);
+    }
+
+    private void tokenizeOneLineComment(char character) {
+        while ("\r\n\0".indexOf(character) == -1) {//skip before you meet new line
+            character = next();
+        }
+    }
+
+    private void tokenizeMultilineComment(char character) {
+        while (true) {
+            if (character == '\0') {
+                throw new RuntimeException("Missing close tag *)");
+            }
+            if (character == '*' && peek(1) == Brackets.CLOSE_ROUND_BRACKET
+                    || peek(0) == Brackets.CLOSE_CURVE_BRACKET) {
+                break;
+            }
+            character = next();
+        }
+    }
 }

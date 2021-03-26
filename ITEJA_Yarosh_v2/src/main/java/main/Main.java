@@ -31,9 +31,9 @@ public final class Main {
             for (Token token : tokens) {
                 System.out.println(token);
             }
-//            Parser parser = new Parser(tokens);
-//            IStatement program = parser.parseBlock();
-//            program.execute();
+            Parser parser = new Parser(tokens);
+            IStatement program = parser.parseBlock();
+            program.execute();
 //            System.out.println(program);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
