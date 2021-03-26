@@ -45,6 +45,7 @@ public class BinaryExpression implements IExpression {
         final double number1 = value1.asDouble();
         final double number2 = value2.asDouble();
         double result;
+        //todo add mod operation
         switch (operation) {
             case MINUS:
                 result = number1 - number2;

@@ -300,6 +300,7 @@ public final class Parser {
         return result;
     }
 
+    //todo add negation(not)
     private IExpression unary() {
         if (isMatchTokenType(TokenType.MINUS)) {
             return new UnaryExpression(MathOperators.MINUS, primary());

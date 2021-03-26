@@ -39,33 +39,6 @@ public final class Lexer {
             else if (Brackets.isBracket(character)) {
                 addToken(Brackets.detectBracketType(character), Character.toString(character));
             }
-            else if (CompareOperators.isComparisonOperator(character)) {
-                String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
-                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
-                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
-                Matcher matcher = pattern.matcher(possibleConditionalOperator);
-                if (matcher.find()) {
-                    builder.append(matcher.group());
-                    String operator = builder.toString();
-                    if (matcher.find(1)) {
-                        String secondOperator = matcher.group();
-                        if (character == CompareOperators.EQUALITY) {
-                            throw new RuntimeException("Wrong conditional operator " + character + secondOperator + " on position " + currentLine);
-                        }
-                        builder.append(secondOperator);
-                        operator = builder.toString();
-                        TokenType type = CompareOperators.detectComparisonOperatorType(operator);
-                        if (type == TokenType.UNKNOWN) {
-                            throw new RuntimeException("Wrong conditional operator " + operator + " on position " + currentLine);
-                        }
-                        addToken(type, operator);
-                        currentPosition++;
-                    } else {
-                        addToken(CompareOperators.detectComparisonOperatorType(character), operator);
-                    }
-                    builder.setLength(0);
-                }
-            }
             else if (Separators.isSeparator(character)) {
                 if (character == Separators.COLON && peek(1) == CompareOperators.EQUALITY) {
                     addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
@@ -81,6 +54,34 @@ public final class Lexer {
                     addToken(Separators.detectSeparatorType(character), Character.toString(character));
                 }
             }
+            else if (CompareOperators.isComparisonOperator(character)) {
+                String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
+                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
+                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
+                Matcher matcher = pattern.matcher(possibleConditionalOperator);
+                if (matcher.find()) {
+                    builder.append(matcher.group());
+                    String operator = builder.toString();
+                    if (matcher.find(1)) {
+                        String secondOperator = matcher.group();
+                        if (character == CompareOperators.EQUALITY) {
+                            throw new RuntimeException("Wrong conditional operator " + character + secondOperator + " on line " + currentLine);
+                        }
+                        builder.append(secondOperator);
+                        operator = builder.toString();
+                        TokenType type = CompareOperators.detectComparisonOperatorType(operator);
+                        if (type == TokenType.UNKNOWN) {
+                            throw new RuntimeException("Wrong conditional operator " + operator + " on line " + currentLine);
+                        }
+                        addToken(type, operator);
+                        currentPosition++;
+                    }
+                    else {
+                        addToken(CompareOperators.detectComparisonOperatorType(character), operator);
+                    }
+                    builder.setLength(0);
+                }
+            }
             else {
                 throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
                         + (currentPosition - currentLine * (currentPosition / currentLine)));
@@ -89,6 +90,7 @@ public final class Lexer {
         return tokens;
     }
 
+    //todo add escaped symbols
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
         Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
