@@ -10,10 +10,10 @@ begin
   writeln("Enter c: ");
   readln(c);
   discriminant := b * b - 4 * a * c;
- if discriminant < 0 then
+  if discriminant < 0 then
   begin
     writeln("Discriminant = " + discriminant + ". Cannot resolve due to discriminant < 0.");
-    exit;
+    exit
   end;
   if discriminant > 0 then
   begin
