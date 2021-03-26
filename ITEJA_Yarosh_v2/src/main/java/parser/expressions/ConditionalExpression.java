@@ -7,11 +7,13 @@ import parser.lib.StringValue;
 public class ConditionalExpression implements IExpression {
     private final IExpression expression1, expression2;
     private final String operation;
+    private final boolean isNegate;
 
-    public ConditionalExpression(String operation, IExpression expression1, IExpression expression2) {
+    public ConditionalExpression(String operation, IExpression expression1, IExpression expression2, boolean isNegate) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.operation = operation;
+        this.isNegate = isNegate;
     }
 
     @Override
@@ -23,18 +25,18 @@ public class ConditionalExpression implements IExpression {
             final String string2 = value2.asString();
             switch (operation) {
                 case "<>":
-                    return new NumberValue(!string1.equals(string2));
+                    return new NumberValue(isNegate == string1.equals(string2));
                 case "<=":
-                    return new NumberValue(string1.compareTo(string2) <= 0);
+                    return new NumberValue(isNegate != (string1.compareTo(string2) <= 0));
                 case ">=":
-                    return new NumberValue(string1.compareTo(string2) >= 0);
+                    return new NumberValue(isNegate != (string1.compareTo(string2) >= 0));
                 case "<":
-                    return new NumberValue(string1.compareTo(string2) < 0);
+                    return new NumberValue(isNegate != (string1.compareTo(string2) < 0));
                 case ">":
-                    return new NumberValue(string1.compareTo(string2) > 0);
+                    return new NumberValue(isNegate != (string1.compareTo(string2) > 0));
                 case "=":
                 default:
-                    return new NumberValue(string1.equals(string2));
+                    return new NumberValue(isNegate != string1.equals(string2));
             }
         }
 
@@ -42,18 +44,18 @@ public class ConditionalExpression implements IExpression {
         double number2 = value2.asDouble();
         switch (operation) {
             case "<>":
-                return new NumberValue(number1 != number2);
+                return new NumberValue(isNegate != (number1 != number2));
             case "<":
-                return new NumberValue(number1 < number2);
+                return new NumberValue(isNegate != (number1 < number2));
             case "<=":
-                return new NumberValue(number1 <= number2);
+                return new NumberValue(isNegate != (number1 <= number2));
             case ">":
-                return new NumberValue(number1 > number2);
+                return new NumberValue(isNegate != (number1 > number2));
             case ">=":
-                return new NumberValue(number1 >= number2);
+                return new NumberValue(isNegate != (number1 >= number2));
             case "=":
             default:
-                return new NumberValue(number1 == number2);
+                return new NumberValue(isNegate != (number1 == number2));
         }
     }
 
