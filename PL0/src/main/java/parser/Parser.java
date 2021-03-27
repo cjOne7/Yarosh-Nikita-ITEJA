@@ -111,9 +111,13 @@ public final class Parser {
     }
 
     private void parseConstNumber(String identifier, boolean isNegativeNumber) {
-        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
-        consumeToken(TokenType.NUMBER);
-        Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
+        try {
+            double value = Double.parseDouble(getCurrentToken(0).getStringToken());
+            consumeToken(TokenType.NUMBER);
+            Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
+        } catch (NumberFormatException e) {
+            System.err.println("You can't assign string to number.");
+        }
     }
 
     private void parseConstString(String identifier) {
