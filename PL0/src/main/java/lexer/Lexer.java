@@ -6,6 +6,8 @@ import token.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Lexer {
     private String code;
@@ -37,39 +39,65 @@ public final class Lexer {
             else if (Brackets.isBracket(character)) {
                 addToken(Brackets.detectBracketType(character), Character.toString(character));
             }
-            else if (CompareOperators.isComparisonOperator(character)) {
-                if (currentPosition < code.length() - 1 && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    TokenType type = character == CompareOperators.GREATER ? TokenType.GREATER_OR_EQUAL : TokenType.LESS_OR_EQUAL;
-                    addToken(type, Character.toString(character).concat(Character.toString(code.charAt(currentPosition + 1))));
-                    currentPosition++;
-                }
-                else {
-                    addToken(CompareOperators.detectComparisonOperatorType(character), Character.toString(character));
-                }
-            }
             else if (Separators.isSeparator(character)) {
-                if (currentPosition < code.length() - 1 && character == Separators.COLON
-                        && code.charAt(currentPosition + 1) == CompareOperators.EQUALITY) {
-                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(code.charAt(currentPosition + 1) + ""));//ADD :=
-                    currentPosition++;
+                if (character == Separators.COLON && peek(1) == CompareOperators.EQUALITY) {
+                    addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
+                    next();
                 }
-                else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
-                    addToken(TokenType.END_OF_FILE, Character.toString(character));//ADD EOF
-                }
-                else if (code.charAt(currentPosition) == Separators.QUOTE) {
-                    System.out.println();
+                else if (character == Separators.QUOTE) {
+                    readString();
                 }
                 else {
                     addToken(Separators.detectSeparatorType(character), Character.toString(character));
                 }
             }
+            else if (CompareOperators.isComparisonOperator(character)) {
+                String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
+                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
+                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
+                Matcher matcher = pattern.matcher(possibleConditionalOperator);
+                if (matcher.find()) {
+                    builder.append(matcher.group());
+                    String operator = builder.toString();
+                    if (matcher.find(1)) {
+                        String secondOperator = matcher.group();
+                        if (character == CompareOperators.EQUALITY) {
+                            throw new RuntimeException("Wrong conditional operator " + character + secondOperator + " on line " + currentLine);
+                        }
+                        builder.append(secondOperator);
+                        operator = builder.toString();
+                        TokenType type = CompareOperators.detectComparisonOperatorType(operator);
+                        if (type == TokenType.UNKNOWN) {
+                            throw new RuntimeException("Wrong conditional operator " + operator + " on line " + currentLine);
+                        }
+                        addToken(type, operator);
+                        next();
+                    }
+                    else {
+                        addToken(CompareOperators.detectComparisonOperatorType(character), operator);
+                    }
+                    builder.setLength(0);
+                }
+            }
             else {
-                addToken(TokenType.UNKNOWN, Character.toString(character));
                 throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
                         + (currentPosition - currentLine * (currentPosition / currentLine)));
             }
         }
         return tokens;
+    }
+
+    private void readString() {
+        addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
+        Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
+        matcher.find(currentPosition);
+        String value = code.substring(matcher.start(), matcher.end());
+        if (!value.isEmpty()) {
+            token = new Token(TokenType.STRING, value, currentLine, currentPosition);
+            currentPosition += (matcher.end() - matcher.start());//skip string value
+            tokens.add(token);
+        }
+        addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the end
     }
 
     private void readWord(char character) {
@@ -108,9 +136,26 @@ public final class Lexer {
     }
 
     private void addToken(TokenType tokenType, String value) {
-        currentPosition++;
+        if (tokenType == TokenType.UNKNOWN) {
+            throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
+                    + (currentPosition - currentLine * (currentPosition / currentLine)));
+        }
+        next();
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);
+    }
+
+    private char peek(int relativePosition) {
+        final int position = currentPosition + relativePosition;
+        if (position >= code.length()) {
+            return '\0';
+        }
+        return code.charAt(position);
+    }
+
+    private char next() {
+        currentPosition++;
+        return peek(0);
     }
 
 }
