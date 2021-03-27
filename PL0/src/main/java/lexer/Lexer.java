@@ -42,7 +42,7 @@ public final class Lexer {
             else if (Separators.isSeparator(character)) {
                 if (character == Separators.COLON && peek(1) == CompareOperators.EQUALITY) {
                     addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
-                    next();
+                    currentPosition++;
                 }
                 else if (character == Separators.QUOTE) {
                     readString();
@@ -71,7 +71,7 @@ public final class Lexer {
                             throw new RuntimeException("Wrong conditional operator " + operator + " on line " + currentLine);
                         }
                         addToken(type, operator);
-                        next();
+                        currentPosition++;
                     }
                     else {
                         addToken(CompareOperators.detectComparisonOperatorType(character), operator);
@@ -140,7 +140,7 @@ public final class Lexer {
             throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
                     + (currentPosition - currentLine * (currentPosition / currentLine)));
         }
-        next();
+        currentPosition++;
         token = new Token(tokenType, value, currentLine, currentPosition);
         tokens.add(token);
     }
@@ -151,11 +151,6 @@ public final class Lexer {
             return '\0';
         }
         return code.charAt(position);
-    }
-
-    private char next() {
-        currentPosition++;
-        return peek(0);
     }
 
 }
