@@ -153,15 +153,13 @@ public final class Parser {
 
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
-        if (!Variables.isKeyExists(identifier)) {
-            throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
+        checkConstImmutable(identifier);
+        if (Variables.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.ASSIGNMENT);
+            return new AssignmentStatement(identifier, expression());
         }
-        if (Constants.isKeyExists(identifier)) {
-            throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
-        }
-        consumeToken(TokenType.IDENTIFIER);
-        consumeToken(TokenType.ASSIGNMENT);
-        return new AssignmentStatement(identifier, expression());
+        throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
     }
 
     private IStatement parseIfStatement() {
@@ -175,6 +173,7 @@ public final class Parser {
     private IStatement parseReadStatement() {
         consumeToken(TokenType.QUESTION_MARK);
         String identifier = getCurrentToken(0).getStringToken();
+        checkConstImmutable(identifier);
         if (Variables.isKeyExists(identifier)) {
             consumeToken(TokenType.IDENTIFIER);
             return new ReadStatement(identifier);
@@ -328,5 +327,11 @@ public final class Parser {
             throw new RuntimeException("Program must be finished with DOT in the end.");
         }
         return tokens.get(position);
+    }
+
+    private void checkConstImmutable(String identifier) {
+        if (Constants.isKeyExists(identifier)) {
+            throw new RuntimeException("Constant '" + identifier + "' can't be changed.");
+        }
     }
 }
