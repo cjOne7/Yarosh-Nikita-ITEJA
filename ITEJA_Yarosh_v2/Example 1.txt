@@ -3,7 +3,8 @@ program FirstExample;
 var a, b : double;
 
 begin
-    a:=11;
-    b:=5;
-    writeln(a div b);
+    if 50 > 40 and 120 < 100 then
+        writeln("true")
+    else
+        writeln("false")
 end.
