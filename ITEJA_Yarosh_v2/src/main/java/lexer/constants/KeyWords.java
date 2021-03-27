@@ -36,9 +36,11 @@ public class KeyWords {
     public static final String COT = "cot";
     public final static String DOUBLE = "double";
     public final static String STRING = "string";
+    public final static String MOD = "mod";
+    public final static String DIV = "div";
 
     public static TokenType detectKeyWordType(String value) {
-        switch (value) {
+        switch (value.toLowerCase()) {
             case PROGRAM:
                 return TokenType.PROGRAM;
             case BEGIN:
@@ -105,6 +107,10 @@ public class KeyWords {
                 return TokenType.DOUBLE;
             case STRING:
                 return TokenType.STRING;
+            case DIV:
+                return TokenType.DIV;
+            case MOD:
+                return TokenType.MOD;
             default:
                 return TokenType.IDENTIFIER;
         }

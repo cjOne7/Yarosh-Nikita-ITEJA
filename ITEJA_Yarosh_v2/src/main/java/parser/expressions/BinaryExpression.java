@@ -1,16 +1,16 @@
 package parser.expressions;
 
+import lexer.constants.KeyWords;
 import parser.lib.IValue;
 import parser.lib.NumberValue;
 import parser.lib.StringValue;
 
-import static lexer.constants.MathOperators.*;
 
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
-    private final char operation;
+    private final String operation;
 
-    public BinaryExpression(char operation, IExpression expression1, IExpression expression2) {
+    public BinaryExpression(String operation, IExpression expression1, IExpression expression2) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.operation = operation;
@@ -24,10 +24,12 @@ public class BinaryExpression implements IExpression {
             final String string1 = value1.asString();
             final String string2 = value2.asString();
             switch (operation) {
-                case MINUS:
-                case DIVIDE:
+                case KeyWords.DIV:
+                case KeyWords.MOD:
+                case "-":
+                case "/":
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
-                case MULTIPLY:
+                case "*":
                     if (value2 instanceof NumberValue) {
                         final int iterations = (int) value2.asDouble();
                         final StringBuilder buffer = new StringBuilder();
@@ -37,7 +39,7 @@ public class BinaryExpression implements IExpression {
                         return new StringValue(buffer.toString());
                     }
                     throw new RuntimeException("You can't string times string");
-                case PLUS:
+                case "+":
                 default:
                     return new StringValue(string1 + string2);
             }
@@ -45,18 +47,22 @@ public class BinaryExpression implements IExpression {
         final double number1 = value1.asDouble();
         final double number2 = value2.asDouble();
         double result;
-        //todo add mod operation
         switch (operation) {
-            case MINUS:
+            case "-":
                 result = number1 - number2;
                 return new NumberValue(Math.round(result * 100.0) / 100.0);
-            case MULTIPLY:
+            case "*":
                 result = number1 * number2;
                 return new NumberValue(Math.round(result * 100.0) / 100.0);
-            case DIVIDE:
+            case "/":
                 result = number1 / number2;
                 return new NumberValue(Math.round(result * 100.0) / 100.0);
-            case PLUS:
+            case KeyWords.MOD:
+                result = number1 % number2;
+                return new NumberValue(result);
+            case KeyWords.DIV:
+                return new NumberValue((long) number1 / (long) number2);
+            case "+":
             default:
                 result = number1 + number2;
                 return new NumberValue(Math.round(result * 100.0) / 100.0);

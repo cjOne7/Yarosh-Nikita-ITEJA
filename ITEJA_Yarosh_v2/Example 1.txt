@@ -1,12 +1,9 @@
 program FirstExample;
 
-var i : double;
+var a, b : double;
 
 begin
-    while i <= 10 do
-    begin
-        i := i + 1;
-        if i = 5 then break;
-        writeln(i);
-    end
+    a:=11;
+    b:=5;
+    writeln(a div b);
 end.

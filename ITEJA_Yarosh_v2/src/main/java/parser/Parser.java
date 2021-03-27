@@ -325,11 +325,11 @@ public final class Parser {
         while (true) {
             Token current = getCurrentToken(0);
             if (isMatchTokenType(TokenType.PLUS)) {
-                result = new BinaryExpression(current.getStringToken().charAt(0), result, multiplicative());
+                result = new BinaryExpression(current.getStringToken(), result, multiplicative());
                 continue;
             }
             if (isMatchTokenType(TokenType.MINUS)) {
-                result = new BinaryExpression(current.getStringToken().charAt(0), result, multiplicative());
+                result = new BinaryExpression(current.getStringToken(), result, multiplicative());
                 continue;
             }
             break;
@@ -343,11 +343,19 @@ public final class Parser {
         while (true) {
             Token current = getCurrentToken(0);
             if (isMatchTokenType(TokenType.MULTIPLY)) {
-                result = new BinaryExpression(current.getStringToken().charAt(0), result, unary());
+                result = new BinaryExpression(current.getStringToken(), result, unary());
                 continue;
             }
             if (isMatchTokenType(TokenType.DIVIDE)) {
-                result = new BinaryExpression(current.getStringToken().charAt(0), result, unary());
+                result = new BinaryExpression(current.getStringToken(), result, unary());
+                continue;
+            }
+            if (isMatchTokenType(TokenType.DIV)) {
+                result = new BinaryExpression(current.getStringToken(), result, unary());
+                continue;
+            }
+            if (isMatchTokenType(TokenType.MOD)) {
+                result = new BinaryExpression(current.getStringToken(), result, unary());
                 continue;
             }
             break;

@@ -123,7 +123,7 @@ public final class Lexer {
             }
             character = code.charAt(currentPosition);
         }
-        String str = builder.toString().toLowerCase();
+        String str = builder.toString();
         token = new Token(KeyWords.detectKeyWordType(str), str, currentLine, currentPosition);
         tokens.add(token);
         builder.setLength(0);
