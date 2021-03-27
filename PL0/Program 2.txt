@@ -1,15 +1,18 @@
-var a, b, c, x1, x2, discriminant, sqrtDiscriminant;
+var a, b, c, x1, x2, discriminant, sqrtDiscriminant : double;
 
 procedure calcDiscriminant;
 begin
+    !"Enter a:";
     ?a;
+    !"Enter b:";
     ?b;
+    !"Enter c:";
     ?c;
     discriminant := b * b - 4 * a * c
 end;
 
 procedure sqrt;
-var x;
+var x : double;
 begin
   x := 0;
   while x * x < discriminant do
@@ -42,7 +45,6 @@ begin
     begin
         x1 := (-b + sqrtDiscriminant) / (2*a);
         x2 := (-b - sqrtDiscriminant) / (2*a);
-		! x1;
-		! x2
+		! "x1 = " + x1 + ", x2 = " + x2
     end
 end.
