@@ -1,7 +1,5 @@
-const x : string = "const";
-      y : double = -4.4;
-var i, r, l : double;
-    result : string;
+const x : string = "const", y : double = -4.4;
+var i : double, r : double, l : double, result : string;
 begin
     i := 1;
     while i # 10 do

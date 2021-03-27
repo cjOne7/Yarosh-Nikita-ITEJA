@@ -54,34 +54,23 @@ public final class Parser {
     }
 
     private void parseVariableBlock() {
-        List<String> identifiersList = new ArrayList<>();
         consumeToken(TokenType.VAR);
-        loop:
-        while (true) {
-            do {
-                if (getCurrentToken(0).getTokenType() != TokenType.IDENTIFIER) {
-                    break loop;
-                }
-                String identifier = getCurrentToken(0).getStringToken();
-                if (identifiersList.contains(identifier)) {
-                    throw new RuntimeException("Variable '" + identifier + "' is already defined.");
-                }
-                identifiersList.add(identifier);
-                consumeToken(TokenType.IDENTIFIER);
-            } while (isMatchTokenType(TokenType.COMMA));
+        do {
+            String identifier = getCurrentToken(0).getStringToken();
+            if (Variables.isKeyExists(identifier)) {
+                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+            }
+            consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.ZERO));
-            }
-            else if (isMatchTokenType(TokenType.STRING)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
-            }
-            else {
+                Variables.put(identifier, Variables.ZERO);
+            } else if (isMatchTokenType(TokenType.STRING)) {
+                Variables.put(identifier, Variables.EMPTY);
+            } else {
                 throw new RuntimeException("Unknown datatype.");
             }
-            identifiersList.clear();
-            consumeToken(TokenType.SEMICOLON);
-        }
+        } while (isMatchTokenType(TokenType.COMMA));
+        consumeToken(TokenType.SEMICOLON);
     }
 
     private void parseConstBlock() {
@@ -107,7 +96,8 @@ public final class Parser {
             else {
                 throw new RuntimeException("Unknown datatype.");
             }
-        } while (isMatchTokenType(TokenType.SEMICOLON));
+        } while (isMatchTokenType(TokenType.COMMA));
+        consumeToken(TokenType.SEMICOLON);
     }
 
     private void parseConstNumber(String identifier, boolean isNegativeNumber) {
