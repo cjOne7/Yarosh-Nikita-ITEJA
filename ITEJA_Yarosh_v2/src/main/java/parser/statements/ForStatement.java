@@ -10,9 +10,17 @@ public class ForStatement implements IStatement {
     private final IExpression toExpression;
     private final IStatement body;
     private final boolean isReverse;
+    private double step = 1;
 
-
-    public ForStatement(String identifier, IExpression initialValueExpression, IExpression toExpression, IStatement body, boolean isReverse) {
+    public ForStatement(String identifier, IExpression initialValueExpression, IExpression toExpression
+            , IStatement body, boolean isReverse, IExpression step) {
+        if (step != null) {
+            double stepDouble = step.eval().asDouble();
+            if (stepDouble == 0) {
+                throw new RuntimeException("Step in for loop can't be equal 0.");
+            }
+            this.step = stepDouble;
+        }
         this.identifier = identifier;
         this.initialValueExpression = initialValueExpression;
         this.toExpression = toExpression;
@@ -25,19 +33,20 @@ public class ForStatement implements IStatement {
         double initialValue = initialValueExpression.eval().asDouble();
         Variables.put(identifier, new NumberValue(initialValue));
         double toValue = toExpression.eval().asDouble();
+        double i = initialValue;
         if (isReverse) {
-            for (double d = initialValue; d >= toValue; d--) {
+            for (; i >= toValue; i -= step) {
                 try {
-                    d = executeBody(d);
+                    i = executeBody(i);
                 } catch (BreakStatement e) {
                     break;
                 }
             }
         }
         else {
-            for (double d = initialValue; d <= toValue; d++) {
+            for (; i <= toValue; i += step) {
                 try {
-                    d = executeBody(d);
+                    i = executeBody(i);
                 } catch (BreakStatement e) {
                     break;
                 }
@@ -45,11 +54,11 @@ public class ForStatement implements IStatement {
         }
     }
 
-    private double executeBody(double d) {
-        Variables.put(identifier, new NumberValue(d));
+    private double executeBody(double i) {
+        Variables.put(identifier, new NumberValue(i));
         body.execute();
-        d = Variables.getValueByKey(identifier).asDouble();
-        return d;
+        i = Variables.getValueByKey(identifier).asDouble();
+        return i;
     }
 
     @Override

@@ -257,9 +257,13 @@ public final class Parser {
             isMatchTokenType(TokenType.TO);
         }
         IExpression toExpression = additive();
+        IExpression step = null;
+        if (isMatchTokenType(TokenType.STEP)) {
+            step = additive();
+        }
         consumeToken(TokenType.DO);
         IStatement body = parseStatementOrBlock();
-        return new ForStatement(identifier, assignmentExpression, toExpression, body, isReverse);
+        return new ForStatement(identifier, assignmentExpression, toExpression, body, isReverse, step);
 
     }
 

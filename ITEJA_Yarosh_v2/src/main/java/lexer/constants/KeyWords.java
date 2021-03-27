@@ -20,6 +20,7 @@ public class KeyWords {
     public final static String FOR = "for";
     public final static String TO = "to";
     public final static String DOWNTO = "downto";
+    public final static String STEP = "step";
     public final static String VAR = "var";
     public final static String CONST = "const";
     public final static String WRITELN = "writeln";
@@ -77,6 +78,8 @@ public class KeyWords {
                 return TokenType.TO;
             case DOWNTO:
                 return TokenType.DOWNTO;
+            case STEP:
+                return TokenType.STEP;
             case VAR:
                 return TokenType.VAR;
             case CONST:
