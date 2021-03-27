@@ -244,18 +244,23 @@ public final class Parser {
     }
 
     private IStatement parseForStatement() {
+        boolean isReverse = false;
         consumeToken(TokenType.FOR);
         String identifier = getCurrentToken(0).getStringToken();
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.ASSIGNMENT);
-        IExpression assignmentExpression = expression();
-        if (isMatchTokenType(TokenType.TO)) {
-            IExpression toExpression = expression();
-            consumeToken(TokenType.DO);
-            IStatement body = parseStatementOrBlock();
-            return new ForStatement(identifier, assignmentExpression, toExpression, body);
+        IExpression assignmentExpression = additive();
+
+        if (isMatchTokenType(TokenType.DOWNTO)) {
+            isReverse = true;
+        } else {
+            isMatchTokenType(TokenType.TO);
         }
-        return null;
+        IExpression toExpression = additive();
+        consumeToken(TokenType.DO);
+        IStatement body = parseStatementOrBlock();
+        return new ForStatement(identifier, assignmentExpression, toExpression, body, isReverse);
+
     }
 
     private IStatement parseIfStatement() {
