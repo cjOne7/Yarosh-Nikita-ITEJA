@@ -425,7 +425,6 @@ public final class Parser {
             }
             IExpression expression = condition();
             return new ConditionalExpression(expression.eval().asDouble() != 1);
-
         }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
