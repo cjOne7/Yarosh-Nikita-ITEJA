@@ -44,6 +44,9 @@ public final class Lexer {
                     addToken(TokenType.ASSIGNMENT, Character.toString(character).concat(peek(1) + ""));//ADD :=
                     currentPosition++;
                 }
+                else if (currentPosition == code.length() - 1 && character == Separators.DOT) {
+                    addToken(TokenType.END_OF_FILE, Character.toString(character));//ADD EOF
+                }
                 else if (character == Separators.QUOTE) {
                     readString();
                 }
@@ -78,6 +81,12 @@ public final class Lexer {
                     }
                     builder.setLength(0);
                 }
+            }
+            else if (character == '!') {
+                addToken(TokenType.EXCLAMATION_MARK, Character.toString(character));
+            }
+            else if (character == '?') {
+                addToken(TokenType.QUESTION_MARK, Character.toString(character));
             }
             else {
                 throw new RuntimeException("Unknown token on the line " + currentLine + " and position "

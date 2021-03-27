@@ -1,6 +1,7 @@
 package parser.expressions;
 
 import parser.lib.Constants;
+import parser.lib.IValue;
 import parser.lib.Variables;
 
 public class VariableExpression implements IExpression {
@@ -11,7 +12,7 @@ public class VariableExpression implements IExpression {
     }
 
     @Override
-    public double eval() {
+    public IValue eval() {
         if (Variables.isKeyExists(name)) {
             return Variables.getValueByKey(name);
         }

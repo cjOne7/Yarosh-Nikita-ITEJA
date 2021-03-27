@@ -13,7 +13,7 @@ public class WhileStatement implements IStatement {
 
     @Override
     public void execute() {
-        while (condition.eval() != 0) {
+        while (condition.eval().asDouble() != 0) {
             blockStatement.execute();
         }
     }

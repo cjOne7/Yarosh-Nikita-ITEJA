@@ -23,12 +23,12 @@ public final class Main {
 
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.getTokens(stringBuilder.toString());
-            for (Token token : tokens) {
-                System.out.println(token);
-            }
-//            Parser parser = new Parser(tokens);
-//            IStatement program = parser.parseBlock();
-//            program.execute();
+//            for (Token token : tokens) {
+//                System.out.println(token);
+//            }
+            Parser parser = new Parser(tokens);
+            IStatement program = parser.parseBlock();
+            program.execute();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

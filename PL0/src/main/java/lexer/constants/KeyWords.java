@@ -17,8 +17,6 @@ public class KeyWords {
     public final static String ODD = "odd";
     public final static String DOUBLE = "double";
     public final static String STRING = "string";
-    public final static String EXCLAMATION_MARK = "!";
-    public final static String QUESTION_MARK = "?";
 
     public static TokenType detectKeyWordType(String value) {
         switch (value.toLowerCase()) {
@@ -50,10 +48,6 @@ public class KeyWords {
                 return TokenType.DOUBLE;
             case STRING:
                 return TokenType.STRING;
-            case EXCLAMATION_MARK:
-                return TokenType.EXCLAMATION_MARK;
-            case QUESTION_MARK:
-                return TokenType.QUESTION_MARK;
             default:
                 return TokenType.IDENTIFIER;
         }

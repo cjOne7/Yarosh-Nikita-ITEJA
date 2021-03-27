@@ -1,6 +1,7 @@
 package parser.expressions;
 
-import static lexer.constants.MathOperators.*;
+import parser.lib.IValue;
+import parser.lib.NumberValue;
 
 public class UnaryExpression implements IExpression {
 
@@ -13,15 +14,15 @@ public class UnaryExpression implements IExpression {
     }
 
     @Override
-    public double eval() {
+    public IValue eval() {
         switch (operation) {
             case "-":
-                return -expression.eval();
+                return new NumberValue(-expression.eval().asDouble());
             case "odd":
-                return expression.eval() % 2 == 0 ? 0 : 1;
+                return new NumberValue(expression.eval().asDouble() % 2 == 0 ? 0 : 1);
             case "+":
             default:
-                return expression.eval();
+                return new NumberValue(expression.eval().asDouble());
         }
     }
 

@@ -13,14 +13,14 @@ public class IfStatement implements IStatement {
 
     @Override
     public void execute() {
-        if (expression.eval() == 1) {
+        if (expression.eval().asDouble() == 1) {
             ifStatement.execute();
         }
     }
 
     @Override
     public String toString() {
-        double result = expression.eval();
+        double result = expression.eval().asDouble();
         return "if " + (result == 1 ? "true" : "false") + " then\nbegin\n\t" + ifStatement + "end;";
     }
 }

@@ -1,0 +1,11 @@
+const x = "const";
+      y = 10;
+var l, r : double;
+    result: string;
+begin
+    !"Enter radius:";
+    ?r;
+    l := 2 * PI * r;
+    result := "Circle length: " + l + "cm.";
+    !result
+end.

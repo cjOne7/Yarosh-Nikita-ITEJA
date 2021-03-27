@@ -2,9 +2,7 @@ package parser;
 
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
-import parser.lib.Constants;
-import parser.lib.Identifiers;
-import parser.lib.Variables;
+import parser.lib.*;
 import parser.procedure.Procedure;
 import parser.procedure.Procedures;
 import parser.statements.*;
@@ -56,32 +54,80 @@ public final class Parser {
     }
 
     private void parseVariableBlock() {
+        List<String> identifiersList = new ArrayList<>();
         consumeToken(TokenType.VAR);
-        do {
-            String identifier = getCurrentToken(0).getStringToken();
-            if (Variables.isKeyExists(identifier)) {
-                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+        loop:
+        while (true) {
+            do {
+                if (getCurrentToken(0).getTokenType() != TokenType.IDENTIFIER) {
+                    break loop;
+                }
+                String identifier = getCurrentToken(0).getStringToken();
+                if (identifiersList.contains(identifier)) {
+                    throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+                }
+                identifiersList.add(identifier);
+                consumeToken(TokenType.IDENTIFIER);
+            } while (isMatchTokenType(TokenType.COMMA));
+            consumeToken(TokenType.COLON);
+            if (isMatchTokenType(TokenType.DOUBLE)) {
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.ZERO));
             }
-            Variables.put(identifier, 0);
-            consumeToken(TokenType.IDENTIFIER);
-        } while (isMatchTokenType(TokenType.COMMA));
-        consumeToken(TokenType.SEMICOLON);
+            else if (isMatchTokenType(TokenType.STRING)) {
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
+            }
+            else {
+                throw new RuntimeException("Unknown datatype.");
+            }
+            identifiersList.clear();
+            consumeToken(TokenType.SEMICOLON);
+        }
     }
 
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
         do {
+            if (getCurrentToken(0).getTokenType() != TokenType.IDENTIFIER) {
+                break;
+            }
             String identifier = getCurrentToken(0).getStringToken();
             if (Constants.isKeyExists(identifier)) {
                 throw new RuntimeException("Constant '" + identifier + "' is already defined.");
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.EQUAL);
-            double value = Double.parseDouble(getCurrentToken(0).getStringToken());
-            consumeToken(TokenType.NUMBER);
-            Constants.put(identifier, value);
-        } while (isMatchTokenType(TokenType.COMMA));
-        consumeToken(TokenType.SEMICOLON);
+            if (getCurrentToken(0).getTokenType() == TokenType.QUOTE) {
+                parseConstString(identifier);
+            }
+            else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
+                parseConstNumber(identifier, false);
+            }
+            else if (isMatchTokenType(TokenType.MINUS)) {
+                parseConstNumber(identifier, true);
+            }
+            else {
+                throw new RuntimeException("Unknown datatype.");
+            }
+        } while (isMatchTokenType(TokenType.SEMICOLON));
+    }
+
+    private void parseConstNumber(String identifier, boolean isNegativeNumber) {
+        double value = Double.parseDouble(getCurrentToken(0).getStringToken());
+        consumeToken(TokenType.NUMBER);
+        Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
+    }
+
+    private void parseConstString(String identifier) {
+        consumeToken(TokenType.QUOTE);
+        if (getCurrentToken(0).getTokenType() == TokenType.STRING) {
+            String value = getCurrentToken(0).getStringToken();
+            consumeToken(TokenType.STRING);
+            Constants.put(identifier, new StringValue(value));
+        }
+        else {
+            Constants.put(identifier, Constants.EMPTY);
+        }
+        consumeToken(TokenType.QUOTE);
     }
 
     private void parseProcedure() {
@@ -102,14 +148,10 @@ public final class Parser {
         List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
         while (!isMatchTokenType(TokenType.END)) {
-            IStatement statement;
             if (statements.size() != 0) {
                 consumeToken(TokenType.SEMICOLON);
             }
-            statement = parseStatement();
-            if (statement != null) {
-                statements.add(statement);
-            }
+            statements.add(parseStatement());
         }
         return new StatementBlock(statements);
     }
@@ -290,14 +332,17 @@ public final class Parser {
     private IExpression primary() {
         Token current = getCurrentToken(0);
         if (isMatchTokenType(TokenType.NUMBER)) {
-            return new NumberExpression(Double.parseDouble(current.getStringToken()));
+            return new ValueExpression(Double.parseDouble(current.getStringToken()));
+        }
+        if (isMatchTokenType(TokenType.QUOTE)) {
+            return string();
         }
         if (isMatchTokenType(TokenType.IDENTIFIER)) {
             return new VariableExpression(current.getStringToken());
         }
         if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
-            isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET);
+            consumeToken(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
         }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
@@ -310,6 +355,13 @@ public final class Parser {
             return true;
         }
         return false;
+    }
+
+    private IExpression string() {
+        String value = getCurrentToken(0).getStringToken();
+        isMatchTokenType(TokenType.STRING);
+        consumeToken(TokenType.QUOTE);
+        return new ValueExpression(value);
     }
 
     private void consumeToken(TokenType type) {
