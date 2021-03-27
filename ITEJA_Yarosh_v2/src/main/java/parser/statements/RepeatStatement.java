@@ -14,7 +14,12 @@ public class RepeatStatement implements IStatement {
     @Override
     public void execute() {
         do {
-            blockStatement.execute();
+            try {
+                blockStatement.execute();
+            } catch (ContinueStatement e) {
+            } catch (BreakStatement e) {
+                break;
+            }
         } while (condition.eval().asDouble() != 0);
     }
 

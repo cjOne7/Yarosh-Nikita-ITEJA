@@ -14,7 +14,12 @@ public class WhileStatement implements IStatement {
     @Override
     public void execute() {
         while (condition.eval().asDouble() != 0) {
-            blockStatement.execute();
+            try {
+                blockStatement.execute();
+            } catch (ContinueStatement e) {
+            } catch (BreakStatement e) {
+                break;
+            }
         }
     }
 

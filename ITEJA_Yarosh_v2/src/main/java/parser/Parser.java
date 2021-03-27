@@ -160,6 +160,12 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.REPEAT)) {
             statement = parseRepeatStatement();
         }
+        else if (isMatchTokenType(TokenType.BREAK)) {
+            statement = new BreakStatement();
+        }
+        else if (isMatchTokenType(TokenType.CONTINUE)) {
+            statement = new ContinueStatement();
+        }
         else if (current.getTokenType().equals(TokenType.WRITELN)) {
             statement = parseWriteBlock();
         }
