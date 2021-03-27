@@ -7,25 +7,23 @@ public class CompareOperators {
     public static final char GREATER = '>';
     public static final char LESS = '<';
     public static final char NOTEQUAL = '#';
-    public static final char QUESTION_MARK = '?';
-    public static final char EXCLAMATION_MARK = '!';
+    public static final String GREATER_OR_EQUAL = ">=";
+    public static final String LESS_OR_EQUAL = "<=";
 
     public static boolean isComparisonOperator(char character) {
-        switch (character){
+        switch (character) {
             case EQUALITY:
             case GREATER:
             case LESS:
             case NOTEQUAL:
-            case EXCLAMATION_MARK:
-            case QUESTION_MARK:
                 return true;
             default:
                 return false;
         }
     }
 
-    public static TokenType detectComparisonOperatorType(char character) {
-        switch (character){
+    public static TokenType detectComparisonOperatorType(char operator) {
+        switch (operator) {
             case EQUALITY:
                 return TokenType.EQUAL;
             case GREATER:
@@ -34,12 +32,19 @@ public class CompareOperators {
                 return TokenType.LESS;
             case NOTEQUAL:
                 return TokenType.NOTEQUAL;
-            case EXCLAMATION_MARK:
-                return TokenType.EXCLAMATION_MARK;
-            case QUESTION_MARK:
-                return TokenType.QUESTION_MARK;
             default:
                 return TokenType.UNKNOWN;
+        }
+    }
+
+    public static TokenType detectComparisonOperatorType(String operator) {
+        switch (operator) {
+            case GREATER_OR_EQUAL:
+                return TokenType.GREATER_OR_EQUAL;
+            case LESS_OR_EQUAL:
+                return TokenType.LESS_OR_EQUAL;
+            default:
+                return operator.length() == 1 ? detectComparisonOperatorType(operator.charAt(0)) : TokenType.UNKNOWN;
         }
     }
 }
