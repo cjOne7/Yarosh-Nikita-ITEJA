@@ -95,15 +95,14 @@ public final class Parser {
                 throw new RuntimeException("Constant '" + identifier + "' is already defined.");
             }
             consumeToken(TokenType.IDENTIFIER);
-            consumeToken(TokenType.EQUAL);
-            if (getCurrentToken(0).getTokenType() == TokenType.QUOTE) {
+            consumeToken(TokenType.COLON);
+            if (isMatchTokenType(TokenType.DOUBLE)) {
+                consumeToken(TokenType.EQUAL);
+                parseConstNumber(identifier, isMatchTokenType(TokenType.MINUS));
+            }
+            else if (isMatchTokenType(TokenType.STRING)) {
+                consumeToken(TokenType.EQUAL);
                 parseConstString(identifier);
-            }
-            else if (getCurrentToken(0).getTokenType() == TokenType.NUMBER) {
-                parseConstNumber(identifier, false);
-            }
-            else if (isMatchTokenType(TokenType.MINUS)) {
-                parseConstNumber(identifier, true);
             }
             else {
                 throw new RuntimeException("Unknown datatype.");
