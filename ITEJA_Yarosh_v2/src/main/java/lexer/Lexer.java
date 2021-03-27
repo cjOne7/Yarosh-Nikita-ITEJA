@@ -41,7 +41,7 @@ public final class Lexer {
                 next();
             }
             else if (Brackets.isBracket(character)) {
-                if (peek(1) == '*') {
+                if (character == Brackets.OPEN_ROUND_BRACKET && peek(1) == '*') {
                     tokenizeMultilineComment(character);
                     next();
                     next();

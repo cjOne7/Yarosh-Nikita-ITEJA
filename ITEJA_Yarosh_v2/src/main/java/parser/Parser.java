@@ -160,11 +160,11 @@ public final class Parser {
         else if (current.getTokenType().equals(TokenType.REPEAT)) {
             statement = parseRepeatStatement();
         }
+        else if (current.getTokenType().equals(TokenType.FOR)) {
+            statement = parseForStatement();
+        }
         else if (isMatchTokenType(TokenType.BREAK)) {
             statement = new BreakStatement();
-        }
-        else if (isMatchTokenType(TokenType.CONTINUE)) {
-            statement = new ContinueStatement();
         }
         else if (current.getTokenType().equals(TokenType.WRITELN)) {
             statement = parseWriteBlock();
@@ -241,6 +241,21 @@ public final class Parser {
         }
         IExpression condition = expression();
         return new RepeatStatement(condition, statement);
+    }
+
+    private IStatement parseForStatement() {
+        consumeToken(TokenType.FOR);
+        String identifier = getCurrentToken(0).getStringToken();
+        consumeToken(TokenType.IDENTIFIER);
+        consumeToken(TokenType.ASSIGNMENT);
+        IExpression assignmentExpression = expression();
+        if (isMatchTokenType(TokenType.TO)) {
+            IExpression toExpression = expression();
+            consumeToken(TokenType.DO);
+            IStatement body = parseStatementOrBlock();
+            return new ForStatement(identifier, assignmentExpression, toExpression, body);
+        }
+        return null;
     }
 
     private IStatement parseIfStatement() {
