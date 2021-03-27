@@ -5,7 +5,6 @@ import parser.lib.IValue;
 import parser.lib.NumberValue;
 import parser.lib.StringValue;
 
-
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
     private final String operation;

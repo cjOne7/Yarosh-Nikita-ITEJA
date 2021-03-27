@@ -1,17 +1,10 @@
 package parser.lib;
 
-import token.TokenType;
-
 public class StringValue implements IValue {
-    private final TokenType type = TokenType.STRING;
     private final String value;
 
     public StringValue(String value) {
         this.value = value;
-    }
-
-    public TokenType getType() {
-        return type;
     }
 
     @Override
