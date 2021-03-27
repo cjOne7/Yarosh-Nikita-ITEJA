@@ -1,10 +1,12 @@
 program FirstExample;
 
-var a: double;
-    str: string;
+var i : double;
 
 begin
-    str := "str";
-    writeln();
-    writeln(str);
+    while i <= 10 do
+    begin
+        i := i + 1;
+        if i = 5 then break;
+        writeln(i);
+    end
 end.
