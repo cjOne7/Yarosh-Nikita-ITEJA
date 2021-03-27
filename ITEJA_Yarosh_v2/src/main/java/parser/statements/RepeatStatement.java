@@ -16,7 +16,6 @@ public class RepeatStatement implements IStatement {
         do {
             try {
                 blockStatement.execute();
-            } catch (ContinueStatement e) {
             } catch (BreakStatement e) {
                 break;
             }

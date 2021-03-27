@@ -17,7 +17,9 @@ public class KeyWords {
     public final static String REPEAT = "repeat";
     public final static String UNTIL = "until";
     public final static String BREAK = "break";
-    public final static String CONTINUE = "continue";
+    public final static String FOR = "for";
+    public final static String TO = "to";
+    public final static String DOWNTO = "downto";
     public final static String VAR = "var";
     public final static String CONST = "const";
     public final static String WRITELN = "writeln";
@@ -69,8 +71,12 @@ public class KeyWords {
                 return TokenType.UNTIL;
             case BREAK:
                 return TokenType.BREAK;
-            case CONTINUE:
-                return TokenType.CONTINUE;
+            case FOR:
+                return TokenType.FOR;
+            case TO:
+                return TokenType.TO;
+            case DOWNTO:
+                return TokenType.DOWNTO;
             case VAR:
                 return TokenType.VAR;
             case CONST:

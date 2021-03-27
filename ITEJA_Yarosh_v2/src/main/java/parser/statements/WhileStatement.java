@@ -16,7 +16,6 @@ public class WhileStatement implements IStatement {
         while (condition.eval().asDouble() != 0) {
             try {
                 blockStatement.execute();
-            } catch (ContinueStatement e) {
             } catch (BreakStatement e) {
                 break;
             }
