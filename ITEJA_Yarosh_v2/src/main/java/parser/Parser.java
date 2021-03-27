@@ -396,8 +396,14 @@ public final class Parser {
             return mathFunction();
         }
         if (isMatchTokenType(TokenType.NOT)) {
-            IExpression expression = expression();
+            if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
+                IExpression expression = expression();
+                consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+                return new ConditionalExpression(expression.eval().asDouble() != 1);
+            }
+            IExpression expression = condition();
             return new ConditionalExpression(expression.eval().asDouble() != 1);
+
         }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
