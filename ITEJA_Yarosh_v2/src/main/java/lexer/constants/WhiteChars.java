@@ -1,7 +1,5 @@
 package lexer.constants;
 
-import token.TokenType;
-
 public class WhiteChars {
     public static final char WHITE_SPACE = ' ';
     public static final char NEW_LINE = '\n';
