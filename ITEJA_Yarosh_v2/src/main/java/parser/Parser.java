@@ -1,5 +1,6 @@
 package parser;
 
+import lexer.constants.KeyWords;
 import lexer.constants.MathOperators;
 import parser.blocks.StatementBlock;
 import parser.expressions.*;
@@ -14,6 +15,7 @@ import java.util.List;
 public final class Parser {
     private final List<Token> tokens;
     private int pos;
+    private boolean isNegate;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -252,28 +254,49 @@ public final class Parser {
 
     //Recursive descending parser
     private IExpression expression() {
-        return condition();
+        return logicalOr();
     }
 
-//    private IExpression negativeCondition() {
-//
-//    }
+    private IExpression logicalOr() {
+//        int counter = 1;
+//        while (isMatchTokenType(TokenType.NOT)) {
+//            counter++;
+//        }
+//        isNegate = counter % 2 == 0;
+        IExpression result = logicalAnd();
+        while (true) {
+            if (isMatchTokenType(TokenType.OR)) {
+                result = new ConditionalExpression(KeyWords.OR, result, logicalAnd(), isNegate);
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
 
-//    private IExpression logicalOr() {
-//
-//    }
-
-//    private IExpression logicalAnd() {
-//
-//    }
+    private IExpression logicalAnd() {
+//        int counter = 1;
+//        while (isMatchTokenType(TokenType.NOT)) {
+//            counter++;
+//        }
+//        isNegate = counter % 2 == 0;
+        IExpression result = condition();
+        while (true) {
+            if (isMatchTokenType(TokenType.AND)) {
+                result = new ConditionalExpression(KeyWords.AND, result, condition(), isNegate);
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
 
     private IExpression condition() {
-        boolean isNegate;
-        int counter = 1;
-        while (isMatchTokenType(TokenType.NOT)) {
-            counter++;
-        }
-        isNegate = counter % 2 == 0;
+//        int counter = 1;
+//        while (isMatchTokenType(TokenType.NOT)) {
+//            counter++;
+//        }
+//        isNegate = counter % 2 == 0;
         IExpression result = additive();
         while (true) {
             Token current = getCurrentToken(0);
@@ -343,7 +366,6 @@ public final class Parser {
         return result;
     }
 
-    //todo add negation(not)
     private IExpression unary() {
         if (isMatchTokenType(TokenType.MINUS)) {
             return new UnaryExpression(MathOperators.MINUS, primary());
@@ -373,10 +395,10 @@ public final class Parser {
         if (MathExpression.isMathExpression(current.getTokenType().name())) {
             return mathFunction();
         }
-//        if (isMatchTokenType(TokenType.NOT)) {
-//            IExpression expression = expression();
-//
-//        }
+        if (isMatchTokenType(TokenType.NOT)) {
+            IExpression expression = expression();
+            return new ConditionalExpression(expression.eval().asDouble() != 1);
+        }
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 

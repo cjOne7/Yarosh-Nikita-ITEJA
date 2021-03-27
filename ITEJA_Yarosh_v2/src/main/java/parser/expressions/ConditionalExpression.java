@@ -5,9 +5,16 @@ import parser.lib.NumberValue;
 import parser.lib.StringValue;
 
 public class ConditionalExpression implements IExpression {
-    private final IExpression expression1, expression2;
-    private final String operation;
-    private final boolean isNegate;
+    private IExpression expression1, expression2;
+    private String operation;
+    private boolean isNegate;
+    private IValue value;
+
+    public ConditionalExpression(String operation, IExpression expression1, IExpression expression2) {
+        this.expression1 = expression1;
+        this.expression2 = expression2;
+        this.operation = operation;
+    }
 
     public ConditionalExpression(String operation, IExpression expression1, IExpression expression2, boolean isNegate) {
         this.expression1 = expression1;
@@ -16,8 +23,15 @@ public class ConditionalExpression implements IExpression {
         this.isNegate = isNegate;
     }
 
+    public ConditionalExpression(boolean result) {
+        value = new NumberValue(result);
+    }
+
     @Override
     public IValue eval() {
+        if (expression1 == null) {
+            return value;
+        }
         final IValue value1 = expression1.eval();
         final IValue value2 = expression2.eval();
         if (value1 instanceof StringValue || value2 instanceof StringValue) {
@@ -53,6 +67,10 @@ public class ConditionalExpression implements IExpression {
                 return new NumberValue(isNegate != (number1 > number2));
             case ">=":
                 return new NumberValue(isNegate != (number1 >= number2));
+            case "and":
+                return new NumberValue(isNegate != ((number1 != 0) && (number2 != 0)));
+            case "or":
+                return new NumberValue(isNegate != ((number1 != 0) || (number2 != 0)));
             case "=":
             default:
                 return new NumberValue(isNegate != (number1 == number2));
