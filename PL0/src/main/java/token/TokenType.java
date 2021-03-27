@@ -3,7 +3,6 @@ package token;
 public enum TokenType {
     PROGRAM, PROCEDURE, CALL, ODD,
     DOT, SEMICOLON, COMMA, COLON,
-    WHITE_SPACE, NEW_LINE, TABULATOR, CARRIAGE_RETURN,
     BEGIN, END,
     IF, THEN,
     DO, WHILE,
