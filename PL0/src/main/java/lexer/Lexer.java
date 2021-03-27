@@ -56,8 +56,8 @@ public final class Lexer {
             }
             else if (CompareOperators.isComparisonOperator(character)) {
                 String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
-                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
-                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
+                Pattern pattern = Pattern.compile(String.format("[%c%c%c%c]"
+                        , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS, CompareOperators.NOTEQUAL));
                 Matcher matcher = pattern.matcher(possibleConditionalOperator);
                 if (matcher.find()) {
                     builder.append(matcher.group());
