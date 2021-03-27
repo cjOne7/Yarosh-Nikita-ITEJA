@@ -22,7 +22,7 @@ public class ConditionalExpression implements IExpression {
             final String string1 = value1.asString();
             final String string2 = value2.asString();
             switch (operation) {
-                case "<>":
+                case "#":
                     return new NumberValue(!string1.equals(string2));
                 case "<=":
                     return new NumberValue(string1.compareTo(string2) <= 0);
@@ -41,7 +41,7 @@ public class ConditionalExpression implements IExpression {
         double number1 = value1.asDouble();
         double number2 = value2.asDouble();
         switch (operation) {
-            case "<>":
+            case "#":
                 return new NumberValue(number1 != number2);
             case "<":
                 return new NumberValue(number1 < number2);

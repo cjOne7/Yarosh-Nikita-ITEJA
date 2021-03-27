@@ -24,9 +24,18 @@ public class BinaryExpression implements IExpression {
             final String string1 = value1.asString();
             final String string2 = value2.asString();
             switch (operation) {
-                case MINUS:
                 case DIVIDE:
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
+                case MINUS:
+                    if (value2 instanceof NumberValue) {
+                        int value = (int) value2.asDouble();
+                        String stringValue1 = value1.asString();
+                        if (stringValue1.length() < value) {
+                            throw new RuntimeException(stringValue1 + " (" + stringValue1.length() + ") is smaller than subtracted value (" + value + ").");
+                        }
+                        return new StringValue(stringValue1.substring(0, stringValue1.length() - value));
+                    }
+                    throw new RuntimeException("You can't string times string");
                 case MULTIPLY:
                     if (value2 instanceof NumberValue) {
                         final int iterations = (int) value2.asDouble();
