@@ -15,7 +15,6 @@ import java.util.List;
 public final class Parser {
     private final List<Token> tokens;
     private int pos;
-    private boolean isNegate;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -258,15 +257,10 @@ public final class Parser {
     }
 
     private IExpression logicalOr() {
-//        int counter = 1;
-//        while (isMatchTokenType(TokenType.NOT)) {
-//            counter++;
-//        }
-//        isNegate = counter % 2 == 0;
         IExpression result = logicalAnd();
         while (true) {
             if (isMatchTokenType(TokenType.OR)) {
-                result = new ConditionalExpression(KeyWords.OR, result, logicalAnd(), isNegate);
+                result = new ConditionalExpression(KeyWords.OR, result, logicalAnd());
                 continue;
             }
             break;
@@ -275,15 +269,10 @@ public final class Parser {
     }
 
     private IExpression logicalAnd() {
-//        int counter = 1;
-//        while (isMatchTokenType(TokenType.NOT)) {
-//            counter++;
-//        }
-//        isNegate = counter % 2 == 0;
         IExpression result = condition();
         while (true) {
             if (isMatchTokenType(TokenType.AND)) {
-                result = new ConditionalExpression(KeyWords.AND, result, condition(), isNegate);
+                result = new ConditionalExpression(KeyWords.AND, result, condition());
                 continue;
             }
             break;
@@ -292,36 +281,31 @@ public final class Parser {
     }
 
     private IExpression condition() {
-//        int counter = 1;
-//        while (isMatchTokenType(TokenType.NOT)) {
-//            counter++;
-//        }
-//        isNegate = counter % 2 == 0;
         IExpression result = additive();
         while (true) {
             Token current = getCurrentToken(0);
             if (isMatchTokenType(TokenType.EQUAL)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             if (isMatchTokenType(TokenType.NOTEQUAL)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             if (isMatchTokenType(TokenType.LESS)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             if (isMatchTokenType(TokenType.LESS_OR_EQUAL)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             if (isMatchTokenType(TokenType.GREATER)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             if (isMatchTokenType(TokenType.GREATER_OR_EQUAL)) {
-                result = new ConditionalExpression(current.getStringToken(), result, additive(), isNegate);
+                result = new ConditionalExpression(current.getStringToken(), result, additive());
                 continue;
             }
             break;
