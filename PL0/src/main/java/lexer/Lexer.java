@@ -129,13 +129,6 @@ public final class Lexer {
             if (++currentPosition == code.length()) {
                 break;
             }
-            if (currentPosition < code.length() - 1 && code.charAt(currentPosition) == Separators.DOT) {
-                if (builder.indexOf(Character.toString(Separators.DOT)) != -1) {
-                    throw new RuntimeException("Incorrect double number on the line " + currentLine
-                            + " and on position " + currentPosition);
-                }
-                builder.append(code.charAt(currentPosition++));
-            }
             character = code.charAt(currentPosition);
         }
 

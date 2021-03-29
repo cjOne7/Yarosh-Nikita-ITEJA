@@ -28,7 +28,7 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
                 case MINUS:
                     if (value2 instanceof NumberValue) {
-                        int value = (int) value2.asDouble();
+                        int value = (int) value2.asNumber();
                         String stringValue1 = value1.asString();
                         if (stringValue1.length() < value) {
                             throw new RuntimeException(stringValue1 + " (" + stringValue1.length() + ") is smaller than subtracted value (" + value + ").");
@@ -47,28 +47,28 @@ public class BinaryExpression implements IExpression {
                     return new StringValue(string1 + string2);
             }
         }
-        final double number1 = value1.asDouble();
-        final double number2 = value2.asDouble();
+        final double number1 = value1.asNumber();
+        final double number2 = value2.asNumber();
         double result;
         switch (operation) {
             case MINUS:
                 result = number1 - number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new NumberValue((int) Math.round(result));
             case MULTIPLY:
                 result = number1 * number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new NumberValue((int) Math.round(result));
             case DIVIDE:
                 result = number1 / number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new NumberValue((int) Math.round(result));
             case PLUS:
             default:
                 result = number1 + number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new NumberValue((int) Math.round(result));
         }
     }
 
     private StringValue multiplyStrings(IValue number, IValue string) {
-        final int iterations = (int) number.asDouble();
+        final int iterations = (int) number.asNumber();
         final StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < iterations; i++) {
             buffer.append(string);

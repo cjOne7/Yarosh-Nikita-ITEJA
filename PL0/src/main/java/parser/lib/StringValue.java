@@ -8,9 +8,9 @@ public class StringValue implements IValue {
     }
 
     @Override
-    public double asDouble() {
+    public int asNumber() {
         try {
-            return Double.parseDouble(value);
+            return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             return 0;
         }

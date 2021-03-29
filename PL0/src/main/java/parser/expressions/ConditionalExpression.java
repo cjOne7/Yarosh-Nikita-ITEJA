@@ -38,8 +38,8 @@ public class ConditionalExpression implements IExpression {
             }
         }
 
-        double number1 = value1.asDouble();
-        double number2 = value2.asDouble();
+        double number1 = value1.asNumber();
+        double number2 = value2.asNumber();
         switch (operation) {
             case "#":
                 return new NumberValue(number1 != number2);

@@ -8,7 +8,7 @@ public class ValueExpression implements IExpression {
 
     private final IValue value;
 
-    public ValueExpression(double value) {
+    public ValueExpression(int value) {
         this.value = new NumberValue(value);
     }
 

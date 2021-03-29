@@ -64,7 +64,7 @@ public final class Parser {
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.COLON);
-            if (isMatchTokenType(TokenType.DOUBLE)) {
+            if (isMatchTokenType(TokenType.INTEGER)) {
                 Variables.put(identifier, Variables.ZERO);
             }
             else if (isMatchTokenType(TokenType.STRING)) {
@@ -89,7 +89,7 @@ public final class Parser {
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.COLON);
-            if (isMatchTokenType(TokenType.DOUBLE)) {
+            if (isMatchTokenType(TokenType.INTEGER)) {
                 consumeToken(TokenType.EQUAL);
                 parseConstNumber(identifier, isMatchTokenType(TokenType.MINUS));
             }
@@ -106,7 +106,7 @@ public final class Parser {
 
     private void parseConstNumber(String identifier, boolean isNegativeNumber) {
         try {
-            double value = Double.parseDouble(getCurrentToken(0).getStringToken());
+            int value = Integer.parseInt(getCurrentToken(0).getStringToken());
             consumeToken(TokenType.NUMBER);
             Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
         } catch (NumberFormatException e) {
@@ -152,8 +152,8 @@ public final class Parser {
             }
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.COLON);
-            if (isMatchTokenType(TokenType.DOUBLE)) {
-                variables.put(identifier, Variables.NAN);
+            if (isMatchTokenType(TokenType.INTEGER)) {
+                variables.put(identifier, Variables.ZERO);
             }
             else if (isMatchTokenType(TokenType.STRING)) {
                 variables.put(identifier, Variables.EMPTY);
@@ -360,7 +360,7 @@ public final class Parser {
     private IExpression primary() {
         Token current = getCurrentToken(0);
         if (isMatchTokenType(TokenType.NUMBER)) {
-            return new ValueExpression(Double.parseDouble(current.getStringToken()));
+            return new ValueExpression(Integer.parseInt(current.getStringToken()));
         }
         if (isMatchTokenType(TokenType.QUOTE)) {
             return string();

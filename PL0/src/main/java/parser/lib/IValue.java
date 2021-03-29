@@ -1,7 +1,7 @@
 package parser.lib;
 
 public interface IValue {
-    double asDouble();
+    int asNumber();
 
     String asString();
 }

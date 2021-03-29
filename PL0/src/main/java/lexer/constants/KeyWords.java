@@ -15,7 +15,7 @@ public class KeyWords {
     public final static String VAR = "var";
     public final static String CONST = "const";
     public final static String ODD = "odd";
-    public final static String DOUBLE = "double";
+    public final static String INTEGER = "integer";
     public final static String STRING = "string";
 
     public static TokenType detectKeyWordType(String value) {
@@ -44,8 +44,8 @@ public class KeyWords {
                 return TokenType.CONST;
             case ODD:
                 return TokenType.ODD;
-            case DOUBLE:
-                return TokenType.DOUBLE;
+            case INTEGER:
+                return TokenType.INTEGER;
             case STRING:
                 return TokenType.STRING;
             default:

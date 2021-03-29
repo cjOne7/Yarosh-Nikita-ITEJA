@@ -8,11 +8,6 @@ public class Constants {
     public static final IValue EMPTY = new StringValue("");
     private static final Map<String, IValue> CONSTANTS = new HashMap<>();
 
-    static {
-        CONSTANTS.put("PI", new NumberValue(3.14));
-        CONSTANTS.put("E", new NumberValue(2.7));
-    }
-
     public static boolean isKeyExists(String key) {
         return CONSTANTS.containsKey(key);
     }

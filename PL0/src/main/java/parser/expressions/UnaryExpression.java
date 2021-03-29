@@ -17,12 +17,12 @@ public class UnaryExpression implements IExpression {
     public IValue eval() {
         switch (operation) {
             case "-":
-                return new NumberValue(-expression.eval().asDouble());
+                return new NumberValue(-expression.eval().asNumber());
             case "odd":
-                return new NumberValue(expression.eval().asDouble() % 2 == 0 ? 0 : 1);
+                return new NumberValue(expression.eval().asNumber() % 2 == 0 ? 0 : 1);
             case "+":
             default:
-                return new NumberValue(expression.eval().asDouble());
+                return new NumberValue(expression.eval().asNumber());
         }
     }
 
