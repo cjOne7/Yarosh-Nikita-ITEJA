@@ -10,7 +10,9 @@ import token.Token;
 import token.TokenType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Parser {
     private final List<Token> tokens;
@@ -64,9 +66,11 @@ public final class Parser {
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
                 Variables.put(identifier, Variables.ZERO);
-            } else if (isMatchTokenType(TokenType.STRING)) {
+            }
+            else if (isMatchTokenType(TokenType.STRING)) {
                 Variables.put(identifier, Variables.EMPTY);
-            } else {
+            }
+            else {
                 throw new RuntimeException("Unknown datatype.");
             }
         } while (isMatchTokenType(TokenType.COMMA));
@@ -129,12 +133,39 @@ public final class Parser {
         Identifiers.put(identifier);
         consumeToken(TokenType.IDENTIFIER);
         consumeToken(TokenType.SEMICOLON);
+        Map<String, IValue> variables = null;
         if (getCurrentToken(0).getTokenType() == TokenType.VAR) {
-            parseVariableBlock();
+            variables = parseLocalVariableBlock();
         }
         IStatement procedureBlockStatements = parseStatementBlock();
-        procedures.add(new Procedure(identifier, procedureBlockStatements));
+        procedures.add(new Procedure(identifier, procedureBlockStatements, variables));
         consumeToken(TokenType.SEMICOLON);
+    }
+
+    private Map<String, IValue> parseLocalVariableBlock() {
+        Map<String, IValue> variables = new HashMap<>();
+        consumeToken(TokenType.VAR);
+        do {
+            String identifier = getCurrentToken(0).getStringToken();
+            if (LocalVars.isKeyExists(identifier)) {
+                throw new RuntimeException("Variable '" + identifier + "' is already defined.");
+            }
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.COLON);
+            if (isMatchTokenType(TokenType.DOUBLE)) {
+                variables.put(identifier, Variables.NAN);
+                LocalVars.put(identifier, Variables.NAN);
+            }
+            else if (isMatchTokenType(TokenType.STRING)) {
+                variables.put(identifier, Variables.EMPTY);
+                LocalVars.put(identifier, Variables.EMPTY);
+            }
+            else {
+                throw new RuntimeException("Unknown datatype.");
+            }
+        } while (isMatchTokenType(TokenType.COMMA));
+        consumeToken(TokenType.SEMICOLON);
+        return variables;
     }
 
     private IStatement parseStatementBlock() {
@@ -189,6 +220,11 @@ public final class Parser {
     private IStatement parseAssignmentStatement() {
         String identifier = getCurrentToken(0).getStringToken();
         checkConstImmutable(identifier);
+        if (LocalVars.isKeyExists(identifier)) {
+            consumeToken(TokenType.IDENTIFIER);
+            consumeToken(TokenType.ASSIGNMENT);
+            return new AssignmentStatement(identifier, expression());
+        }
         if (Variables.isKeyExists(identifier)) {
             consumeToken(TokenType.IDENTIFIER);
             consumeToken(TokenType.ASSIGNMENT);

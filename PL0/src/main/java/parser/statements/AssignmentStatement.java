@@ -14,14 +14,20 @@ public class AssignmentStatement implements IStatement {
 
     @Override
     public void execute() {
-        IValue value = Variables.getValueByKey(variableName);
+        IValue value = LocalVars.isKeyExists(variableName)
+                ? LocalVars.getValueByKey(variableName) : Variables.getValueByKey(variableName);
         IValue rightValue = expression.eval();
         if (value.getClass() != rightValue.getClass()) {
             String firstDatatype = value.getClass().getSimpleName();
             String secondDatatype = rightValue.getClass().getSimpleName();
             throw new RuntimeException("Datatype " + firstDatatype + " doesn't match " + secondDatatype);
         }
-        Variables.put(variableName, rightValue);
+        if (LocalVars.isKeyExists(variableName)) {
+            LocalVars.put(variableName, rightValue);
+        }
+        else {
+            Variables.put(variableName, rightValue);
+        }
     }
 
     @Override
