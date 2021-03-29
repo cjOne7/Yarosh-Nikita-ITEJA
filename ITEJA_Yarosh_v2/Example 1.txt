@@ -1,12 +1,9 @@
 program myProgram;
-const x = "const";
-      y = 10;
-var l, r : double;
-    result: string;
+
+var a : double;
+    str: string;
 begin
-    writeln("Enter radius:");
-    readln(r);
-    l := 2 * PI * r;
-    result := "Circle length: " + l + "cm.";
-    writeln(result)
+    a := 3;
+    str := "123";
+    writeln(str * a);
 end.

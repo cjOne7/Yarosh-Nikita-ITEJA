@@ -35,15 +35,11 @@ public class BinaryExpression implements IExpression {
                         }
                         return new StringValue(stringValue1.substring(0, stringValue1.length() - value));
                     }
-                    throw new RuntimeException("You can't string times string");
+                    throw new RuntimeException("You can't string minus string");
                 case MULTIPLY:
-                    if (value2 instanceof NumberValue) {
-                        final int iterations = (int) value2.asDouble();
-                        final StringBuilder buffer = new StringBuilder();
-                        for (int i = 0; i < iterations; i++) {
-                            buffer.append(string1);
-                        }
-                        return new StringValue(buffer.toString());
+                    if (value1.getClass() != value2.getClass()) {
+                        return value1 instanceof NumberValue
+                                ? multiplyStrings(value1, value2) : multiplyStrings(value2, value1);
                     }
                     throw new RuntimeException("You can't string times string");
                 case PLUS:
@@ -69,6 +65,15 @@ public class BinaryExpression implements IExpression {
                 result = number1 + number2;
                 return new NumberValue(Math.round(result * 100.0) / 100.0);
         }
+    }
+
+    private StringValue multiplyStrings(IValue number, IValue string) {
+        final int iterations = (int) number.asDouble();
+        final StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < iterations; i++) {
+            buffer.append(string);
+        }
+        return new StringValue(buffer.toString());
     }
 
     @Override
