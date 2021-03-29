@@ -12,7 +12,7 @@ import java.util.Set;
 public class Procedure {
     private final String identifier;
     private final IStatement procedureBody;
-    private Map<String, IValue> variables = new HashMap<>();
+    private Map<String, IValue> variables;
 
     public Procedure(String identifier, IStatement procedureBody, Map<String, IValue> variables) {
         this.identifier = identifier;
@@ -26,9 +26,9 @@ public class Procedure {
         }
         else {
             Set<String> keys = new HashSet<>(variables.keySet());
-            variables.keySet().forEach(key -> LocalVars.put(key, variables.get(key)));
+            keys.forEach(key -> LocalVars.put(key, variables.get(key)));
             procedureBody.execute();
-            LocalVars.clear();
+            LocalVars.clear(keys);
         }
     }
 
