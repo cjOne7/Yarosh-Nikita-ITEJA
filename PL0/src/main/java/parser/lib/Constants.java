@@ -18,7 +18,10 @@ public class Constants {
     }
 
     public static IValue getValueByKey(String key) {
-        return isKeyExists(key) ? CONSTANTS.get(key) : ZERO;
+        if (isKeyExists(key)) {
+            return CONSTANTS.get(key);
+        }
+        throw new RuntimeException("Constant with key '" + key + "' doesn't exist.");
     }
 
     public static void put(String key, IValue value) {

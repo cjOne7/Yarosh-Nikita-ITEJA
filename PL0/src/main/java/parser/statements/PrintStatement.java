@@ -13,20 +13,17 @@ public class PrintStatement implements IStatement {
 
     @Override
     public void execute() {
-        if (expression == null) {
-            System.out.println();
-        } else {
-            IValue value = expression.eval();
-            if (value instanceof StringValue) {
-                System.out.println(value);
-            }
-            else {
-                double doubleValue = value.asDouble();
-                long result = (long) doubleValue;//For example, 1.0 will be typed as 1
-                System.out.println(result == doubleValue ? result + "" : doubleValue + "");
-            }
+        IValue value = expression.eval();
+        if (value instanceof StringValue) {
+            System.out.println(value);
+        }
+        else {
+            double doubleValue = value.asDouble();
+            long result = (long) doubleValue;//For example, 1.0 will be typed as 1
+            System.out.println(result == doubleValue ? result + "" : doubleValue + "");
         }
     }
+
 
     @Override
     public String toString() {
