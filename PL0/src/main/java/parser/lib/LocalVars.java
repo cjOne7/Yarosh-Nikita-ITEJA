@@ -1,12 +1,9 @@
 package parser.lib;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class LocalVars {
-    private static final Stack<Map<String, IValue>> LOCAL_VARS_STACK = new Stack<>();
-    private static Map<String, IValue> variables = new HashMap<>();
+    private static final Map<String, IValue> variables = new HashMap<>();
 
     public static boolean isKeyExists(String key) {
         return variables.containsKey(key);
@@ -19,19 +16,15 @@ public class LocalVars {
         throw new RuntimeException("Local variable with key '" + key + "' doesn't exist.");
     }
 
-    public static void push() {
-        LOCAL_VARS_STACK.push(new HashMap<>(variables));
+    public static void push(Map<String, IValue> variables) {
+        variables.keySet().forEach(key -> LocalVars.variables.put(key, variables.get(key)));
     }
 
-    public static void pop() {
-        variables = LOCAL_VARS_STACK.pop();
+    public static void pop(Set<String> keys) {
+        keys.forEach(variables::remove);
     }
 
     public static void put(String key, IValue value) {
         variables.put(key, value);
-    }
-
-    public static void clear() {
-        variables.clear();
     }
 }

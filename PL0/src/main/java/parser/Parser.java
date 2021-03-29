@@ -154,17 +154,18 @@ public final class Parser {
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
                 variables.put(identifier, Variables.NAN);
-                LocalVars.put(identifier, Variables.NAN);
+//                LocalVars.put(identifier, Variables.NAN);
             }
             else if (isMatchTokenType(TokenType.STRING)) {
                 variables.put(identifier, Variables.EMPTY);
-                LocalVars.put(identifier, Variables.EMPTY);
+//                LocalVars.put(identifier, Variables.EMPTY);
             }
             else {
                 throw new RuntimeException("Unknown datatype.");
             }
         } while (isMatchTokenType(TokenType.COMMA));
         consumeToken(TokenType.SEMICOLON);
+        LocalVars.push(variables);
         return variables;
     }
 
