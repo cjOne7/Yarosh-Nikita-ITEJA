@@ -3,7 +3,9 @@ package parser.lib;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Constants implements IVariable {
+public class Constants {
+    public static final IValue ZERO = new NumberValue(0);
+    public static final IValue EMPTY = new StringValue("");
     private static final Map<String, IValue> CONSTANTS = new HashMap<>();
 
     static {

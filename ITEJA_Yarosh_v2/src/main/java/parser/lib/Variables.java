@@ -3,7 +3,9 @@ package parser.lib;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Variables implements IVariable {
+public class Variables {
+    public static final IValue ZERO = new NumberValue(0);
+    public static final IValue EMPTY = new StringValue("");
     private static final Map<String, IValue> VARIABLES = new HashMap<>();
 
     public static boolean isKeyExists(String key) {

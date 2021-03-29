@@ -59,10 +59,10 @@ public final class Parser {
             } while (isMatchTokenType(TokenType.COMMA));
             consumeToken(TokenType.COLON);
             if (isMatchTokenType(TokenType.DOUBLE)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, IVariable.ZERO));
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.ZERO));
             }
             else if (isMatchTokenType(TokenType.STRING)) {
-                identifiersList.forEach(identifier -> Variables.put(identifier, IVariable.EMPTY));
+                identifiersList.forEach(identifier -> Variables.put(identifier, Variables.EMPTY));
             }
             else {
                 throw new RuntimeException("Unknown datatype.");
@@ -113,7 +113,7 @@ public final class Parser {
             Constants.put(identifier, new StringValue(value));
         }
         else {
-            Constants.put(identifier, IVariable.EMPTY);
+            Constants.put(identifier, Constants.EMPTY);
         }
         consumeToken(TokenType.QUOTE);
     }
