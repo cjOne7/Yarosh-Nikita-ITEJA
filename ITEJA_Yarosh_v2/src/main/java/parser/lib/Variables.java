@@ -11,7 +11,10 @@ public class Variables implements IVariable {
     }
 
     public static IValue getValueByKey(String key) {
-        return isKeyExists(key) ? VARIABLES.get(key) : EMPTY;
+        if (isKeyExists(key)) {
+            return VARIABLES.get(key);
+        }
+        throw new RuntimeException("Variable with key '" + key + "' doesn't exist.");
     }
 
     public static void put(String key, IValue value) {
