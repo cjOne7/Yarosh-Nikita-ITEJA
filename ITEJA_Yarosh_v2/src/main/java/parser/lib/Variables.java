@@ -1,5 +1,8 @@
 package parser.lib;
 
+import parser.lib.datatypes.DoubleValue;
+import parser.lib.datatypes.StringValue;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package parser.statements.loops;
 
 import parser.expressions.IExpression;
-import parser.lib.DoubleValue;
+import parser.lib.datatypes.DoubleValue;
 import parser.lib.Variables;
 import parser.statements.IStatement;
 

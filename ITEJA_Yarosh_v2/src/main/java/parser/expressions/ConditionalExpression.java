@@ -1,8 +1,8 @@
 package parser.expressions;
 
 import parser.lib.IValue;
-import parser.lib.DoubleValue;
-import parser.lib.StringValue;
+import parser.lib.datatypes.DoubleValue;
+import parser.lib.datatypes.StringValue;
 
 public class ConditionalExpression implements IExpression {
     private IExpression expression1, expression2;

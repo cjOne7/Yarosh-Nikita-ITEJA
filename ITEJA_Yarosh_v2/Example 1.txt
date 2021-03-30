@@ -1,9 +1,12 @@
 program myProgram;
 
 var a : double;
-    str: string;
+    name: string;
 begin
-    writeln(cos(0));
+    //name := "Nikita" + cos(PI);
+    name := "Nikita" + write("Hello, ", 10, "!");
+    //write("Hello, ", name, "!");
+    //writeln(cos(PI));
     {for a := 1 to 10 do
     begin
         writeln(a * "*")

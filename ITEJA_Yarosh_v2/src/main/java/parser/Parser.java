@@ -1,17 +1,14 @@
 package parser;
 
-import lexer.constants.Brackets;
 import lexer.constants.KeyWords;
 import lexer.constants.MathOperators;
-import parser.statements.blocks.BlockStatement;
-import parser.statements.blocks.StatementBlock;
+import parser.lib.datatypes.*;
+import parser.statements.blocks.*;
 import parser.expressions.*;
 import parser.lib.*;
 import parser.statements.*;
-import parser.statements.loops.BreakStatement;
-import parser.statements.loops.ForStatement;
-import parser.statements.loops.RepeatStatement;
-import parser.statements.loops.WhileStatement;
+import parser.statements.functions.FunctionStatement;
+import parser.statements.loops.*;
 import token.Token;
 import token.TokenType;
 
@@ -149,43 +146,40 @@ public final class Parser {
     }
 
     private IStatement parseStatement() {
-        IStatement statement;
         Token current = getCurrentToken(0);
-        if (current.getTokenType().equals(TokenType.IDENTIFIER)) {
-            statement = parseAssignmentStatement();
+        switch (current.getTokenType()) {
+            case IDENTIFIER:
+                if (getCurrentToken(1).getTokenType().equals(TokenType.OPEN_ROUND_BRACKET)) {
+                    consumeToken(TokenType.IDENTIFIER);
+                    consumeToken(TokenType.OPEN_ROUND_BRACKET);
+                    return new FunctionStatement(function(current.getStringToken()));
+                }
+                return parseAssignmentStatement();
+            case IF:
+                return parseIfStatement();
+            case BEGIN:
+                consumeToken(TokenType.BEGIN);
+                return new BlockStatement(parseStatementBlock());
+            case WHILE:
+                return parseWhileStatement();
+            case REPEAT:
+                return parseRepeatStatement();
+            case FOR:
+                return parseForStatement();
+            case BREAK:
+                consumeToken(TokenType.BREAK);
+                return new BreakStatement();
+            case WRITELN:
+                return parseWriteBlock();
+            case READLN:
+                return parseReadStatement();
+            case EXIT:
+                consumeToken(TokenType.EXIT);
+                return new ExitStatement();
+            default:
+                throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, EXIT, " +
+                        "but current token is " + current.getTokenType() + " on position " + current.getRowPosition());
         }
-        else if (current.getTokenType().equals(TokenType.IF)) {
-            statement = parseIfStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.BEGIN)) {
-            statement = new BlockStatement(parseStatementBlock());
-        }
-        else if (current.getTokenType().equals(TokenType.WHILE)) {
-            statement = parseWhileStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.REPEAT)) {
-            statement = parseRepeatStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.FOR)) {
-            statement = parseForStatement();
-        }
-        else if (isMatchTokenType(TokenType.BREAK)) {
-            statement = new BreakStatement();
-        }
-        else if (current.getTokenType().equals(TokenType.WRITELN)) {
-            statement = parseWriteBlock();
-        }
-        else if (current.getTokenType().equals(TokenType.READLN)) {
-            statement = parseReadStatement();
-        }
-        else if (isMatchTokenType(TokenType.EXIT)) {
-            statement = new ExitStatement();
-        }
-        else {
-            throw new RuntimeException("Missing one of next statements: IDENTIFIER, IF, WHILE, BEGIN, WRITELN, READLN, EXIT, " +
-                    "but current token is " + current.getTokenType() + " on position " + current.getRowPosition());
-        }
-        return statement;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

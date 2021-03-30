@@ -2,7 +2,7 @@ package parser.statements;
 
 import parser.expressions.IExpression;
 import parser.lib.IValue;
-import parser.lib.StringValue;
+import parser.lib.datatypes.StringValue;
 
 public class WriteStatement implements IStatement {
     private IExpression expression;

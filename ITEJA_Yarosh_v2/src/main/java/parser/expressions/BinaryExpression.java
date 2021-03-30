@@ -2,8 +2,8 @@ package parser.expressions;
 
 import lexer.constants.KeyWords;
 import parser.lib.IValue;
-import parser.lib.DoubleValue;
-import parser.lib.StringValue;
+import parser.lib.datatypes.DoubleValue;
+import parser.lib.datatypes.StringValue;
 
 public class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;

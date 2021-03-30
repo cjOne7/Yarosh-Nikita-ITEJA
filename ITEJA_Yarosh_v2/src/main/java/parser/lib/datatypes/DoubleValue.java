@@ -1,4 +1,6 @@
-package parser.lib;
+package parser.lib.datatypes;
+
+import parser.lib.IValue;
 
 public class DoubleValue implements IValue {
     private final double value;

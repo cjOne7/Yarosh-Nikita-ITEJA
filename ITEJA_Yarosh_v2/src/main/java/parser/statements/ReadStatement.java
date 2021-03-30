@@ -1,8 +1,8 @@
 package parser.statements;
 
 import parser.lib.IValue;
-import parser.lib.DoubleValue;
-import parser.lib.StringValue;
+import parser.lib.datatypes.DoubleValue;
+import parser.lib.datatypes.StringValue;
 import parser.lib.Variables;
 
 import java.util.Scanner;

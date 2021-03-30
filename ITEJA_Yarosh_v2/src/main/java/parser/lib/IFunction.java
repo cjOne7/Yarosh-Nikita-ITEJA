@@ -1,4 +1,4 @@
-package parser.statements.functions;
+package parser.lib;
 
 import parser.lib.IValue;
 
