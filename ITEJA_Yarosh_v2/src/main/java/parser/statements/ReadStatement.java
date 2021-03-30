@@ -1,7 +1,7 @@
 package parser.statements;
 
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 import parser.lib.StringValue;
 import parser.lib.Variables;
 
@@ -24,7 +24,7 @@ public class ReadStatement implements IStatement {
                 Variables.put(identifier, new StringValue(newValue));
             }
             else {
-                Variables.put(identifier, new NumberValue(Double.parseDouble(newValue)));
+                Variables.put(identifier, new DoubleValue(Double.parseDouble(newValue)));
             }
         } catch (NumberFormatException e) {
             System.err.println("Datatype " + value.getClass().getSimpleName() + " doesn't match with '" + newValue + "' value.");

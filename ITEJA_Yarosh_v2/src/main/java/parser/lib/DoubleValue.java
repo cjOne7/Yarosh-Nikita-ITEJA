@@ -1,13 +1,13 @@
 package parser.lib;
 
-public class NumberValue implements IValue {
+public class DoubleValue implements IValue {
     private final double value;
 
-    public NumberValue(boolean value) {
+    public DoubleValue(boolean value) {
         this.value = value ? 1 : 0;
     }
 
-    public NumberValue(double value) {
+    public DoubleValue(double value) {
         this.value = value;
     }
 

@@ -1,7 +1,7 @@
 package parser.expressions;
 
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 import parser.lib.StringValue;
 
 public class ConditionalExpression implements IExpression {
@@ -16,7 +16,7 @@ public class ConditionalExpression implements IExpression {
     }
 
     public ConditionalExpression(boolean result) {
-        value = new NumberValue(result);
+        value = new DoubleValue(result);
     }
 
     @Override
@@ -31,18 +31,18 @@ public class ConditionalExpression implements IExpression {
             final String string2 = value2.asString();
             switch (operation) {
                 case "<>":
-                    return new NumberValue(!string1.equals(string2));
+                    return new DoubleValue(!string1.equals(string2));
                 case "<=":
-                    return new NumberValue(string1.compareTo(string2) <= 0);
+                    return new DoubleValue(string1.compareTo(string2) <= 0);
                 case ">=":
-                    return new NumberValue(string1.compareTo(string2) >= 0);
+                    return new DoubleValue(string1.compareTo(string2) >= 0);
                 case "<":
-                    return new NumberValue(string1.compareTo(string2) < 0);
+                    return new DoubleValue(string1.compareTo(string2) < 0);
                 case ">":
-                    return new NumberValue(string1.compareTo(string2) > 0);
+                    return new DoubleValue(string1.compareTo(string2) > 0);
                 case "=":
                 default:
-                    return new NumberValue(string1.equals(string2));
+                    return new DoubleValue(string1.equals(string2));
             }
         }
 
@@ -50,22 +50,22 @@ public class ConditionalExpression implements IExpression {
         double number2 = value2.asDouble();
         switch (operation) {
             case "<>":
-                return new NumberValue(number1 != number2);
+                return new DoubleValue(number1 != number2);
             case "<":
-                return new NumberValue(number1 < number2);
+                return new DoubleValue(number1 < number2);
             case "<=":
-                return new NumberValue(number1 <= number2);
+                return new DoubleValue(number1 <= number2);
             case ">":
-                return new NumberValue(number1 > number2);
+                return new DoubleValue(number1 > number2);
             case ">=":
-                return new NumberValue(number1 >= number2);
+                return new DoubleValue(number1 >= number2);
             case "and":
-                return new NumberValue((number1 != 0) && (number2 != 0));
+                return new DoubleValue((number1 != 0) && (number2 != 0));
             case "or":
-                return new NumberValue((number1 != 0) || (number2 != 0));
+                return new DoubleValue((number1 != 0) || (number2 != 0));
             case "=":
             default:
-                return new NumberValue(number1 == number2);
+                return new DoubleValue(number1 == number2);
         }
     }
 

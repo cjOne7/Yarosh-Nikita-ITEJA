@@ -2,7 +2,7 @@ package parser.expressions;
 
 import lexer.constants.KeyWords;
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 
 public class MathExpression implements IExpression {
     private final IExpression expression;
@@ -35,29 +35,29 @@ public class MathExpression implements IExpression {
     @Override
     public IValue eval() {
         IValue value = expression.eval();
-        if (value instanceof NumberValue) {
+        if (value instanceof DoubleValue) {
             switch (functionName) {
                 case KeyWords.SQRT:
-                    return new NumberValue(Math.sqrt(value.asDouble()));
+                    return new DoubleValue(Math.sqrt(value.asDouble()));
                 case KeyWords.SQR:
-                    return new NumberValue(Math.pow(value.asDouble(), 2));
+                    return new DoubleValue(Math.pow(value.asDouble(), 2));
                 case KeyWords.ROUND:
-                    return new NumberValue(Math.round(value.asDouble()));
+                    return new DoubleValue(Math.round(value.asDouble()));
                 case KeyWords.FLOOR:
-                    return new NumberValue(Math.floor(value.asDouble()));
+                    return new DoubleValue(Math.floor(value.asDouble()));
                 case KeyWords.LN:
-                    return new NumberValue(Math.log(value.asDouble()));
+                    return new DoubleValue(Math.log(value.asDouble()));
                 case KeyWords.COS:
-                    return new NumberValue(Math.cos(value.asDouble()));
+                    return new DoubleValue(Math.cos(value.asDouble()));
                 case KeyWords.SIN:
-                    return new NumberValue(Math.sin(value.asDouble()));
+                    return new DoubleValue(Math.sin(value.asDouble()));
                 case KeyWords.TAN:
-                    return new NumberValue(Math.tan(value.asDouble()));
+                    return new DoubleValue(Math.tan(value.asDouble()));
                 case KeyWords.COT:
-                    return new NumberValue(1 / Math.tan(value.asDouble()));
+                    return new DoubleValue(1 / Math.tan(value.asDouble()));
                 case KeyWords.ABS:
                 default:
-                    return new NumberValue(Math.abs(value.asDouble()));
+                    return new DoubleValue(Math.abs(value.asDouble()));
             }
         }
 

@@ -1,7 +1,7 @@
 package parser.statements.loops;
 
 import parser.expressions.IExpression;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 import parser.lib.Variables;
 import parser.statements.IStatement;
 
@@ -32,7 +32,7 @@ public class ForStatement implements IStatement {
     @Override
     public void execute() {
         double initialValue = initialValueExpression.eval().asDouble();
-        Variables.put(identifier, new NumberValue(initialValue));
+        Variables.put(identifier, new DoubleValue(initialValue));
         double toValue = toExpression.eval().asDouble();
         double i = initialValue;
         if (isReverse) {
@@ -56,7 +56,7 @@ public class ForStatement implements IStatement {
     }
 
     private double executeBody(double i) {
-        Variables.put(identifier, new NumberValue(i));
+        Variables.put(identifier, new DoubleValue(i));
         body.execute();
         return Variables.getValueByKey(identifier).asDouble();
     }

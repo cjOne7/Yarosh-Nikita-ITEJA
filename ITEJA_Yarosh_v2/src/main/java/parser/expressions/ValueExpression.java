@@ -1,7 +1,7 @@
 package parser.expressions;
 
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 import parser.lib.StringValue;
 
 public class ValueExpression implements IExpression {
@@ -9,7 +9,7 @@ public class ValueExpression implements IExpression {
     private final IValue value;
 
     public ValueExpression(double value) {
-        this.value = new NumberValue(value);
+        this.value = new DoubleValue(value);
     }
 
     public ValueExpression(String value) {

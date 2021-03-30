@@ -2,7 +2,7 @@ package parser.expressions;
 
 import lexer.constants.KeyWords;
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 import parser.lib.StringValue;
 
 public class BinaryExpression implements IExpression {
@@ -28,7 +28,7 @@ public class BinaryExpression implements IExpression {
                 case "/":
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
                 case "-":
-                    if (value2 instanceof NumberValue) {
+                    if (value2 instanceof DoubleValue) {
                         int value = (int) value2.asDouble();
                         String stringValue1 = value1.asString();
                         if (stringValue1.length() < value) {
@@ -39,7 +39,7 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("You can't string minus string");
                 case "*":
                     if (value1.getClass() != value2.getClass()) {
-                        return value1 instanceof NumberValue
+                        return value1 instanceof DoubleValue
                                 ? multiplyStrings(value1, value2) : multiplyStrings(value2, value1);
                     }
                     throw new RuntimeException("You can't times on string");
@@ -54,22 +54,22 @@ public class BinaryExpression implements IExpression {
         switch (operation) {
             case "-":
                 result = number1 - number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new DoubleValue(Math.round(result * 100.0) / 100.0);
             case "*":
                 result = number1 * number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new DoubleValue(Math.round(result * 100.0) / 100.0);
             case "/":
                 result = number1 / number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new DoubleValue(Math.round(result * 100.0) / 100.0);
             case KeyWords.MOD:
                 result = number1 % number2;
-                return new NumberValue(result);
+                return new DoubleValue(result);
             case KeyWords.DIV:
-                return new NumberValue((long) number1 / (long) number2);
+                return new DoubleValue((long) number1 / (long) number2);
             case "+":
             default:
                 result = number1 + number2;
-                return new NumberValue(Math.round(result * 100.0) / 100.0);
+                return new DoubleValue(Math.round(result * 100.0) / 100.0);
         }
     }
 

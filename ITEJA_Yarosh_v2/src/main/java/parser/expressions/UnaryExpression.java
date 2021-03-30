@@ -2,7 +2,7 @@ package parser.expressions;
 
 import lexer.constants.MathOperators;
 import parser.lib.IValue;
-import parser.lib.NumberValue;
+import parser.lib.DoubleValue;
 
 public class UnaryExpression implements IExpression {
 
@@ -18,10 +18,10 @@ public class UnaryExpression implements IExpression {
     public IValue eval() {
         switch (operation) {
             case MathOperators.MINUS:
-                return new NumberValue(-expression.eval().asDouble());
+                return new DoubleValue(-expression.eval().asDouble());
             case MathOperators.PLUS:
             default:
-                return new NumberValue(expression.eval().asDouble());
+                return new DoubleValue(expression.eval().asDouble());
         }
     }
 

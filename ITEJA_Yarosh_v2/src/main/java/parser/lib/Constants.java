@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-    public static final IValue ZERO = new NumberValue(0);
+    public static final IValue ZERO = new DoubleValue(0);
     public static final IValue EMPTY = new StringValue("");
     private static final Map<String, IValue> CONSTANTS = new HashMap<>();
 
     static {
-        CONSTANTS.put("PI", new NumberValue(3.14));
-        CONSTANTS.put("E", new NumberValue(2.7));
+        CONSTANTS.put("PI", new DoubleValue(3.14));
+        CONSTANTS.put("E", new DoubleValue(2.7));
     }
 
     public static boolean isKeyExists(String key) {
