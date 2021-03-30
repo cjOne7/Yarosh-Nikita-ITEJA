@@ -26,17 +26,6 @@ public class KeyWords {
     public final static String WRITELN = "writeln";
     public final static String READLN = "readln";
     public final static String EXIT = "exit";
-    public final static String SQRT = "sqrt";
-    public static final String SQR = "sqr";
-    public static final String ROUND = "round";
-    public static final String FLOOR = "floor";
-    public static final String CEIL = "ceil";
-    public static final String ABS = "abs";
-    public static final String LN = "ln";
-    public static final String COS = "cos";
-    public static final String SIN = "sin";
-    public static final String TAN = "tan";
-    public static final String COT = "cot";
     public final static String DOUBLE = "double";
     public final static String STRING = "string";
     public final static String MOD = "mod";
@@ -90,28 +79,6 @@ public class KeyWords {
                 return TokenType.READLN;
             case EXIT:
                 return TokenType.EXIT;
-            case SQRT:
-                return TokenType.SQRT;
-            case SQR:
-                return TokenType.SQR;
-            case ROUND:
-                return TokenType.ROUND;
-            case FLOOR:
-                return TokenType.FLOOR;
-            case CEIL:
-                return TokenType.CEIL;
-            case ABS:
-                return TokenType.ABS;
-            case LN:
-                return TokenType.LN;
-            case COS:
-                return TokenType.COS;
-            case SIN:
-                return TokenType.SIN;
-            case TAN:
-                return TokenType.TAN;
-            case COT:
-                return TokenType.COT;
             case DOUBLE:
                 return TokenType.DOUBLE;
             case STRING:

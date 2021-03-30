@@ -3,8 +3,9 @@ program myProgram;
 var a : double;
     str: string;
 begin
-    for a := 1 to 10 do
+    writeln(cos(0));
+    {for a := 1 to 10 do
     begin
         writeln(a * "*")
-    end
+    end}
 end.

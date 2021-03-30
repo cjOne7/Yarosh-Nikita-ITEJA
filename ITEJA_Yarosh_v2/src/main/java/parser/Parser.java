@@ -1,5 +1,6 @@
 package parser;
 
+import lexer.constants.Brackets;
 import lexer.constants.KeyWords;
 import lexer.constants.MathOperators;
 import parser.statements.blocks.BlockStatement;
@@ -107,7 +108,7 @@ public final class Parser {
     private void parseConstNumber(String identifier, boolean isNegativeNumber) {
         double value = Double.parseDouble(getCurrentToken(0).getStringToken());
         consumeToken(TokenType.NUMBER);
-        Constants.put(identifier, new NumberValue(isNegativeNumber ? -value : value));
+        Constants.put(identifier, new DoubleValue(isNegativeNumber ? -value : value));
     }
 
     private void parseConstString(String identifier) {
@@ -258,7 +259,8 @@ public final class Parser {
 
         if (isMatchTokenType(TokenType.DOWNTO)) {
             isReverse = true;
-        } else {
+        }
+        else {
             isMatchTokenType(TokenType.TO);
         }
         IExpression toExpression = additive();
@@ -412,15 +414,15 @@ public final class Parser {
             return string();
         }
         if (isMatchTokenType(TokenType.IDENTIFIER)) {
+            if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
+                return function(current.getStringToken());
+            }
             return new VariableExpression(current.getStringToken());
         }
         if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
             IExpression expression = expression();
             consumeToken(TokenType.CLOSE_ROUND_BRACKET);
             return expression;
-        }
-        if (MathExpression.isMathExpression(current.getTokenType().name())) {
-            return mathFunction();
         }
         if (isMatchTokenType(TokenType.NOT)) {
             if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
@@ -434,21 +436,20 @@ public final class Parser {
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
+    private FunctionExpression function(String function) {
+        FunctionExpression functionExpression = new FunctionExpression(function);
+        do {
+            functionExpression.addArgument(expression());
+        } while (isMatchTokenType(TokenType.COMMA));
+        consumeToken(TokenType.CLOSE_ROUND_BRACKET);
+        return functionExpression;
+    }
+
     private IExpression string() {
         String value = getCurrentToken(0).getStringToken();
         isMatchTokenType(TokenType.STRING);
         consumeToken(TokenType.QUOTE);
         return new ValueExpression(value);
-    }
-
-    private IExpression mathFunction() {
-        Token current = getCurrentToken(0);
-        String function = current.getStringToken();
-        consumeToken(current.getTokenType());
-        consumeToken(TokenType.OPEN_ROUND_BRACKET);
-        IExpression expression = expression();
-        consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-        return new MathExpression(function, expression);
     }
 
     private boolean isMatchTokenType(TokenType type) {
