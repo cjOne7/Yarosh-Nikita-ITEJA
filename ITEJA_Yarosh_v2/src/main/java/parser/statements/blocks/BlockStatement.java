@@ -1,5 +1,7 @@
-package parser.statements;
+package parser.statements.blocks;
 
+
+import parser.statements.IStatement;
 
 public class BlockStatement implements IStatement {
     private final IStatement block;

@@ -1,8 +1,9 @@
-package parser.statements;
+package parser.statements.loops;
 
 import parser.expressions.IExpression;
 import parser.lib.NumberValue;
 import parser.lib.Variables;
+import parser.statements.IStatement;
 
 public class ForStatement implements IStatement {
     private final String identifier;
@@ -57,8 +58,7 @@ public class ForStatement implements IStatement {
     private double executeBody(double i) {
         Variables.put(identifier, new NumberValue(i));
         body.execute();
-        i = Variables.getValueByKey(identifier).asDouble();
-        return i;
+        return Variables.getValueByKey(identifier).asDouble();
     }
 
     @Override

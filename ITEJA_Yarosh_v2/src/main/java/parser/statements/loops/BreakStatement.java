@@ -1,6 +1,8 @@
-package parser.statements;
+package parser.statements.loops;
 
-public class BreakStatement extends RuntimeException implements IStatement{
+import parser.statements.IStatement;
+
+public class BreakStatement extends RuntimeException implements IStatement {
 
     @Override
     public void execute() {

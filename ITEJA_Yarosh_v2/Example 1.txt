@@ -3,7 +3,8 @@ program myProgram;
 var a : double;
     str: string;
 begin
-    a := 3;
-    str := "123";
-    writeln(str * a);
+    for a := 1 to 10 do
+    begin
+        writeln(a * "*")
+    end
 end.

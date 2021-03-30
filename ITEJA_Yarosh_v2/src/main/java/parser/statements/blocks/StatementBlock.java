@@ -1,4 +1,4 @@
-package parser.statements;
+package parser.statements.blocks;
 
 import parser.statements.IStatement;
 
@@ -12,18 +12,18 @@ public class StatementBlock implements IStatement {
     }
 
     @Override
+    public void execute() {
+        for (IStatement statement : statementList) {
+            statement.execute();
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (IStatement statement : statementList) {
             stringBuilder.append(statement.toString());
         }
         return stringBuilder.toString();
-    }
-
-    @Override
-    public void execute() {
-        for (IStatement statement : statementList) {
-            statement.execute();
-        }
     }
 }

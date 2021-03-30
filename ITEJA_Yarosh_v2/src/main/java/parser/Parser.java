@@ -2,10 +2,15 @@ package parser;
 
 import lexer.constants.KeyWords;
 import lexer.constants.MathOperators;
-import parser.statements.StatementBlock;
+import parser.statements.blocks.BlockStatement;
+import parser.statements.blocks.StatementBlock;
 import parser.expressions.*;
 import parser.lib.*;
 import parser.statements.*;
+import parser.statements.loops.BreakStatement;
+import parser.statements.loops.ForStatement;
+import parser.statements.loops.RepeatStatement;
+import parser.statements.loops.WhileStatement;
 import token.Token;
 import token.TokenType;
 

@@ -1,6 +1,7 @@
-package parser.statements;
+package parser.statements.loops;
 
 import parser.expressions.IExpression;
+import parser.statements.IStatement;
 
 public class WhileStatement implements IStatement {
     private final IExpression condition;
