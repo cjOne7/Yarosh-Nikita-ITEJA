@@ -419,6 +419,9 @@ public final class Parser {
 
     private FunctionExpression function(String functionName, boolean isExpression) {
         FunctionExpression functionExpression = new FunctionExpression(functionName, isExpression);
+        if (isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET)) {
+            return functionExpression;
+        }
         do {
             functionExpression.addArgument(expression());
         } while (isMatchTokenType(TokenType.COMMA));
