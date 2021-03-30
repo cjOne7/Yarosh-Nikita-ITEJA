@@ -429,7 +429,7 @@ public final class Parser {
         return functionExpression;
     }
 
-    private IExpression string() {
+    private ValueExpression string() {
         String value = getCurrentToken(0).getStringToken();
         isMatchTokenType(TokenType.STRING);
         consumeToken(TokenType.QUOTE);
