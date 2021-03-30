@@ -1,4 +1,4 @@
-package parser.blocks;
+package parser.statements;
 
 import parser.statements.IStatement;
 
