@@ -152,7 +152,7 @@ public final class Parser {
                 if (getCurrentToken(1).getTokenType().equals(TokenType.OPEN_ROUND_BRACKET)) {
                     consumeToken(TokenType.IDENTIFIER);
                     consumeToken(TokenType.OPEN_ROUND_BRACKET);
-                    return new FunctionStatement(function(current.getStringToken()));
+                    return new FunctionStatement(function(current.getStringToken(), false));
                 }
                 return parseAssignmentStatement();
             case IF:
@@ -409,7 +409,7 @@ public final class Parser {
         }
         if (isMatchTokenType(TokenType.IDENTIFIER)) {
             if (isMatchTokenType(TokenType.OPEN_ROUND_BRACKET)) {
-                return function(current.getStringToken());
+                return function(current.getStringToken(), true);
             }
             return new VariableExpression(current.getStringToken());
         }
@@ -430,8 +430,8 @@ public final class Parser {
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
-    private FunctionExpression function(String function) {
-        FunctionExpression functionExpression = new FunctionExpression(function);
+    private FunctionExpression function(String functionName, boolean isExpression) {
+        FunctionExpression functionExpression = new FunctionExpression(functionName, isExpression);
         do {
             functionExpression.addArgument(expression());
         } while (isMatchTokenType(TokenType.COMMA));

@@ -4,9 +4,10 @@ var a : double;
     name: string;
 begin
     //name := "Nikita" + cos(PI);
-    name := "Nikita" + write("Hello, ", 10, "!");
-    //write("Hello, ", name, "!");
-    //writeln(cos(PI));
+    //name := "Nikita" + write("Hello, ", 10, "!");
+    //write("Hello, ", 10, "!");
+    //write(round(cos(PI)));
+    cos(PI);
     {for a := 1 to 10 do
     begin
         writeln(a * "*")
