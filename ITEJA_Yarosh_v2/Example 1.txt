@@ -1,13 +1,12 @@
 program myProgram;
 
 var a : double;
-    name: string;
+    name : string;
 begin
     //readln(a);
-    //name := "Nikita" + cos(PI);
     //name := "Nikita" + write("Hello, ", 10, "!");
-    writeln();
-    writeln(round(cos(PI)));
+    //writeln();
+    //writeln(round(cos(PI)));
     //cos(PI);
     {for a := 1 to 10 do
     begin

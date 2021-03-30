@@ -60,6 +60,22 @@ public final class Functions {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.round(args[0].asDouble()));
         });
+        addFunction(FLOOR, true, args -> {
+            check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
+            return new DoubleValue(Math.floor(args[0].asDouble()));
+        });
+        addFunction(CEIL, true, args -> {
+            check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
+            return new DoubleValue(Math.ceil(args[0].asDouble()));
+        });
+        addFunction(ABS, true, args -> {
+            check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
+            return new DoubleValue(Math.abs(args[0].asDouble()));
+        });
+        addFunction(LN, true, args -> {
+            check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
+            return new DoubleValue(Math.log(args[0].asDouble()));
+        });
         addFunction(POWER, true, args -> {
             check(args.length != 2, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.pow(args[0].asDouble(), args[1].asDouble()));
