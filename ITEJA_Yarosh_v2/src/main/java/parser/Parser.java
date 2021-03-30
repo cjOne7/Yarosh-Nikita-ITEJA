@@ -169,8 +169,6 @@ public final class Parser {
             case BREAK:
                 consumeToken(TokenType.BREAK);
                 return new BreakStatement();
-            case WRITELN:
-                return parseWriteBlock();
             case READLN:
                 return parseReadStatement();
             case EXIT:
@@ -183,17 +181,6 @@ public final class Parser {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private IStatement parseWriteBlock() {
-        consumeToken(TokenType.WRITELN);
-        consumeToken(TokenType.OPEN_ROUND_BRACKET);
-        if (isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET)) {
-            return new WriteStatement();
-        }
-        IExpression expression = expression();
-        consumeToken(TokenType.CLOSE_ROUND_BRACKET);
-        return new WriteStatement(expression);
-    }
-
     private IStatement parseReadStatement() {
         consumeToken(TokenType.READLN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);

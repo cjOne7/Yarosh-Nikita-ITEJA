@@ -23,7 +23,6 @@ public class KeyWords {
     public final static String STEP = "step";
     public final static String VAR = "var";
     public final static String CONST = "const";
-    public final static String WRITELN = "writeln";
     public final static String READLN = "readln";
     public final static String EXIT = "exit";
     public final static String DOUBLE = "double";
@@ -73,8 +72,6 @@ public class KeyWords {
                 return TokenType.VAR;
             case CONST:
                 return TokenType.CONST;
-            case WRITELN:
-                return TokenType.WRITELN;
             case READLN:
                 return TokenType.READLN;
             case EXIT:

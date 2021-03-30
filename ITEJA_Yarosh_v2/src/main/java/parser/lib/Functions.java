@@ -6,6 +6,7 @@ import parser.lib.datatypes.StringValue;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public final class Functions {
@@ -23,6 +24,8 @@ public final class Functions {
     private static final String COTAN = "cot";
     //Input/Output
     private static final String WRITE = "write";
+    private static final String WRITELN = "writeln";
+    private static final String READLN = "readln";
 
     public static final IValue VOID = new StringValue("void");
     private static final Map<String, IFunction> FUNCTIONS = new HashMap<>();
@@ -33,46 +36,46 @@ public final class Functions {
     static {
         String errorMess = "The required number of arguments does not match current amount.";
         //maths
-        FUNCTION_HAS_RETURN_TYPE.put(COS, true);
-        FUNCTIONS.put(COS, args -> {
+        addFunction(COS, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.cos(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(SIN, true);
-        FUNCTIONS.put(SIN, args -> {
+        addFunction(SIN, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.sin(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(TAN, true);
-        FUNCTIONS.put(TAN, args -> {
+        addFunction(TAN, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.tan(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(COTAN, true);
-        FUNCTIONS.put(COTAN, args -> {
+        addFunction(COTAN, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(1 / Math.tan(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(SQRT, true);
-        FUNCTIONS.put(SQRT, args -> {
+        addFunction(SQRT, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.sqrt(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(ROUND, true);
-        FUNCTIONS.put(ROUND, args -> {
+        addFunction(ROUND, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.round(args[0].asDouble()));
         });
-        FUNCTION_HAS_RETURN_TYPE.put(POWER, true);
-        FUNCTIONS.put(POWER, args -> {
-            check(args.length != 2, errorMess + "Required " + 2 + ", but found " + args.length);
+        addFunction(POWER, true, args -> {
+            check(args.length != 2, errorMess + "Required " + 1 + ", but found " + args.length);
             return new DoubleValue(Math.pow(args[0].asDouble(), args[1].asDouble()));
         });
         //Input/Output
-        FUNCTION_HAS_RETURN_TYPE.put(WRITE, false);
-        FUNCTIONS.put(WRITE, args -> {
+        addFunction(WRITE, false, args -> {
             String output = Arrays.stream(args).map(IValue::asString).collect(Collectors.joining());
             System.out.print(output);
+            return VOID;
+        });
+        addFunction(WRITELN, false, args -> {
+            if (args.length == 0) {
+                System.out.println();
+            } else {
+                System.out.println(Arrays.stream(args).map(IValue::asString).collect(Collectors.joining()));
+            }
             return VOID;
         });
     }
@@ -83,21 +86,17 @@ public final class Functions {
     }
 
     public static boolean functionHasReturnType(String functionName) {
-        check(!isKeyExists(functionName), "Unknown function '" + functionName + "'.");
+        check(isKeyNotExists(functionName), "Unknown function '" + functionName + "'.");
         return FUNCTION_HAS_RETURN_TYPE.get(functionName);
     }
 
     public static IFunction getFunctionByName(String functionName) {
-        check(!isKeyExists(functionName), "Unknown function '" + functionName + "'.");
+        check(isKeyNotExists(functionName), "Unknown function '" + functionName + "'.");
         return FUNCTIONS.get(functionName);
     }
 
-    public static void put(String key, IFunction function) {
-        FUNCTIONS.put(key, function);
-    }
-
-    public static boolean isKeyExists(String key) {
-        return FUNCTIONS.containsKey(key);
+    public static boolean isKeyNotExists(String key) {
+        return !FUNCTIONS.containsKey(key);
     }
 
     private static void check(boolean condition, String exceptionMessage) {
