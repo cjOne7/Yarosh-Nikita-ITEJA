@@ -17,7 +17,7 @@ public final class Main {
     public static void main(String[] args) {
         String[] paths = {"Program 1.txt", "Program 2.txt", "Program 3.txt"};
         try {
-            String input = new String(Files.readAllBytes(Paths.get(paths[0])), StandardCharsets.UTF_8);
+            String input = new String(Files.readAllBytes(Paths.get(paths[2])), StandardCharsets.UTF_8);
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.getTokens(input);
 //            for (Token token : tokens) {

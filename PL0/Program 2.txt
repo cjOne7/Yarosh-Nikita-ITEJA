@@ -1,50 +1,16 @@
-var a, b, c, x1, x2, discriminant, sqrtDiscriminant : double;
+VAR x : INTEGER, squ : INTEGER;
 
-procedure calcDiscriminant;
-begin
-    !"Enter a:";
-    ?a;
-    !"Enter b:";
-    ?b;
-    !"Enter c:";
-    ?c;
-    discriminant := b * b - 4 * a * c
-end;
+PROCEDURE square;
+BEGIN
+   squ:= x * x
+END;
 
-procedure sqrt;
-var x : double;
-begin
-  x := 0;
-  while x * x < discriminant do
-    x := x + 1;
-
-  if x * x # discriminant then
-  begin
-    while x * x < discriminant do
-      x := x + 0.1;
-
-    x := x - 0.1;
-    while x * x < discriminant do
-      x := x + 0.01;
-
-    x := x - 0.01;
-    while x * x < discriminant do
-      x := x + 0.001;
-
-    x := x - 0.001
-  end;
-  sqrtDiscriminant := x
-end;
-
-begin
-    call calcDiscriminant;
-    ! discriminant;
-    call sqrt;
-    ! sqrtDiscriminant;
-    if discriminant >= 0 then
-    begin
-        x1 := (-b + sqrtDiscriminant) / (2*a);
-        x2 := (-b - sqrtDiscriminant) / (2*a);
-		! "x1 = " + x1 + ", x2 = " + x2
-    end
-end.
+BEGIN
+   x := 1;
+   WHILE x <= 10 DO
+   BEGIN
+      CALL square;
+      ! squ;
+      x := x + 1
+   END
+END.
