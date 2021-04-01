@@ -87,11 +87,7 @@ public final class Functions {
             return VOID;
         });
         addFunction(WRITELN, false, args -> {
-            if (args.length == 0) {
-                System.out.println();
-            } else {
-                System.out.println(Arrays.stream(args).map(IValue::asString).collect(Collectors.joining()));
-            }
+            System.out.println(Arrays.stream(args).map(IValue::asString).collect(Collectors.joining()));
             return VOID;
         });
     }

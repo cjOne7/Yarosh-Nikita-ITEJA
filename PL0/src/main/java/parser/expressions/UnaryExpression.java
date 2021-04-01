@@ -2,6 +2,7 @@ package parser.expressions;
 
 import parser.lib.IValue;
 import parser.lib.NumberValue;
+import parser.lib.StringValue;
 
 public class UnaryExpression implements IExpression {
 
@@ -15,14 +16,19 @@ public class UnaryExpression implements IExpression {
 
     @Override
     public IValue eval() {
+        IValue value = expression.eval();
         switch (operation) {
             case "-":
-                return new NumberValue(-expression.eval().asNumber());
+                return new NumberValue(-value.asNumber());
             case "odd":
-                return new NumberValue(expression.eval().asNumber() % 2 == 0 ? 0 : 1);
+                return new NumberValue(value.asNumber() % 2 == 0 ? 0 : 1);
             case "+":
+                if (value instanceof StringValue) {
+                    return new NumberValue(value.asNumber());
+                }
+                return new NumberValue(value.asNumber());
             default:
-                return new NumberValue(expression.eval().asNumber());
+                return new NumberValue(value.asNumber());
         }
     }
 
