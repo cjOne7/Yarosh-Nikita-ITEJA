@@ -3,12 +3,11 @@ program myProgram;
 var a : double;
     name : string;
 begin
-    //readln(a);
-    //name := "Nikita" + write("Hello, ", 10, "!");
-    //writeln();
+    //name := "Nikita" + write("Hello, ", 10, "!");//error due to write can be called only as statement
     //writeln(round(cos(PI)));
     //cos(PI);
-    {for a := 1 to 10 do
+    {readln(a);
+    for a := 1 to 10 do
     begin
         writeln(a * "*")
     end}
