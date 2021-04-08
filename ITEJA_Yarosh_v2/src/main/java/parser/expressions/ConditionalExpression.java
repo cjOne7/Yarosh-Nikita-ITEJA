@@ -28,7 +28,7 @@ public final class ConditionalExpression implements IExpression {
     }
 
     /**
-     * @param result converted into boolean double result after evaluating
+     * @param result converted double result into boolean after evaluating
      */
     public ConditionalExpression(final boolean result) {
         value = new DoubleValue(result);

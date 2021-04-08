@@ -28,21 +28,32 @@ public final class FunctionExpression implements IExpression {
     }
 
     /**
-     * @param argument add one argument to function header
+     * @param functionName function identifier
+     * @param isExpression responsible for marking functions with void return type
+     * @param args         add list of arguments to function header {@link #args}
+     */
+    public FunctionExpression(final String functionName, final boolean isExpression, final List<IExpression> args) {
+        this.functionName = functionName;
+        this.isExpression = isExpression;
+        this.args = args;
+    }
+
+    /**
+     * @param argument add one argument to function header {@link #args}
      */
     public void addArgument(final IExpression argument) {
         args.add(argument);
     }
 
     /**
-     * @param args add {@link List} of arguments to function header
+     * @param args add list of arguments to function header {@link #args}
      */
     public void addArguments(final List<IExpression> args) {
         this.args.addAll(args);
     }
 
     /**
-     * @return execution result {@link IValue} depending on function return datatype
+     * @return function execution result {@link IValue} depending on function return datatype
      * @throws RuntimeException when user try to call void function as expression
      */
     @Override
