@@ -3,11 +3,11 @@ package parser.statements.loops;
 import parser.expressions.IExpression;
 import parser.statements.IStatement;
 
-public class RepeatStatement implements IStatement {
+public final class RepeatStatement implements IStatement {
     private final IExpression condition;
     private final IStatement blockStatement;
 
-    public RepeatStatement(IExpression condition, IStatement blockStatement) {
+    public RepeatStatement(final IExpression condition, final IStatement blockStatement) {
         this.condition = condition;
         this.blockStatement = blockStatement;
     }

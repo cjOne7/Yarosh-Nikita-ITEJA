@@ -4,15 +4,15 @@ import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
-public class ValueExpression implements IExpression {
+public final class ValueExpression implements IExpression {
 
     private final IValue value;
 
-    public ValueExpression(double value) {
+    public ValueExpression(final double value) {
         this.value = new DoubleValue(value);
     }
 
-    public ValueExpression(String value) {
+    public ValueExpression(final String value) {
         this.value = new StringValue(value);
     }
 

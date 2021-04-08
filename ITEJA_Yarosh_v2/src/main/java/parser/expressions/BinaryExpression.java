@@ -5,11 +5,11 @@ import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
-public class BinaryExpression implements IExpression {
+public final class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
     private final String operation;
 
-    public BinaryExpression(String operation, IExpression expression1, IExpression expression2) {
+    public BinaryExpression(final String operation, final IExpression expression1, final IExpression expression2) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.operation = operation;
@@ -29,8 +29,8 @@ public class BinaryExpression implements IExpression {
                     throw new RuntimeException("Strings don't support '" + operation + "' operation");
                 case "-":
                     if (value2 instanceof DoubleValue) {
-                        int value = (int) value2.asDouble();
-                        String stringValue1 = value1.asString();
+                        final int value = (int) value2.asDouble();
+                        final String stringValue1 = value1.asString();
                         if (stringValue1.length() < value) {
                             throw new RuntimeException(stringValue1 + " (" + stringValue1.length() + ") is smaller than subtracted value (" + value + ").");
                         }

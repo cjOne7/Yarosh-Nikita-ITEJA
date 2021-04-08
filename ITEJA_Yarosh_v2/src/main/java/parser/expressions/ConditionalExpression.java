@@ -4,18 +4,18 @@ import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
-public class ConditionalExpression implements IExpression {
+public final class ConditionalExpression implements IExpression {
     private IExpression expression1, expression2;
     private String operation;
     private IValue value;
 
-    public ConditionalExpression(String operation, IExpression expression1, IExpression expression2) {
+    public ConditionalExpression(final String operation, final IExpression expression1, final IExpression expression2) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.operation = operation;
     }
 
-    public ConditionalExpression(boolean result) {
+    public ConditionalExpression(final boolean result) {
         value = new DoubleValue(result);
     }
 
@@ -46,8 +46,8 @@ public class ConditionalExpression implements IExpression {
             }
         }
 
-        double number1 = value1.asDouble();
-        double number2 = value2.asDouble();
+        final double number1 = value1.asDouble();
+        final double number2 = value2.asDouble();
         switch (operation) {
             case "<>":
                 return new DoubleValue(number1 != number2);

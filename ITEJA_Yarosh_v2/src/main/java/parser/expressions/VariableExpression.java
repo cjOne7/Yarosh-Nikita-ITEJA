@@ -4,10 +4,10 @@ import parser.lib.Constants;
 import parser.lib.datatypes.IValue;
 import parser.lib.Variables;
 
-public class VariableExpression implements IExpression {
+public final class VariableExpression implements IExpression {
     private final String name;
 
-    public VariableExpression(String name) {
+    public VariableExpression(final String name) {
         this.name = name;
     }
 

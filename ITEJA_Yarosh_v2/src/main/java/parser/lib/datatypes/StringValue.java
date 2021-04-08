@@ -1,9 +1,9 @@
 package parser.lib.datatypes;
 
-public class StringValue implements IValue {
+public final class StringValue implements IValue {
     private final String value;
 
-    public StringValue(String value) {
+    public StringValue(final String value) {
         this.value = value;
     }
 

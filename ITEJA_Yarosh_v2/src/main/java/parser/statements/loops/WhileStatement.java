@@ -3,11 +3,11 @@ package parser.statements.loops;
 import parser.expressions.IExpression;
 import parser.statements.IStatement;
 
-public class WhileStatement implements IStatement {
+public final class WhileStatement implements IStatement {
     private final IExpression condition;
     private final IStatement blockStatement;
 
-    public WhileStatement(IExpression condition, IStatement blockStatement) {
+    public WhileStatement(final IExpression condition, final IStatement blockStatement) {
         this.condition = condition;
         this.blockStatement = blockStatement;
     }

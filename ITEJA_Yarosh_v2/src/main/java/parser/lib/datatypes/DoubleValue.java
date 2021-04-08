@@ -1,13 +1,13 @@
 package parser.lib.datatypes;
 
-public class DoubleValue implements IValue {
+public final class DoubleValue implements IValue {
     private final double value;
 
-    public DoubleValue(boolean value) {
+    public DoubleValue(final boolean value) {
         this.value = value ? 1 : 0;
     }
 
-    public DoubleValue(double value) {
+    public DoubleValue(final double value) {
         this.value = value;
     }
 
@@ -18,7 +18,7 @@ public class DoubleValue implements IValue {
 
     @Override
     public String asString() {
-        long result = (long) value;
+        final long result = (long) value;
         if (result == value) {
             return String.format("%.0f", value);
         }

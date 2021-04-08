@@ -4,22 +4,22 @@ import parser.expressions.IExpression;
 import parser.lib.*;
 import parser.lib.datatypes.IValue;
 
-public class AssignmentStatement implements IStatement {
+public final class AssignmentStatement implements IStatement {
     private final String variableName;
     private final IExpression expression;
 
-    public AssignmentStatement(String identifier, IExpression expression) {
+    public AssignmentStatement(final String identifier, final IExpression expression) {
         this.variableName = identifier;
         this.expression = expression;
     }
 
     @Override
     public void execute() {
-        IValue value = Variables.getValueByKey(variableName);
-        IValue rightValue = expression.eval();
+        final IValue value = Variables.getValueByKey(variableName);
+        final IValue rightValue = expression.eval();
         if (value.getClass() != rightValue.getClass()) {
-            String firstDatatype = value.getClass().getSimpleName();
-            String secondDatatype = rightValue.getClass().getSimpleName();
+            final String firstDatatype = value.getClass().getSimpleName();
+            final String secondDatatype = rightValue.getClass().getSimpleName();
             throw new RuntimeException("Datatype " + firstDatatype + " doesn't match " + secondDatatype);
         }
         Variables.put(variableName, rightValue);

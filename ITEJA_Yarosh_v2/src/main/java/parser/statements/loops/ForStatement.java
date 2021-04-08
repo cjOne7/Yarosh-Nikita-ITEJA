@@ -5,7 +5,7 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.Variables;
 import parser.statements.IStatement;
 
-public class ForStatement implements IStatement {
+public final class ForStatement implements IStatement {
     private final String identifier;
     private final IExpression initialValueExpression;
     private final IExpression toExpression;
@@ -31,9 +31,9 @@ public class ForStatement implements IStatement {
 
     @Override
     public void execute() {
-        double initialValue = initialValueExpression.eval().asDouble();
+        final double initialValue = initialValueExpression.eval().asDouble();
         Variables.put(identifier, new DoubleValue(initialValue));
-        double toValue = toExpression.eval().asDouble();
+        final double toValue = toExpression.eval().asDouble();
         double i = initialValue;
         if (isReverse) {
             for (; i >= toValue; i -= step) {

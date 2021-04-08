@@ -12,6 +12,8 @@ public final class Variables {
     public static final IValue EMPTY = new StringValue("");
     private static final Map<String, IValue> VARIABLES = new HashMap<>();
 
+    private Variables() {}
+
     public static boolean isKeyExists(final String key) {
         return VARIABLES.containsKey(key);
     }

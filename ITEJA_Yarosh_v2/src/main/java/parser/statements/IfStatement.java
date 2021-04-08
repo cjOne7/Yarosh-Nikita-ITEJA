@@ -2,12 +2,12 @@ package parser.statements;
 
 import parser.expressions.IExpression;
 
-public class IfStatement implements IStatement {
+public final class IfStatement implements IStatement {
     private final IExpression condition;
     private final IStatement ifStatement;
     private final IStatement elseStatement;
 
-    public IfStatement(IExpression condition, IStatement ifStatement, IStatement elseStatement) {
+    public IfStatement(final IExpression condition, final IStatement ifStatement, final IStatement elseStatement) {
         this.condition = condition;
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
@@ -25,7 +25,7 @@ public class IfStatement implements IStatement {
 
     @Override
     public String toString() {
-        double result = condition.eval().asDouble();
+        final double result = condition.eval().asDouble();
         return "if " + (result == 1 ? "true" : "false") + " then\nbegin\n\t" + ifStatement + "end;"
                 + (result == 0 ? "\nelse\nbegin\n\t" + elseStatement + "end;" : "");
     }

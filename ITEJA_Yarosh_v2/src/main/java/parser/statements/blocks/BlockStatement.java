@@ -1,12 +1,11 @@
 package parser.statements.blocks;
 
-
 import parser.statements.IStatement;
 
-public class BlockStatement implements IStatement {
+public final class BlockStatement implements IStatement {
     private final IStatement block;
 
-    public BlockStatement(IStatement block) {
+    public BlockStatement(final IStatement block) {
         this.block = block;
     }
 

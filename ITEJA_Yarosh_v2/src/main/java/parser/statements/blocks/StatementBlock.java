@@ -4,10 +4,10 @@ import parser.statements.IStatement;
 
 import java.util.List;
 
-public class StatementBlock implements IStatement {
-    List<IStatement> statementList;
+public final class StatementBlock implements IStatement {
+    private final List<IStatement> statementList;
 
-    public StatementBlock(List<IStatement> statementList) {
+    public StatementBlock(final List<IStatement> statementList) {
         this.statementList = statementList;
     }
 
@@ -20,7 +20,7 @@ public class StatementBlock implements IStatement {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         for (IStatement statement : statementList) {
             stringBuilder.append(statement.toString());
         }

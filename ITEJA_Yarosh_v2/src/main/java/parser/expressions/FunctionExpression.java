@@ -7,38 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FunctionExpression implements IExpression {
+public final class FunctionExpression implements IExpression {
     private final String functionName;
     private final List<IExpression> args;
-    private boolean isExpression;
+    private final boolean isExpression;
 
-    public FunctionExpression(String functionName) {
-        this.functionName = functionName;
-        this.args = new ArrayList<>();
-    }
-
-    public FunctionExpression(String functionName, boolean isExpression) {
+    public FunctionExpression(final String functionName, final boolean isExpression) {
         this.functionName = functionName;
         this.isExpression = isExpression;
         this.args = new ArrayList<>();
     }
 
-    public FunctionExpression(String functionName, List<IExpression> args) {
-        this.functionName = functionName;
-        this.args = args;
-    }
-
-    public void addArgument(IExpression argument) {
+    public void addArgument(final IExpression argument) {
         args.add(argument);
     }
 
-    public void addArguments(List<IExpression> args) {
+    public void addArguments(final List<IExpression> args) {
         this.args.addAll(args);
     }
 
     @Override
     public IValue eval() {
-        IValue[] values = new IValue[args.size()];
+        final IValue[] values = new IValue[args.size()];
         for (int i = 0; i < args.size(); i++) {
             values[i] = args.get(i).eval();
         }

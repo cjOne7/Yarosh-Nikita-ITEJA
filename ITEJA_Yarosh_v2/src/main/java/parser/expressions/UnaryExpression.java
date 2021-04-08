@@ -4,12 +4,12 @@ import lexer.constants.MathOperators;
 import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 
-public class UnaryExpression implements IExpression {
+public final class UnaryExpression implements IExpression {
 
     private final IExpression expression;
     private final char operation;
 
-    public UnaryExpression(char operation, IExpression expression) {
+    public UnaryExpression(final char operation, final IExpression expression) {
         this.expression = expression;
         this.operation = operation;
     }

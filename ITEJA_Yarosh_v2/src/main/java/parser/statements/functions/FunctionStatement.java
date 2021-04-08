@@ -3,10 +3,10 @@ package parser.statements.functions;
 import parser.expressions.FunctionExpression;
 import parser.statements.IStatement;
 
-public class FunctionStatement implements IStatement {
+public final class FunctionStatement implements IStatement {
     private final FunctionExpression expression;
 
-    public FunctionStatement(FunctionExpression expression) {
+    public FunctionStatement(final FunctionExpression expression) {
         this.expression = expression;
     }
 
