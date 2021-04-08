@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *Implementation of the <tt>{@link IExpression}</tt> interface for function expressions
+ * Implementation of the <tt>IExpression</tt> interface for function expressions
+ *
+ * @see IExpression
  */
 public final class FunctionExpression implements IExpression {
     private final String functionName;
@@ -16,7 +18,6 @@ public final class FunctionExpression implements IExpression {
     private final boolean isExpression;
 
     /**
-     *
      * @param functionName function identifier
      * @param isExpression responsible for marking functions with void return type
      */
@@ -27,7 +28,6 @@ public final class FunctionExpression implements IExpression {
     }
 
     /**
-     *
      * @param argument add one argument to function header
      */
     public void addArgument(final IExpression argument) {
@@ -35,7 +35,6 @@ public final class FunctionExpression implements IExpression {
     }
 
     /**
-     *
      * @param args add {@link List} of arguments to function header
      */
     public void addArguments(final List<IExpression> args) {
@@ -43,7 +42,6 @@ public final class FunctionExpression implements IExpression {
     }
 
     /**
-     *
      * @return execution result {@link IValue} depending on function return datatype
      * @throws RuntimeException when user try to call void function as expression
      */

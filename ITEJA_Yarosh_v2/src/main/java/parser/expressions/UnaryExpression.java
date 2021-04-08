@@ -6,14 +6,16 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
 /**
- * Implementation of the <tt>{@link IExpression}</tt> interface for unary expressions
+ * Implementation of the <tt>IExpression</tt> interface for unary expressions
+ *
+ * @see IExpression
  */
 public final class UnaryExpression implements IExpression {
     private final IExpression expression;
     private final char operation;
 
     /**
-     * @param operation this operation will be performed on the expression
+     * @param operation  this operation will be performed on the expression
      * @param expression expression on which will be performed operation
      */
     public UnaryExpression(final char operation, final IExpression expression) {
@@ -22,7 +24,6 @@ public final class UnaryExpression implements IExpression {
     }
 
     /**
-     *
      * @return value {@link IValue} depending on expression evaluation result datatype
      * @throws RuntimeException when result of evaluation expression doesn't support the operation
      */

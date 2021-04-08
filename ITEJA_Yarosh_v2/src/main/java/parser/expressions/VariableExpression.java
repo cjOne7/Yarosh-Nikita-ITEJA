@@ -5,7 +5,9 @@ import parser.lib.datatypes.IValue;
 import parser.lib.Variables;
 
 /**
- * Implementation of the <tt>{@link IExpression}</tt> interface for expressions with variables
+ * Implementation of the <tt>IExpression</tt> interface for expressions with variables
+ *
+ * @see IExpression
  */
 public final class VariableExpression implements IExpression {
     private final String name;

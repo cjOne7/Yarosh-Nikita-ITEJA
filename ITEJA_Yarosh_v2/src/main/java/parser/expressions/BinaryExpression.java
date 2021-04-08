@@ -6,14 +6,16 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
 /**
- *Implementation of the <tt>{@link IExpression}</tt> interface for binary expressions
+ * Implementation of the <tt>IExpression</tt> interface for binary expressions
+ *
+ * @see IExpression
  */
 public final class BinaryExpression implements IExpression {
     private final IExpression expression1, expression2;
     private final String operation;
 
     /**
-     * @param operation this operation will be performed on the expressions
+     * @param operation   this operation will be performed on the expressions
      * @param expression1 left expression
      * @param expression2 right expression
      */
@@ -86,7 +88,6 @@ public final class BinaryExpression implements IExpression {
     }
 
     /**
-     *
      * @param number {@link DoubleValue} datatype value
      * @param string {@link StringValue} datatype value
      * @return multiplied number on string

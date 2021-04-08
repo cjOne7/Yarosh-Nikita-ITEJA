@@ -22,7 +22,7 @@ public final class Lexer {
 
     /**
      * @param code whole code string
-     * @return parsed {@link Lexer#code} string as {@link Lexer#tokens} list
+     * @return parsed {@link #code} string as {@link #tokens} list
      */
     public List<Token> getTokens(final String code) {
         this.code = code;
@@ -110,7 +110,8 @@ public final class Lexer {
     }
 
     /**
-     * This method reads string value and add three tokens to {@link Lexer#tokens}: QUOTE, STRING VALUE, QUOTE
+     * This method reads string value from {@link #code} on {@link #currentPosition} and adds three tokens to
+     * {@link #tokens}: QUOTE, STRING VALUE, QUOTE
      */
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
@@ -126,7 +127,7 @@ public final class Lexer {
     }
 
     /**
-     * This method reads identifier
+     * This method reads identifier. The start character represented as a parameter
      *
      * @param character start char in order to find identifier
      */
@@ -145,7 +146,7 @@ public final class Lexer {
     }
 
     /**
-     * This method reads decimal number
+     * This method reads decimal floating point number. The start character represented as a parameter
      *
      * @param character start char in order to find decimal number
      */
@@ -171,7 +172,7 @@ public final class Lexer {
     }
 
     /**
-     * Add token with current token type to token's list
+     * Add token with current token type to {@link #tokens}
      *
      * @param tokenType type of token
      * @param value     represents token value as string
@@ -187,9 +188,9 @@ public final class Lexer {
     }
 
     /**
-     * @param relativePosition integer value for relatively getting the symbol from {@link Lexer#code}. If relativePosition
-     *                         equals zero, method will return char from {@link Lexer#code} on position {@link Lexer#currentPosition}
-     * @return character on position {@link Lexer#currentPosition} + relativePosition
+     * @param relativePosition integer value for relatively getting the symbol from {@link #code}. If relativePosition
+     *                         equals zero, method will return char from {@link #code} on position {@link #currentPosition}
+     * @return character on position {@link #currentPosition} + relativePosition
      */
     private char peek(final int relativePosition) {
         final int position = currentPosition + relativePosition;
@@ -200,7 +201,8 @@ public final class Lexer {
     }
 
     /**
-     * @return next char in {@link Lexer#code} line
+     * Increments {@link #currentPosition} and returns next char in {@link #code}
+     * @return next char in {@link #code} line
      */
     private char next() {
         currentPosition++;

@@ -5,7 +5,9 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
 /**
- *Implementation of the <tt>{@link IExpression}</tt> interface for expressions with values
+ * Implementation of the <tt>IExpression</tt> interface for expressions with values
+ *
+ * @see IExpression
  */
 public final class ValueExpression implements IExpression {
 
@@ -26,7 +28,6 @@ public final class ValueExpression implements IExpression {
     }
 
     /**
-     *
      * @return value attribute of {@link ValueExpression} class
      */
     @Override

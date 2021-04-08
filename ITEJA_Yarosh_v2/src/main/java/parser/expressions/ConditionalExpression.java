@@ -7,7 +7,9 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 
 /**
- *Implementation of the <tt>{@link IExpression}</tt> interface for conditional expressions
+ * Implementation of the <tt>IExpression</tt> interface for conditional expressions
+ *
+ * @see IExpression
  */
 public final class ConditionalExpression implements IExpression {
     private IExpression expression1, expression2;
@@ -15,7 +17,7 @@ public final class ConditionalExpression implements IExpression {
     private IValue value;
 
     /**
-     * @param operation this operation will be performed on the expressions
+     * @param operation   this operation will be performed on the expressions
      * @param expression1 left expression
      * @param expression2 right expression
      */
