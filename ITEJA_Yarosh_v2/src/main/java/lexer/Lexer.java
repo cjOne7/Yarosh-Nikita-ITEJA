@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * This class cuts input string on defined in language's grammar parts
  */
 public final class Lexer {
     private String code;
@@ -21,8 +21,8 @@ public final class Lexer {
     private Token token;
 
     /**
-     * @param code
-     * @return
+     * @param code whole code string
+     * @return parsed {@link Lexer#code} string as {@link Lexer#tokens} list
      */
     public List<Token> getTokens(final String code) {
         this.code = code;
@@ -110,7 +110,7 @@ public final class Lexer {
     }
 
     /**
-     *
+     * This method reads string value and add three tokens to {@link Lexer#tokens}: QUOTE, STRING VALUE, QUOTE
      */
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
@@ -126,7 +126,9 @@ public final class Lexer {
     }
 
     /**
-     * @param character
+     * This method reads identifier
+     *
+     * @param character start char in order to find identifier
      */
     private void readWord(char character) {
         while (Character.isLetterOrDigit(character) || character == '_') {
@@ -143,7 +145,9 @@ public final class Lexer {
     }
 
     /**
-     * @param character
+     * This method reads decimal number
+     *
+     * @param character start char in order to find decimal number
      */
     private void readNumber(char character) {
         while (Character.isDigit(character)) {
@@ -167,8 +171,10 @@ public final class Lexer {
     }
 
     /**
-     * @param tokenType
-     * @param value
+     * Add token with current token type to token's list
+     *
+     * @param tokenType type of token
+     * @param value     represents token value as string
      */
     private void addToken(final TokenType tokenType, final String value) {
         if (tokenType == TokenType.UNKNOWN) {
@@ -181,8 +187,9 @@ public final class Lexer {
     }
 
     /**
-     * @param relativePosition
-     * @return
+     * @param relativePosition integer value for relatively getting the symbol from {@link Lexer#code}. If relativePosition
+     *                         equals zero, method will return char from {@link Lexer#code} on position {@link Lexer#currentPosition}
+     * @return character on position {@link Lexer#currentPosition} + relativePosition
      */
     private char peek(final int relativePosition) {
         final int position = currentPosition + relativePosition;
@@ -193,7 +200,7 @@ public final class Lexer {
     }
 
     /**
-     * @return
+     * @return next char in {@link Lexer#code} line
      */
     private char next() {
         currentPosition++;
@@ -201,8 +208,7 @@ public final class Lexer {
     }
 
     /**
-     *
-     * @param character
+     * @param character start char in order to skip one line comment
      */
     private void tokenizeOneLineComment(char character) {
         while ("\r\n\0".indexOf(character) == -1) {//skip before you meet new line
@@ -211,8 +217,7 @@ public final class Lexer {
     }
 
     /**
-     *
-     * @param character
+     * @param character start char in order to skip multiline comment
      */
     private void tokenizeMultilineComment(char character) {
         while (true) {

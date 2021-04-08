@@ -4,13 +4,23 @@ import parser.lib.Constants;
 import parser.lib.datatypes.IValue;
 import parser.lib.Variables;
 
+/**
+ * Implementation of the <tt>{@link IExpression}</tt> interface for expressions with variables
+ */
 public final class VariableExpression implements IExpression {
     private final String name;
 
+    /**
+     * @param name variable identifier
+     */
     public VariableExpression(final String name) {
         this.name = name;
     }
 
+    /**
+     * @return value {@link IValue} from {@link Constants} or {@link Variables} depending on expression evaluation
+     * result datatype
+     */
     @Override
     public IValue eval() {
         if (Variables.isKeyExists(name)) {
