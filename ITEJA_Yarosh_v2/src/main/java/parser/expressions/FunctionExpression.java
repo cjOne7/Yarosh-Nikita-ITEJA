@@ -1,8 +1,7 @@
 package parser.expressions;
 
-import parser.lib.Functions;
-import parser.lib.IValue;
-import token.TokenType;
+import parser.lib.functions.Functions;
+import parser.lib.datatypes.IValue;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package parser.expressions;
 
 import lexer.constants.KeyWords;
-import parser.lib.IValue;
+import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 

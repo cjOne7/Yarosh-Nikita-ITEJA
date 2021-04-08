@@ -2,6 +2,7 @@ package parser.statements;
 
 import parser.expressions.IExpression;
 import parser.lib.*;
+import parser.lib.datatypes.IValue;
 
 public class AssignmentStatement implements IStatement {
     private final String variableName;

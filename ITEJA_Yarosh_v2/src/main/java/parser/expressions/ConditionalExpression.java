@@ -1,6 +1,6 @@
 package parser.expressions;
 
-import parser.lib.IValue;
+import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 import parser.lib.datatypes.StringValue;
 

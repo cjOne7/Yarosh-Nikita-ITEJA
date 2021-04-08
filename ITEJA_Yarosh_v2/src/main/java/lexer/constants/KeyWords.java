@@ -2,7 +2,7 @@ package lexer.constants;
 
 import token.TokenType;
 
-public class KeyWords {
+public final class KeyWords {
     public final static String PROGRAM = "program";
     public final static String BEGIN = "begin";
     public final static String END = "end";
@@ -29,6 +29,8 @@ public class KeyWords {
     public final static String STRING = "string";
     public final static String MOD = "mod";
     public final static String DIV = "div";
+
+    private KeyWords() {}
 
     public static TokenType detectKeyWordType(String value) {
         switch (value.toLowerCase()) {

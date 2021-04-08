@@ -20,7 +20,7 @@ public final class Lexer {
     public List<Token> getTokens(String code) {
         this.code = code;
         while (currentPosition < code.length()) {
-            char character = code.charAt(currentPosition);
+            final char character = code.charAt(currentPosition);
             if (Character.isLetter(character)) {
                 readWord(character);
             }
@@ -67,21 +67,21 @@ public final class Lexer {
                 }
             }
             else if (CompareOperators.isComparisonOperator(character)) {
-                String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
-                Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
+                final String possibleConditionalOperator = code.substring(currentPosition, currentPosition + 2);
+                final Pattern pattern = Pattern.compile(String.format("[%c%c%c]"
                         , CompareOperators.EQUALITY, CompareOperators.GREATER, CompareOperators.LESS));
-                Matcher matcher = pattern.matcher(possibleConditionalOperator);
+                final Matcher matcher = pattern.matcher(possibleConditionalOperator);
                 if (matcher.find()) {
                     builder.append(matcher.group());
                     String operator = builder.toString();
                     if (matcher.find(1)) {
-                        String secondOperator = matcher.group();
+                        final String secondOperator = matcher.group();
                         if (character == CompareOperators.EQUALITY) {
                             throw new RuntimeException("Wrong conditional operator " + character + secondOperator + " on line " + currentLine);
                         }
                         builder.append(secondOperator);
                         operator = builder.toString();
-                        TokenType type = CompareOperators.detectComparisonOperatorType(operator);
+                        final TokenType type = CompareOperators.detectComparisonOperatorType(operator);
                         if (type == TokenType.UNKNOWN) {
                             throw new RuntimeException("Wrong conditional operator " + operator + " on line " + currentLine);
                         }
@@ -104,9 +104,9 @@ public final class Lexer {
 
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
-        Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
+        final Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
         matcher.find(currentPosition);
-        String value = code.substring(matcher.start(), matcher.end());
+        final String value = code.substring(matcher.start(), matcher.end());
         if (!value.isEmpty()) {
             token = new Token(TokenType.STRING, value, currentLine, currentPosition);
             currentPosition += (matcher.end() - matcher.start());//skip string value
@@ -123,7 +123,7 @@ public final class Lexer {
             }
             character = code.charAt(currentPosition);
         }
-        String str = builder.toString();
+        final String str = builder.toString();
         token = new Token(KeyWords.detectKeyWordType(str), str, currentLine, currentPosition);
         tokens.add(token);
         builder.setLength(0);
@@ -150,7 +150,7 @@ public final class Lexer {
         builder.setLength(0);
     }
 
-    private void addToken(TokenType tokenType, String value) {
+    private void addToken(final TokenType tokenType, final String value) {
         if (tokenType == TokenType.UNKNOWN) {
             throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
                     + (currentPosition - currentLine * (currentPosition / currentLine)));
@@ -160,7 +160,7 @@ public final class Lexer {
         tokens.add(token);
     }
 
-    private char peek(int relativePosition) {
+    private char peek(final int relativePosition) {
         final int position = currentPosition + relativePosition;
         if (position >= code.length()) {
             return '\0';

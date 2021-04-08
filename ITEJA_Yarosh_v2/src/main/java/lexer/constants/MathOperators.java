@@ -2,13 +2,15 @@ package lexer.constants;
 
 import token.TokenType;
 
-public class MathOperators {
+public final class MathOperators {
     public static final char PLUS = '+';
     public static final char MINUS = '-';
     public static final char MULTIPLY = '*';
     public static final char DIVIDE = '/';
 
-    public static boolean isMathOperator(char character) {
+    private MathOperators() {}
+
+    public static boolean isMathOperator(final char character) {
         switch (character){
             case PLUS:
             case MINUS:
@@ -20,7 +22,7 @@ public class MathOperators {
         }
     }
 
-    public static TokenType detectMathOperatorType(char character) {
+    public static TokenType detectMathOperatorType(final char character) {
         switch (character){
             case DIVIDE:
                 return TokenType.DIVIDE;

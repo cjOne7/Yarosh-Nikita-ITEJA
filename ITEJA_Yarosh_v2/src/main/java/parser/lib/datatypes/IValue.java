@@ -1,4 +1,4 @@
-package parser.lib;
+package parser.lib.datatypes;
 
 public interface IValue {
     double asDouble();

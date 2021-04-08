@@ -1,7 +1,5 @@
 package parser.lib.datatypes;
 
-import parser.lib.IValue;
-
 public class StringValue implements IValue {
     private final String value;
 

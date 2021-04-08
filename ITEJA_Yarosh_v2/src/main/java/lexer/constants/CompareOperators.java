@@ -2,7 +2,7 @@ package lexer.constants;
 
 import token.TokenType;
 
-public class CompareOperators {
+public final class CompareOperators {
     public static final char EQUALITY = '=';
     public static final char GREATER = '>';
     public static final char LESS = '<';
@@ -10,7 +10,9 @@ public class CompareOperators {
     public static final String LESS_OR_EQUAL = "<=";
     public static final String NOTEQUAL = "<>";
 
-    public static boolean isComparisonOperator(char character) {
+    private CompareOperators() {}
+
+    public static boolean isComparisonOperator(final char character) {
         switch (character) {
             case EQUALITY:
             case GREATER:
@@ -21,7 +23,7 @@ public class CompareOperators {
         }
     }
 
-    public static TokenType detectComparisonOperatorType(char operator) {
+    public static TokenType detectComparisonOperatorType(final char operator) {
         switch (operator) {
             case EQUALITY:
                 return TokenType.EQUAL;

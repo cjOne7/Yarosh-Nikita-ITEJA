@@ -1,12 +1,12 @@
-package parser.lib;
+package parser.lib.functions;
 
 import parser.lib.datatypes.DoubleValue;
+import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.StringValue;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public final class Functions {
@@ -25,7 +25,6 @@ public final class Functions {
     //Input/Output
     private static final String WRITE = "write";
     private static final String WRITELN = "writeln";
-    private static final String READLN = "readln";
 
     public static final IValue VOID = new StringValue("void");
     private static final Map<String, IFunction> FUNCTIONS = new HashMap<>();
@@ -34,7 +33,7 @@ public final class Functions {
     private Functions() {}
 
     static {
-        String errorMess = "The required number of arguments does not match current amount.";
+        final String errorMess = "The required number of arguments does not match current amount.";
         //maths
         addFunction(COS, true, args -> {
             check(args.length != 1, errorMess + "Required " + 1 + ", but found " + args.length);
@@ -82,7 +81,7 @@ public final class Functions {
         });
         //Input/Output
         addFunction(WRITE, false, args -> {
-            String output = Arrays.stream(args).map(IValue::asString).collect(Collectors.joining());
+            final String output = Arrays.stream(args).map(IValue::asString).collect(Collectors.joining());
             System.out.print(output);
             return VOID;
         });
@@ -92,26 +91,26 @@ public final class Functions {
         });
     }
 
-    private static void addFunction(String functionName, boolean hasFunctionReturn, IFunction function) {
+    private static void addFunction(final String functionName, final boolean hasFunctionReturn, final IFunction function) {
         FUNCTION_HAS_RETURN_TYPE.put(functionName, hasFunctionReturn);
         FUNCTIONS.put(functionName, function);
     }
 
-    public static boolean functionHasReturnType(String functionName) {
+    public static boolean functionHasReturnType(final String functionName) {
         check(isKeyNotExists(functionName), "Unknown function '" + functionName + "'.");
         return FUNCTION_HAS_RETURN_TYPE.get(functionName);
     }
 
-    public static IFunction getFunctionByName(String functionName) {
+    public static IFunction getFunctionByName(final String functionName) {
         check(isKeyNotExists(functionName), "Unknown function '" + functionName + "'.");
         return FUNCTIONS.get(functionName);
     }
 
-    public static boolean isKeyNotExists(String key) {
+    public static boolean isKeyNotExists(final String key) {
         return !FUNCTIONS.containsKey(key);
     }
 
-    private static void check(boolean condition, String exceptionMessage) {
+    private static void check(final boolean condition, final String exceptionMessage) {
         if (condition) {
             throw new RuntimeException(exceptionMessage);
         }

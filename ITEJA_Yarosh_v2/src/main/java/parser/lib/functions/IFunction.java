@@ -1,6 +1,6 @@
-package parser.lib;
+package parser.lib.functions;
 
-import parser.lib.IValue;
+import parser.lib.datatypes.IValue;
 
 @FunctionalInterface
 public interface IFunction {

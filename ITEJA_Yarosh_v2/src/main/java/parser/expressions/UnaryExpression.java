@@ -1,7 +1,7 @@
 package parser.expressions;
 
 import lexer.constants.MathOperators;
-import parser.lib.IValue;
+import parser.lib.datatypes.IValue;
 import parser.lib.datatypes.DoubleValue;
 
 public class UnaryExpression implements IExpression {

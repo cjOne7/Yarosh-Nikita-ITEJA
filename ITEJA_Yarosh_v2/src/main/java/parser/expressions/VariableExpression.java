@@ -1,7 +1,7 @@
 package parser.expressions;
 
 import parser.lib.Constants;
-import parser.lib.IValue;
+import parser.lib.datatypes.IValue;
 import parser.lib.Variables;
 
 public class VariableExpression implements IExpression {

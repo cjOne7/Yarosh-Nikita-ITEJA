@@ -2,14 +2,16 @@ package lexer.constants;
 
 import token.TokenType;
 
-public class Separators {
+public final class Separators {
     public static final char DOT = '.';
     public static final char SEMICOLON = ';';
     public static final char COMMA = ',';
     public static final char COLON = ':';
     public static final char QUOTE = '"';
 
-    public static boolean isSeparator(char character) {
+    private Separators() {}
+
+    public static boolean isSeparator(final char character) {
         switch (character){
             case DOT:
             case COMMA:
@@ -22,7 +24,7 @@ public class Separators {
         }
     }
 
-    public static TokenType detectSeparatorType(char character) {
+    public static TokenType detectSeparatorType(final char character) {
         switch (character){
             case DOT:
                 return TokenType.DOT;
