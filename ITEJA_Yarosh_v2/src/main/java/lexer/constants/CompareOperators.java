@@ -2,6 +2,9 @@ package lexer.constants;
 
 import token.TokenType;
 
+/**
+ * This class was created to check character if it is compare operator or not, and also to detect its token type
+ */
 public final class CompareOperators {
     public static final char EQUALITY = '=';
     public static final char GREATER = '>';
@@ -12,6 +15,11 @@ public final class CompareOperators {
 
     private CompareOperators() {}
 
+    /**
+     *
+     * @param character char to check if it is a some kind of compare operators
+     * @return <tt>true</tt> if character equals to allowed compare operators
+     */
     public static boolean isComparisonOperator(final char character) {
         switch (character) {
             case EQUALITY:
@@ -23,8 +31,13 @@ public final class CompareOperators {
         }
     }
 
-    public static TokenType detectComparisonOperatorType(final char operator) {
-        switch (operator) {
+    /**
+     *
+     * @param character char to detect what kind of compare operators it belongs
+     * @return token's type of this character
+     */
+    public static TokenType detectComparisonOperatorType(final char character) {
+        switch (character) {
             case EQUALITY:
                 return TokenType.EQUAL;
             case GREATER:
@@ -36,8 +49,13 @@ public final class CompareOperators {
         }
     }
 
-    public static TokenType detectComparisonOperatorType(String operator) {
-        switch (operator) {
+    /**
+     *
+     * @param character two chars to detect what kind of compare operators they belong
+     * @return token's type of this two-chars-string
+     */
+    public static TokenType detectComparisonOperatorType(final String character) {
+        switch (character) {
             case NOTEQUAL:
                 return TokenType.NOTEQUAL;
             case GREATER_OR_EQUAL:
@@ -45,7 +63,7 @@ public final class CompareOperators {
             case LESS_OR_EQUAL:
                 return TokenType.LESS_OR_EQUAL;
             default:
-                return operator.length() == 1 ? detectComparisonOperatorType(operator.charAt(0)) : TokenType.UNKNOWN;
+                return character.length() == 1 ? detectComparisonOperatorType(character.charAt(0)) : TokenType.UNKNOWN;
         }
     }
 }

@@ -2,6 +2,9 @@ package lexer.constants;
 
 import token.TokenType;
 
+/**
+ *This class was created to check character if it is keyword or not, and also to detect its token type
+ */
 public final class KeyWords {
     public final static String PROGRAM = "program";
     public final static String BEGIN = "begin";
@@ -32,7 +35,12 @@ public final class KeyWords {
 
     private KeyWords() {}
 
-    public static TokenType detectKeyWordType(String value) {
+    /**
+     *
+     * @param value keyword to detect what kind of keywords it belongs
+     * @return token's type of this string
+     */
+    public static TokenType detectKeyWordType(final String value) {
         switch (value.toLowerCase()) {
             case PROGRAM:
                 return TokenType.PROGRAM;

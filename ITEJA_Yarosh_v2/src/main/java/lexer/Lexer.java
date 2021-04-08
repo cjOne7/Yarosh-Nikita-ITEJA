@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ */
 public final class Lexer {
     private String code;
     private int currentPosition;
@@ -17,7 +20,11 @@ public final class Lexer {
     private final List<Token> tokens = new ArrayList<>();
     private Token token;
 
-    public List<Token> getTokens(String code) {
+    /**
+     * @param code
+     * @return
+     */
+    public List<Token> getTokens(final String code) {
         this.code = code;
         while (currentPosition < code.length()) {
             final char character = code.charAt(currentPosition);
@@ -102,6 +109,9 @@ public final class Lexer {
         return tokens;
     }
 
+    /**
+     *
+     */
     private void readString() {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the beginning
         final Matcher matcher = Pattern.compile("[^\"]*").matcher(code);
@@ -115,6 +125,9 @@ public final class Lexer {
         addToken(TokenType.QUOTE, Character.toString(Separators.QUOTE));//cut '"' in the end
     }
 
+    /**
+     * @param character
+     */
     private void readWord(char character) {
         while (Character.isLetterOrDigit(character) || character == '_') {
             builder.append(character);
@@ -129,6 +142,9 @@ public final class Lexer {
         builder.setLength(0);
     }
 
+    /**
+     * @param character
+     */
     private void readNumber(char character) {
         while (Character.isDigit(character)) {
             builder.append(character);
@@ -150,6 +166,10 @@ public final class Lexer {
         builder.setLength(0);
     }
 
+    /**
+     * @param tokenType
+     * @param value
+     */
     private void addToken(final TokenType tokenType, final String value) {
         if (tokenType == TokenType.UNKNOWN) {
             throw new RuntimeException("Unknown token on the line " + currentLine + " and position "
@@ -160,6 +180,10 @@ public final class Lexer {
         tokens.add(token);
     }
 
+    /**
+     * @param relativePosition
+     * @return
+     */
     private char peek(final int relativePosition) {
         final int position = currentPosition + relativePosition;
         if (position >= code.length()) {
@@ -168,17 +192,28 @@ public final class Lexer {
         return code.charAt(position);
     }
 
+    /**
+     * @return
+     */
     private char next() {
         currentPosition++;
         return peek(0);
     }
 
+    /**
+     *
+     * @param character
+     */
     private void tokenizeOneLineComment(char character) {
         while ("\r\n\0".indexOf(character) == -1) {//skip before you meet new line
             character = next();
         }
     }
 
+    /**
+     *
+     * @param character
+     */
     private void tokenizeMultilineComment(char character) {
         while (true) {
             if (character == '\0') {
