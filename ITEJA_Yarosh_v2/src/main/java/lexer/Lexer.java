@@ -188,7 +188,7 @@ public final class Lexer {
     }
 
     /**
-     * @param relativePosition integer value for relatively getting the symbol from {@link #code}. If relativePosition
+     * @param relativePosition integer value for relatively getting the symbol from {@link #code}. If <b>relativePosition</b>
      *                         equals zero, method will return char from {@link #code} on position {@link #currentPosition}
      * @return character on position {@link #currentPosition} + relativePosition
      */
@@ -211,6 +211,8 @@ public final class Lexer {
     }
 
     /**
+     * Skip one line comment
+     *
      * @param character start char in order to skip one line comment
      */
     private void tokenizeOneLineComment(char character) {
@@ -220,6 +222,8 @@ public final class Lexer {
     }
 
     /**
+     * Skip multiline comment
+     *
      * @param character start char in order to skip multiline comment
      */
     private void tokenizeMultilineComment(char character) {
