@@ -7,13 +7,22 @@ import parser.lib.Variables;
 
 import java.util.Scanner;
 
+/**
+ * @see IStatement
+ */
 public final class ReadStatement implements IStatement {
     private final String identifier;
 
+    /**
+     * @param identifier
+     */
     public ReadStatement(final String identifier) {
         this.identifier = identifier;
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         final IValue value = Variables.getValueByKey(identifier);

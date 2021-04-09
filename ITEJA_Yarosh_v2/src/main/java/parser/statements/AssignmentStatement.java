@@ -4,15 +4,26 @@ import parser.expressions.IExpression;
 import parser.lib.*;
 import parser.lib.datatypes.IValue;
 
+/**
+ * @see IStatement
+ */
 public final class AssignmentStatement implements IStatement {
     private final String variableName;
     private final IExpression expression;
 
+    /**
+     *
+     * @param identifier
+     * @param expression
+     */
     public AssignmentStatement(final String identifier, final IExpression expression) {
         this.variableName = identifier;
         this.expression = expression;
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         final IValue value = Variables.getValueByKey(variableName);

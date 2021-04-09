@@ -2,17 +2,28 @@ package parser.statements;
 
 import parser.expressions.IExpression;
 
+/**
+ * @see IStatement
+ */
 public final class IfStatement implements IStatement {
     private final IExpression condition;
     private final IStatement ifStatement;
     private final IStatement elseStatement;
 
+    /**
+     * @param condition
+     * @param ifStatement
+     * @param elseStatement
+     */
     public IfStatement(final IExpression condition, final IStatement ifStatement, final IStatement elseStatement) {
         this.condition = condition;
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         if (condition.eval().asDouble() == 1) {

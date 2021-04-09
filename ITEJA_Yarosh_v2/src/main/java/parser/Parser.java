@@ -15,14 +15,23 @@ import token.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public final class Parser {
     private final List<Token> tokens;
     private int pos;
 
+    /**
+     * @param tokens
+     */
     public Parser(final List<Token> tokens) {
         this.tokens = tokens;
     }
 
+    /**
+     * @return
+     */
     public IStatement parseBlock() {
         if (isMatchTokenType(TokenType.PROGRAM)) {
             consumeToken(TokenType.IDENTIFIER);
@@ -44,6 +53,9 @@ public final class Parser {
         return programBody;
     }
 
+    /**
+     *
+     */
     private void parseVariableBlock() {
         final List<String> identifiersList = new ArrayList<>();
         consumeToken(TokenType.VAR);
@@ -75,6 +87,9 @@ public final class Parser {
         }
     }
 
+    /**
+     *
+     */
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
         do {
@@ -102,12 +117,19 @@ public final class Parser {
         } while (isMatchTokenType(TokenType.SEMICOLON));
     }
 
+    /**
+     * @param identifier
+     * @param isNegativeNumber
+     */
     private void parseConstNumber(final String identifier, final boolean isNegativeNumber) {
         final double value = Double.parseDouble(getCurrentToken(0).getStringToken());
         consumeToken(TokenType.NUMBER);
         Constants.put(identifier, new DoubleValue(isNegativeNumber ? -value : value));
     }
 
+    /**
+     * @param identifier
+     */
     private void parseConstString(final String identifier) {
         consumeToken(TokenType.QUOTE);
         if (getCurrentToken(0).getTokenType() == TokenType.STRING) {
@@ -121,11 +143,17 @@ public final class Parser {
         consumeToken(TokenType.QUOTE);
     }
 
+    /**
+     * @return
+     */
     private IStatement parseStatementOrBlock() {
         return getCurrentToken(0).getTokenType() == TokenType.BEGIN
                 ? parseStatementBlock() : parseStatement();
     }
 
+    /**
+     * @return
+     */
     private IStatement parseStatementBlock() {
         final List<IStatement> statements = new ArrayList<>();
         consumeToken(TokenType.BEGIN);
@@ -133,6 +161,10 @@ public final class Parser {
         return new StatementBlock(statements);
     }
 
+    /**
+     * @param statements
+     * @param type
+     */
     private void parseTokensInList(final List<IStatement> statements, final TokenType type) {
         while (!isMatchTokenType(type)) {
             if (statements.size() != 0) {
@@ -145,6 +177,9 @@ public final class Parser {
         }
     }
 
+    /**
+     * @return
+     */
     private IStatement parseStatement() {
         final Token current = getCurrentToken(0);
         switch (current.getTokenType()) {
@@ -181,6 +216,10 @@ public final class Parser {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return
+     */
     private IStatement parseReadStatement() {
         consumeToken(TokenType.READLN);
         consumeToken(TokenType.OPEN_ROUND_BRACKET);
@@ -194,6 +233,9 @@ public final class Parser {
         throw new RuntimeException("Variable '" + identifier + "' doesn't exist.");
     }
 
+    /**
+     * @return
+     */
     private IStatement parseAssignmentStatement() {
         final String identifier = getCurrentToken(0).getStringToken();
         checkConstImmutable(identifier);
@@ -205,6 +247,9 @@ public final class Parser {
         throw new RuntimeException("Variable '" + identifier + "' is not initialized.");
     }
 
+    /**
+     * @return
+     */
     private IStatement parseWhileStatement() {
         consumeToken(TokenType.WHILE);
         final IExpression condition = expression();
@@ -213,6 +258,9 @@ public final class Parser {
         return new WhileStatement(condition, statement);
     }
 
+    /**
+     * @return
+     */
     private IStatement parseRepeatStatement() {
         consumeToken(TokenType.REPEAT);
         final IStatement statement;
@@ -230,6 +278,9 @@ public final class Parser {
         return new RepeatStatement(condition, statement);
     }
 
+    /**
+     * @return
+     */
     private IStatement parseForStatement() {
         boolean isReverse = false;
         consumeToken(TokenType.FOR);
@@ -255,6 +306,9 @@ public final class Parser {
 
     }
 
+    /**
+     * @return
+     */
     private IStatement parseIfStatement() {
         consumeToken(TokenType.IF);
         final IExpression expression = expression();
@@ -270,10 +324,17 @@ public final class Parser {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Recursive descending parser
+
+    /**
+     * @return
+     */
     private IExpression expression() {
         return logicalOr();
     }
 
+    /**
+     * @return
+     */
     private IExpression logicalOr() {
         IExpression result = logicalAnd();
         while (true) {
@@ -286,6 +347,9 @@ public final class Parser {
         return result;
     }
 
+    /**
+     * @return
+     */
     private IExpression logicalAnd() {
         IExpression result = condition();
         while (true) {
@@ -298,6 +362,9 @@ public final class Parser {
         return result;
     }
 
+    /**
+     * @return
+     */
     private IExpression condition() {
         IExpression result = additive();
         while (true) {
@@ -332,6 +399,9 @@ public final class Parser {
         return result;
     }
 
+    /**
+     * @return
+     */
     private IExpression additive() {
         IExpression result = multiplicative();
         while (true) {
@@ -350,6 +420,9 @@ public final class Parser {
         return result;
     }
 
+    /**
+     * @return
+     */
     private IExpression multiplicative() {
         IExpression result = unary();
         while (true) {
@@ -376,6 +449,9 @@ public final class Parser {
         return result;
     }
 
+    /**
+     * @return
+     */
     private IExpression unary() {
         if (isMatchTokenType(TokenType.MINUS)) {
             return new UnaryExpression(MathOperators.MINUS, primary());
@@ -386,6 +462,9 @@ public final class Parser {
         return primary();
     }
 
+    /**
+     * @return
+     */
     private IExpression primary() {
         final Token current = getCurrentToken(0);
         if (isMatchTokenType(TokenType.NUMBER)) {
@@ -417,6 +496,11 @@ public final class Parser {
         throw new RuntimeException("Unknown expression on position " + current.getRowPosition());
     }
 
+    /**
+     * @param functionName
+     * @param isExpression
+     * @return
+     */
     private FunctionExpression function(final String functionName, final boolean isExpression) {
         final FunctionExpression functionExpression = new FunctionExpression(functionName, isExpression);
         if (isMatchTokenType(TokenType.CLOSE_ROUND_BRACKET)) {
@@ -429,6 +513,9 @@ public final class Parser {
         return functionExpression;
     }
 
+    /**
+     * @return
+     */
     private ValueExpression string() {
         final String value = getCurrentToken(0).getStringToken();
         isMatchTokenType(TokenType.STRING);
@@ -436,6 +523,10 @@ public final class Parser {
         return new ValueExpression(value);
     }
 
+    /**
+     * @param type
+     * @return
+     */
     private boolean isMatchTokenType(final TokenType type) {
         final Token current = getCurrentToken(0);
         if (type == current.getTokenType()) {
@@ -445,6 +536,9 @@ public final class Parser {
         return false;
     }
 
+    /**
+     * @param type
+     */
     private void consumeToken(TokenType type) {
         final Token current = getCurrentToken(0);
         if (type == current.getTokenType()) {
@@ -454,6 +548,10 @@ public final class Parser {
         throw new RuntimeException("Expected " + type + ", but was found " + current.getTokenType() + " on position " + current.getRowPosition());
     }
 
+    /**
+     * @param relativePosition
+     * @return
+     */
     private Token getCurrentToken(final int relativePosition) {
         final int position = pos + relativePosition;
         if (position >= tokens.size()) {
@@ -462,6 +560,9 @@ public final class Parser {
         return tokens.get(position);
     }
 
+    /**
+     * @param identifier
+     */
     private void checkConstImmutable(final String identifier) {
         if (Constants.isKeyExists(identifier)) {
             throw new RuntimeException("Constant '" + identifier + "' can't be changed.");

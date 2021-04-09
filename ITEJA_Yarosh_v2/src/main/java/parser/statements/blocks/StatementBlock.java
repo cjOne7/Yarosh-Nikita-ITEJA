@@ -4,13 +4,23 @@ import parser.statements.IStatement;
 
 import java.util.List;
 
+/**
+ * @see IStatement
+ */
 public final class StatementBlock implements IStatement {
     private final List<IStatement> statementList;
 
+    /**
+     *
+     * @param statementList
+     */
     public StatementBlock(final List<IStatement> statementList) {
         this.statementList = statementList;
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         for (IStatement statement : statementList) {

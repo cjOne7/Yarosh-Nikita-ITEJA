@@ -5,6 +5,9 @@ import parser.lib.datatypes.DoubleValue;
 import parser.lib.Variables;
 import parser.statements.IStatement;
 
+/**
+ * @see IStatement
+ */
 public final class ForStatement implements IStatement {
     private final String identifier;
     private final IExpression initialValueExpression;
@@ -13,6 +16,15 @@ public final class ForStatement implements IStatement {
     private final boolean isReverse;
     private double step = 1;
 
+    /**
+     *
+     * @param identifier
+     * @param initialValueExpression
+     * @param toExpression
+     * @param body
+     * @param isReverse
+     * @param step
+     */
     public ForStatement(String identifier, IExpression initialValueExpression, IExpression toExpression
             , IStatement body, boolean isReverse, IExpression step) {
         if (step != null) {
@@ -29,6 +41,9 @@ public final class ForStatement implements IStatement {
         this.isReverse = isReverse;
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         final double initialValue = initialValueExpression.eval().asDouble();
@@ -55,6 +70,11 @@ public final class ForStatement implements IStatement {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     private double executeBody(double i) {
         Variables.put(identifier, new DoubleValue(i));
         body.execute();
