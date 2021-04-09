@@ -3,6 +3,8 @@ package parser.statements;
 import parser.expressions.IExpression;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for implementation conditional statements
+ *
  * @see IStatement
  */
 public final class IfStatement implements IStatement {
@@ -11,9 +13,9 @@ public final class IfStatement implements IStatement {
     private final IStatement elseStatement;
 
     /**
-     * @param condition
-     * @param ifStatement
-     * @param elseStatement
+     * @param condition     expression, which after evaluation return value 1 if true and 0 if false
+     * @param ifStatement   one or more statements for executing if {@link #condition} is true
+     * @param elseStatement one or more statements for executing if {@link #condition} is false
      */
     public IfStatement(final IExpression condition, final IStatement ifStatement, final IStatement elseStatement) {
         this.condition = condition;
@@ -22,7 +24,7 @@ public final class IfStatement implements IStatement {
     }
 
     /**
-     *
+     * Execute if-else statement
      */
     @Override
     public void execute() {

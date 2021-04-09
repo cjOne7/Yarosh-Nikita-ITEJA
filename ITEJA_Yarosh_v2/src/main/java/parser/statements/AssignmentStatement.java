@@ -5,6 +5,8 @@ import parser.lib.*;
 import parser.lib.datatypes.IValue;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for assigning to variables new values
+ *
  * @see IStatement
  */
 public final class AssignmentStatement implements IStatement {
@@ -12,9 +14,8 @@ public final class AssignmentStatement implements IStatement {
     private final IExpression expression;
 
     /**
-     *
-     * @param identifier
-     * @param expression
+     * @param identifier variable identifier to which will be assigned {@link #expression}'s evaluation result
+     * @param expression represents R-value in assignment statement
      */
     public AssignmentStatement(final String identifier, final IExpression expression) {
         this.variableName = identifier;
@@ -22,7 +23,7 @@ public final class AssignmentStatement implements IStatement {
     }
 
     /**
-     *
+     * Assign a new value and update variables map in {@link Variables}
      */
     @Override
     public void execute() {

@@ -8,20 +8,22 @@ import parser.lib.Variables;
 import java.util.Scanner;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for reading values entered by user
+ *
  * @see IStatement
  */
 public final class ReadStatement implements IStatement {
     private final String identifier;
 
     /**
-     * @param identifier
+     * @param identifier value identifier to which will be assigned a new value
      */
     public ReadStatement(final String identifier) {
         this.identifier = identifier;
     }
 
     /**
-     *
+     * Read from console a new value and assign it to value with that {@link #identifier}
      */
     @Override
     public void execute() {

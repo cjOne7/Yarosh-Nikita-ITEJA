@@ -5,21 +5,22 @@ import parser.statements.IStatement;
 import java.util.List;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for storing the whole program
+ *
  * @see IStatement
  */
 public final class StatementBlock implements IStatement {
     private final List<IStatement> statementList;
 
     /**
-     *
-     * @param statementList
+     * @param statementList statement's list to be saved in {@link #statementList}
      */
     public StatementBlock(final List<IStatement> statementList) {
         this.statementList = statementList;
     }
 
     /**
-     *
+     * Execute program
      */
     @Override
     public void execute() {

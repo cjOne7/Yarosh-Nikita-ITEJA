@@ -4,6 +4,8 @@ import parser.expressions.IExpression;
 import parser.statements.IStatement;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for while-do loop
+ *
  * @see IStatement
  */
 public final class WhileStatement implements IStatement {
@@ -11,9 +13,8 @@ public final class WhileStatement implements IStatement {
     private final IStatement blockStatement;
 
     /**
-     *
-     * @param condition
-     * @param blockStatement
+     * @param condition      when loop must be stopped. It will be working while condition is true
+     * @param blockStatement loop's body
      */
     public WhileStatement(final IExpression condition, final IStatement blockStatement) {
         this.condition = condition;
@@ -21,7 +22,7 @@ public final class WhileStatement implements IStatement {
     }
 
     /**
-     *
+     * Execute while-do loop
      */
     @Override
     public void execute() {

@@ -6,6 +6,8 @@ import parser.lib.Variables;
 import parser.statements.IStatement;
 
 /**
+ * Implementation of the <tt>IStatement</tt> interface for for-do loop
+ *
  * @see IStatement
  */
 public final class ForStatement implements IStatement {
@@ -17,15 +19,15 @@ public final class ForStatement implements IStatement {
     private double step = 1;
 
     /**
-     *
-     * @param identifier
-     * @param initialValueExpression
-     * @param toExpression
-     * @param body
-     * @param isReverse
-     * @param step
+     * @param identifier             variable's name which will be used as a counter for for-do loop
+     * @param initialValueExpression sets expression's evaluation result to variable before the loop starts
+     * @param toExpression           defines the value for the loop to run. If this value is less than {@link #identifier},
+     *                               the loop will start over again, if it is bigger, the loop will end.
+     * @param body                   loop's body
+     * @param isReverse              decides in which order loop will be executed
+     * @param step                   defines the step by which {@link #identifier} variable will be increased
      */
-    public ForStatement(String identifier, IExpression initialValueExpression, IExpression toExpression
+    public ForStatement(final String identifier, final IExpression initialValueExpression, final IExpression toExpression
             , IStatement body, boolean isReverse, IExpression step) {
         if (step != null) {
             double stepDouble = step.eval().asDouble();
@@ -42,7 +44,7 @@ public final class ForStatement implements IStatement {
     }
 
     /**
-     *
+     * Execute for-do loop
      */
     @Override
     public void execute() {
@@ -71,11 +73,10 @@ public final class ForStatement implements IStatement {
     }
 
     /**
-     *
-     * @param i
-     * @return
+     * @param i loop's counter
+     * @return updated loop's counter after code {@link #body} was executed
      */
-    private double executeBody(double i) {
+    private double executeBody(final double i) {
         Variables.put(identifier, new DoubleValue(i));
         body.execute();
         return Variables.getValueByKey(identifier).asDouble();
