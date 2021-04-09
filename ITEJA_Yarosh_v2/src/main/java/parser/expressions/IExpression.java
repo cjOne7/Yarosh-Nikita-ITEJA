@@ -15,7 +15,9 @@ import parser.lib.datatypes.IValue;
  */
 @FunctionalInterface
 public interface IExpression {
+
     /**
+     * Evaluate expression
      * @return result of code evaluation
      */
     IValue eval();
