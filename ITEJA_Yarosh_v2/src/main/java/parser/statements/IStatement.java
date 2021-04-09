@@ -5,6 +5,9 @@ import parser.statements.blocks.*;
 import parser.statements.functions.FunctionStatement;
 
 /**
+ * Interface with only one method <tt>execute</tt> provides generalization and implementation for all statements
+ * in programming language
+ *
  * @see BlockStatement
  * @see StatementBlock
  * @see FunctionStatement
@@ -19,8 +22,9 @@ import parser.statements.functions.FunctionStatement;
  */
 @FunctionalInterface
 public interface IStatement {
+
     /**
-     *
+     * Execute statement
      */
     void execute();
 }
