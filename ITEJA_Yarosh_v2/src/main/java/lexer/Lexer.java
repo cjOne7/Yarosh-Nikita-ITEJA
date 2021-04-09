@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class cuts input string on defined in language's grammar parts
+ * This class cuts input string on defined in language's grammar parts, which called tokens
  */
 public final class Lexer {
     private String code;
@@ -21,7 +21,7 @@ public final class Lexer {
     private Token token;
 
     /**
-     * @param code whole code string
+     * @param code string, which was read from user and will be processed in this method
      * @return parsed {@link #code} string as {@link #tokens} list
      */
     public List<Token> getTokens(final String code) {
@@ -202,6 +202,7 @@ public final class Lexer {
 
     /**
      * Increments {@link #currentPosition} and returns next char in {@link #code}
+     *
      * @return next char in {@link #code} line
      */
     private char next() {

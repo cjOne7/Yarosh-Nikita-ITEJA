@@ -19,7 +19,7 @@ public final class FunctionExpression implements IExpression {
 
     /**
      * @param functionName function identifier
-     * @param isExpression responsible for marking functions with void return type
+     * @param isExpression responsible for separating functions with void return type from others functions
      */
     public FunctionExpression(final String functionName, final boolean isExpression) {
         this.functionName = functionName;

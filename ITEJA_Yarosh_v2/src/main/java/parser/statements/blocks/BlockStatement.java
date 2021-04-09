@@ -3,7 +3,7 @@ package parser.statements.blocks;
 import parser.statements.IStatement;
 
 /**
- * Implementation of the <tt>IStatement</tt> interface for saving parsed begin-end block
+ * Implementation of the <tt>IStatement</tt> interface for saving parsed begin-end block of the program as one statement
  *
  * @see IStatement
  */

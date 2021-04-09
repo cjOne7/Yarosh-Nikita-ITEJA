@@ -5,7 +5,7 @@ import parser.statements.IStatement;
 import java.util.List;
 
 /**
- * Implementation of the <tt>IStatement</tt> interface for storing the whole program
+ * Implementation of the <tt>IStatement</tt> interface for storing the block of the program as the statements' list
  *
  * @see IStatement
  */
@@ -20,7 +20,7 @@ public final class StatementBlock implements IStatement {
     }
 
     /**
-     * Execute program
+     * Execute code's block
      */
     @Override
     public void execute() {

@@ -1,5 +1,6 @@
 package parser;
 
+import lexer.Lexer;
 import lexer.constants.KeyWords;
 import lexer.constants.MathOperators;
 import parser.lib.datatypes.*;
@@ -16,21 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * This class uses the received tokens from {@link Lexer#getTokens(String)} to build AST (Abstract Syntax Tree), which
+ * will be evaluated and executed later in the implementations of {@link IStatement} class
  */
 public final class Parser {
     private final List<Token> tokens;
     private int pos;
 
     /**
-     * @param tokens
+     * @param tokens set token's list which was get after execution {@link Lexer#getTokens(String)} method to {@link #tokens}
      */
     public Parser(final List<Token> tokens) {
         this.tokens = tokens;
     }
 
     /**
-     * @return
+     * @return {@link StatementBlock} which contains the whole parsed program code
      */
     public IStatement parseBlock() {
         if (isMatchTokenType(TokenType.PROGRAM)) {
@@ -54,7 +56,7 @@ public final class Parser {
     }
 
     /**
-     *
+     * Parse variable block, which starts with VAR keyword
      */
     private void parseVariableBlock() {
         final List<String> identifiersList = new ArrayList<>();
@@ -88,7 +90,7 @@ public final class Parser {
     }
 
     /**
-     *
+     * Parse constant block, which starts with CONST keyword
      */
     private void parseConstBlock() {
         consumeToken(TokenType.CONST);
@@ -118,8 +120,11 @@ public final class Parser {
     }
 
     /**
-     * @param identifier
-     * @param isNegativeNumber
+     * Method gets value from {@link #tokens} on {@link #pos} and put it to constants' map in {@link Constants} as
+     * decimal floating point number
+     *
+     * @param identifier       constant name
+     * @param isNegativeNumber determines whether the number is negative or not
      */
     private void parseConstNumber(final String identifier, final boolean isNegativeNumber) {
         final double value = Double.parseDouble(getCurrentToken(0).getStringToken());
@@ -128,7 +133,9 @@ public final class Parser {
     }
 
     /**
-     * @param identifier
+     * Method gets value from {@link #tokens} on {@link #pos} and put it to constants' map in {@link Constants} as string
+     *
+     * @param identifier constant name
      */
     private void parseConstString(final String identifier) {
         consumeToken(TokenType.QUOTE);
@@ -144,7 +151,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Decide one statement or statements' block should be parsed
+     *
+     * @return one statement or {@link StatementBlock}
      */
     private IStatement parseStatementOrBlock() {
         return getCurrentToken(0).getTokenType() == TokenType.BEGIN
@@ -152,7 +161,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse begin-end block
+     *
+     * @return {@link StatementBlock}
      */
     private IStatement parseStatementBlock() {
         final List<IStatement> statements = new ArrayList<>();
@@ -162,8 +173,8 @@ public final class Parser {
     }
 
     /**
-     * @param statements
-     * @param type
+     * @param statements statements' list to which will be saved all statements
+     * @param type       if the token with this type still meeting - continue reading, in the other case - stop
      */
     private void parseTokensInList(final List<IStatement> statements, final TokenType type) {
         while (!isMatchTokenType(type)) {
@@ -178,7 +189,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse statement
+     *
+     * @return one of the implementations of the {@link IStatement} class
      */
     private IStatement parseStatement() {
         final Token current = getCurrentToken(0);
@@ -218,7 +231,9 @@ public final class Parser {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @return
+     * Parse user input statement
+     *
+     * @return {@link ReadStatement}
      */
     private IStatement parseReadStatement() {
         consumeToken(TokenType.READLN);
@@ -234,7 +249,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse assignment statement
+     *
+     * @return {@link AssignmentStatement}
      */
     private IStatement parseAssignmentStatement() {
         final String identifier = getCurrentToken(0).getStringToken();
@@ -248,7 +265,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse while-do statement
+     *
+     * @return {@link WhileStatement}
      */
     private IStatement parseWhileStatement() {
         consumeToken(TokenType.WHILE);
@@ -259,7 +278,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse repeat-until statement
+     *
+     * @return {@link RepeatStatement}
      */
     private IStatement parseRepeatStatement() {
         consumeToken(TokenType.REPEAT);
@@ -279,7 +300,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse for-do statement
+     *
+     * @return {@link ForStatement}
      */
     private IStatement parseForStatement() {
         boolean isReverse = false;
@@ -307,7 +330,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse if-else statement
+     *
+     * @return {@link IfStatement}
      */
     private IStatement parseIfStatement() {
         consumeToken(TokenType.IF);
@@ -326,14 +351,18 @@ public final class Parser {
     //Recursive descending parser
 
     /**
-     * @return
+     * Parse expression
+     *
+     * @return {@link ConditionalExpression}
      */
     private IExpression expression() {
         return logicalOr();
     }
 
     /**
-     * @return
+     * Parse logical or expression
+     *
+     * @return {@link ConditionalExpression}
      */
     private IExpression logicalOr() {
         IExpression result = logicalAnd();
@@ -348,7 +377,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse logical and expression
+     *
+     * @return {@link ConditionalExpression}
      */
     private IExpression logicalAnd() {
         IExpression result = condition();
@@ -363,7 +394,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse condition expression
+     *
+     * @return {@link ConditionalExpression}
      */
     private IExpression condition() {
         IExpression result = additive();
@@ -400,7 +433,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse +, - operations binary expression
+     *
+     * @return {@link BinaryExpression}
      */
     private IExpression additive() {
         IExpression result = multiplicative();
@@ -421,7 +456,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse *, / operations binary expression
+     *
+     * @return {@link BinaryExpression}
      */
     private IExpression multiplicative() {
         IExpression result = unary();
@@ -450,7 +487,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse +, - operations unary expression
+     *
+     * @return {@link UnaryExpression}
      */
     private IExpression unary() {
         if (isMatchTokenType(TokenType.MINUS)) {
@@ -463,7 +502,11 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse recursively expressions in round brackets. Parse numbers or strings values. Parse functions identifiers as
+     * {@link FunctionExpression}. Parse conditional negation
+     *
+     * @return a one of the following types presented: {@link ValueExpression}, {@link VariableExpression},
+     * {@link ConditionalExpression}, {@link FunctionExpression}
      */
     private IExpression primary() {
         final Token current = getCurrentToken(0);
@@ -497,9 +540,11 @@ public final class Parser {
     }
 
     /**
-     * @param functionName
-     * @param isExpression
-     * @return
+     * Parse function as expression
+     *
+     * @param functionName function identifier
+     * @param isExpression responsible for separating functions with void return type from others functions
+     * @return {@link FunctionExpression}
      */
     private FunctionExpression function(final String functionName, final boolean isExpression) {
         final FunctionExpression functionExpression = new FunctionExpression(functionName, isExpression);
@@ -514,7 +559,9 @@ public final class Parser {
     }
 
     /**
-     * @return
+     * Parse string
+     *
+     * @return {@link ValueExpression}
      */
     private ValueExpression string() {
         final String value = getCurrentToken(0).getStringToken();
@@ -524,8 +571,11 @@ public final class Parser {
     }
 
     /**
-     * @param type
-     * @return
+     * Match token type. If <b>type</b> matches with token's type on {@link #pos}, {@link #pos} will be incremented and
+     * will be returned <tt>true</tt>. In other case will be returned <tt>false</tt>
+     *
+     * @param type type, which should be matched with token's type on {@link #pos}
+     * @return <tt>true</tt> if <b>type</b> matches with token's type on {@link #pos}
      */
     private boolean isMatchTokenType(final TokenType type) {
         final Token current = getCurrentToken(0);
@@ -537,7 +587,8 @@ public final class Parser {
     }
 
     /**
-     * @param type
+     * @param type type, which should be matched with token's type on {@link #pos}
+     * @throws RuntimeException if <b>type</b> doesn't match with token's type on {@link #pos}
      */
     private void consumeToken(TokenType type) {
         final Token current = getCurrentToken(0);
@@ -549,8 +600,10 @@ public final class Parser {
     }
 
     /**
-     * @param relativePosition
-     * @return
+     * @param relativePosition integer value for relatively getting the token from {@link #tokens}. If relativePosition
+     *                         equals zero, method will return char from {@link #tokens} on position {@link #pos}
+     * @return token from {@link #tokens} on position {@link #pos}
+     * @throws RuntimeException if in the end of program DOT isn't found
      */
     private Token getCurrentToken(final int relativePosition) {
         final int position = pos + relativePosition;
@@ -561,7 +614,10 @@ public final class Parser {
     }
 
     /**
-     * @param identifier
+     * Throw exception if constant name is found in {@link Constants} map
+     *
+     * @param identifier constant name
+     * @throws RuntimeException if constant identifier is in {@link Constants} map
      */
     private void checkConstImmutable(final String identifier) {
         if (Constants.isKeyExists(identifier)) {

@@ -24,7 +24,7 @@ public final class ForStatement implements IStatement {
      * @param toExpression           defines the value for the loop to run. If this value is less than {@link #identifier},
      *                               the loop will start over again, if it is bigger, the loop will end.
      * @param body                   loop's body
-     * @param isReverse              decides in which order loop will be executed
+     * @param isReverse              defines in which order loop will be executed
      * @param step                   defines the step by which {@link #identifier} variable will be increased
      */
     public ForStatement(final String identifier, final IExpression initialValueExpression, final IExpression toExpression
