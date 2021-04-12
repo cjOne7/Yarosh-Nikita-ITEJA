@@ -50,8 +50,8 @@ public final class Lexer {
             else if (Brackets.isBracket(character)) {
                 if (character == Brackets.OPEN_ROUND_BRACKET && peek(1) == '*') {
                     tokenizeMultilineComment(character);
-                    next();
-                    next();
+                    next();//skip *
+                    next();//skip )
                 }
                 else if (peek(0) == Brackets.OPEN_CURVE_BRACKET) {
                     tokenizeMultilineComment(character);
