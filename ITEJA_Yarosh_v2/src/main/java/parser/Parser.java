@@ -590,7 +590,7 @@ public final class Parser {
      * @param type type, which should be matched with token's type on {@link #pos}
      * @throws RuntimeException if <b>type</b> doesn't match with token's type on {@link #pos}
      */
-    private void consumeToken(TokenType type) {
+    private void consumeToken(final TokenType type) {
         final Token current = getCurrentToken(0);
         if (type == current.getTokenType()) {
             pos++;
